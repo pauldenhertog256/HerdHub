@@ -648,7 +648,7 @@ export default function App() {
         {/* ── Nav bar ── */}
         <AppBar position="sticky" sx={{ bgcolor: '#1b4332', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
           <Toolbar sx={{ gap: 1, flexWrap: 'wrap', py: { xs: 0.5, sm: 0 } }}>
-            <Typography variant="h6" sx={{ mr: 1, whiteSpace: 'nowrap', display: { xs: 'none', sm: 'block' } }}>🐄 Cattle Breeds</Typography>
+            <Typography variant="h6" sx={{ mr: 1, whiteSpace: 'nowrap', display: { xs: 'none', sm: 'block' } }}>🐄 HerdHub</Typography>
             <Typography variant="h6" sx={{ mr: 1, whiteSpace: 'nowrap', display: { xs: 'block', sm: 'none' } }}>🐄</Typography>
             <Tabs
               value={tab}
