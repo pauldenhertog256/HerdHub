@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {
   AppBar,
+  Avatar,
   Badge,
   Box,
   Button,
@@ -10,6 +11,7 @@ import {
   CardContent,
   CardMedia,
   Chip,
+  CircularProgress,
   CssBaseline,
   Container,
   Dialog,
@@ -36,12 +38,45 @@ import BookmarkAddedIcon from '@mui/icons-material/BookmarkAdded';
 import BookmarkRemoveIcon from '@mui/icons-material/BookmarkRemove';
 import DownloadIcon from '@mui/icons-material/Download';
 import EditIcon from '@mui/icons-material/Edit';
+import LogoutIcon from '@mui/icons-material/Logout';
 import {
   Document, Paragraph, Table, TableCell, TableRow,
   TextRun, ImageRun, WidthType, HeadingLevel, Packer,
 } from 'docx';
 
-// ── Theme ──────────────────────────────────────────────────────────────────
+// ── Login page ────────────────────────────────────────────────────────────────
+function LoginPage({ error }) {
+  return (
+    <Box sx={{
+      minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center',
+      background: 'linear-gradient(145deg, #1b4332 0%, #2d6a4f 100%)',
+    }}>
+      <Card elevation={8} sx={{ p: 4, borderRadius: 4, textAlign: 'center', maxWidth: 360, width: '100%', mx: 2 }}>
+        <Typography sx={{ fontSize: '3.5rem', mb: 1 }}>🐄</Typography>
+        <Typography variant="h5" sx={{ mb: 0.5 }}>HerdHub</Typography>
+        <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>Cattle breed reference</Typography>
+        {error === 'unauthorized' && (
+          <Box sx={{ bgcolor: '#fff0f0', border: '1px solid', borderColor: 'error.main', borderRadius: 2, p: 1.5, mb: 2 }}>
+            <Typography variant="body2" color="error.main">Your email is not on the access list.</Typography>
+          </Box>
+        )}
+        <Button
+          fullWidth variant="contained" size="large"
+          href="/auth/google"
+          sx={{
+            bgcolor: '#4285f4', color: 'white', fontWeight: 600, py: 1.5,
+            textTransform: 'none', fontSize: '1rem', borderRadius: 2,
+            '&:hover': { bgcolor: '#3367d6' },
+          }}
+        >
+          Sign in with Google
+        </Button>
+      </Card>
+    </Box>
+  );
+}
+
+// ── Theme ─────────────────────────────────────────────────────────────────────
 const theme = createTheme({
   palette: {
     primary:    { main: '#2d6a4f' },
@@ -495,6 +530,8 @@ function BreedGrid({ breeds, myList, onCardClick, onToggle, onEdit }) {
 }
 
 export default function App() {
+  const [authState, setAuthState] = useState('loading'); // 'loading'|'unauthenticated'|'authenticated'
+  const [user, setUser] = useState(null);
   const [breeds, setBreeds] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -504,7 +541,17 @@ export default function App() {
   const [myList, setMyList] = useState(() => loadMyList());
   const [purposeFilter, setPurposeFilter] = useState(null);
 
+  // Step 1: check auth
   useEffect(() => {
+    fetch('/api/me')
+      .then((r) => r.ok ? r.json() : Promise.reject())
+      .then((u) => { setUser(u); setAuthState('authenticated'); })
+      .catch(() => { setAuthState('unauthenticated'); setLoading(false); });
+  }, []);
+
+  // Step 2: load breeds only when authenticated
+  useEffect(() => {
+    if (authState !== 'authenticated') return;
     fetch('/api/breeds')
       .then((r) => r.json())
       .then((data) => {
@@ -512,7 +559,7 @@ export default function App() {
         setBreeds(data.map((b) => ({ ...b, ...(edits[b.name] || {}) })));
         setLoading(false);
       });
-  }, []);
+  }, [authState]);
 
   const saveBreed = (updated, originalName) => {
     const edits = loadEdits();
@@ -640,6 +687,17 @@ export default function App() {
 
   const selectionList = breeds.filter((b) => myList.has(b.name));
 
+  // Auth gates
+  const errorParam = new URLSearchParams(window.location.search).get('error');
+  if (authState === 'loading') return (
+    <Box sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', bgcolor: '#1b4332' }}>
+      <CircularProgress sx={{ color: '#74c69d' }} />
+    </Box>
+  );
+  if (authState === 'unauthenticated') return (
+    <ThemeProvider theme={theme}><CssBaseline /><LoginPage error={errorParam} /></ThemeProvider>
+  );
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -678,13 +736,24 @@ export default function App() {
                   sx={{ color: 'rgba(255,255,255,0.85)', borderColor: 'rgba(255,255,255,0.25)', fontSize: '0.72rem', minWidth: 0, px: { xs: 0.75, sm: 1.5 } }}
                 ><Box sx={{ display: { xs: 'none', sm: 'inline' } }}>.docx</Box></Button>
               </Tooltip>
-              <Tooltip title="Download breeds.json with your edits">
+              <Tooltip title="Save all edits to server">
                 <Button size="small" variant="outlined"
                   onClick={downloadBreedsJson}
                   sx={{ color: 'rgba(255,255,255,0.85)', borderColor: 'rgba(255,255,255,0.25)', fontSize: '0.72rem', display: { xs: 'none', sm: 'flex' } }}
                 >JSON</Button>
               </Tooltip>
             </Box>
+            {/* User avatar + logout */}
+            <Tooltip title={user?.email}>
+              <Avatar src={user?.photo} sx={{ width: 30, height: 30, bgcolor: '#40916c', fontSize: '0.8rem', cursor: 'default', flexShrink: 0 }}>
+                {user?.name?.[0]}
+              </Avatar>
+            </Tooltip>
+            <Tooltip title="Sign out">
+              <IconButton size="small" href="/auth/logout" sx={{ color: 'rgba(255,255,255,0.7)', flexShrink: 0 }}>
+                <LogoutIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
           </Toolbar>
         </AppBar>
 
