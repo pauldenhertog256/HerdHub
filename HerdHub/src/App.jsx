@@ -505,7 +505,7 @@ export default function App() {
   const [purposeFilter, setPurposeFilter] = useState(null);
 
   useEffect(() => {
-    fetch('/breeds.json')
+    fetch('/api/breeds')
       .then((r) => r.json())
       .then((data) => {
         const edits = loadEdits();
@@ -523,7 +523,18 @@ export default function App() {
     setEditTarget(null);
   };
 
-  const downloadBreedsJson = () => {
+  const downloadBreedsJson = async () => {
+    // Save to server (persists in volume across redeploys)
+    try {
+      await fetch('/api/save-breeds', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(breeds),
+      });
+    } catch (err) {
+      console.error('Server save failed', err);
+    }
+    // Also download locally as backup
     const blob = new Blob([JSON.stringify(breeds, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
