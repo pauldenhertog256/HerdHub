@@ -225,7 +225,7 @@ function BreedCard({ breed, inMyList, onCardClick, onToggle, onEdit }) {
             <EditIcon sx={{ fontSize: 16 }} />
           </IconButton>
         </Tooltip>
-        <Tooltip title={inMyList ? 'Remove from My Selection' : 'Add to My Selection'}>
+        <Tooltip title={inMyList ? 'Remove from My Herd' : 'Add to My Herd'}>
           <IconButton
             size="small"
             sx={{ color: inMyList ? '#2d6a4f' : 'text.secondary' }}
@@ -718,7 +718,7 @@ export default function App() {
               <Tab label={`All (${breeds.length})`} sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }} />
               <Tab label={
                 <Badge badgeContent={myList.size} color="error" showZero={false} sx={{ pr: myList.size > 0 ? 1.5 : 0 }}>
-                  <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>My Selection</Box>
+                  <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>My Herd</Box>
                   <Box component="span" sx={{ display: { xs: 'inline', sm: 'none' } }}>🔖</Box>
                 </Badge>
               } />
