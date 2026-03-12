@@ -1,4 +1,4 @@
-// Simple image upload server — saves pasted/uploaded images to public/images/
+// Express server — image upload API + serves the built React frontend
 import express from 'express';
 import { writeFile, mkdir } from 'fs/promises';
 import path from 'path';
@@ -6,17 +6,13 @@ import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const IMG_DIR = path.join(__dirname, 'public', 'images');
-const PORT = 3001;
+const DIST_DIR = path.join(__dirname, 'dist');
+const PORT = process.env.PORT || 3001;
 
 const app = express();
 app.use(express.json({ limit: '25mb' }));
 
-// Allow Vite dev server to reach this
-app.use((_, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  next();
-});
+// ── API ──────────────────────────────────────────────────────────────────────
 
 app.post('/api/upload-image', async (req, res) => {
   try {
@@ -38,4 +34,14 @@ app.post('/api/upload-image', async (req, res) => {
   }
 });
 
-app.listen(PORT, () => console.log(`Upload server → http://localhost:${PORT}`));
+// ── Static frontend (production) ─────────────────────────────────────────────
+
+app.use(express.static(DIST_DIR));
+app.use('/images', express.static(path.join(__dirname, 'public', 'images')));
+
+// SPA fallback — all non-API routes serve index.html
+app.get('*', (req, res) => {
+  res.sendFile(path.join(DIST_DIR, 'index.html'));
+});
+
+app.listen(PORT, () => console.log(`HerdHub → http://localhost:${PORT}`));
