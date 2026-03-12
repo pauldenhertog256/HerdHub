@@ -379,7 +379,7 @@ function EditDialog({ breed, onClose, onSave }) {
             transition: 'all 0.2s',
             '&:focus': { borderColor: 'primary.main', bgcolor: 'primary.50' },
           }}
-          onClick={() => pasteZoneRef.current?.focus()}
+          onClick={() => fileRef.current.click()}
         >
           {form.imageUrl ? (
             <Box sx={{ position: 'relative', display: 'inline-block' }}>
@@ -404,7 +404,7 @@ function EditDialog({ breed, onClose, onSave }) {
             </Box>
           ) : (
             <Typography variant="body2" color="text.secondary" sx={{ py: 2 }}>
-              Click here, then paste an image (Ctrl+V)
+              📷 Tap to choose a photo · or paste (Ctrl+V) on desktop
             </Typography>
           )}
           {uploading && (
@@ -413,11 +413,11 @@ function EditDialog({ breed, onClose, onSave }) {
             </Typography>
           )}
         </Box>
+        {/* hidden file input — accept image from gallery or camera */}
+        <input ref={fileRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={handleFile} />
 
         <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
           <TextField fullWidth label="Image URL" size="small" value={form.imageUrl || ''} onChange={set('imageUrl')} />
-          <Button variant="outlined" size="small" onClick={() => fileRef.current.click()} sx={{ whiteSpace: 'nowrap' }}>Upload</Button>
-          <input ref={fileRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={handleFile} />
         </Box>
         <TextField fullWidth label="Name" size="small" value={form.name || ''} onChange={set('name')} />
         <TextField fullWidth label="Origin" size="small" value={form.origin || ''} onChange={set('origin')} />
