@@ -206,21 +206,19 @@ function BreedCard({ breed, inMyList, onCardClick, onToggle, onEdit }) {
 
 function LoadingSkeleton() {
   return (
-    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-      {Array.from({ length: 12 }).map((_, i) => (
-        <Box key={i} sx={{ width: 220, flexShrink: 0 }}>
-          <Card elevation={0} sx={{ borderRadius: 4 }}>
-            <Skeleton variant="rectangular" height={180} />
-            <CardContent sx={{ pt: 1.5 }}>
-              <Skeleton variant="text" width="70%" height={24} />
-              <Skeleton variant="text" width="50%" height={18} sx={{ mb: 1 }} />
-              <Box sx={{ display: 'flex', gap: 0.5 }}>
-                <Skeleton variant="rounded" width={50} height={20} />
-                <Skeleton variant="rounded" width={40} height={20} />
-              </Box>
-            </CardContent>
-          </Card>
-        </Box>
+    <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 2 }}>
+      {Array.from({ length: 24 }).map((_, i) => (
+        <Card key={i} elevation={0} sx={{ borderRadius: 4 }}>
+          <Skeleton variant="rectangular" height={180} />
+          <CardContent sx={{ pt: 1.5 }}>
+            <Skeleton variant="text" width="70%" height={24} />
+            <Skeleton variant="text" width="50%" height={18} sx={{ mb: 1 }} />
+            <Box sx={{ display: 'flex', gap: 0.5 }}>
+              <Skeleton variant="rounded" width={50} height={20} />
+              <Skeleton variant="rounded" width={40} height={20} />
+            </Box>
+          </CardContent>
+        </Card>
       ))}
     </Box>
   );
@@ -436,7 +434,29 @@ function EditDialog({ breed, onClose, onSave }) {
   );
 }
 
+const PAGE_SIZE = 40;
+
 function BreedGrid({ breeds, myList, onCardClick, onToggle, onEdit }) {
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+  const sentinelRef = useRef(null);
+
+  // Reset when the list changes (new search / filter / tab)
+  useEffect(() => { setVisibleCount(PAGE_SIZE); }, [breeds]);
+
+  // Infinite scroll — bump visibleCount when sentinel enters viewport
+  useEffect(() => {
+    const el = sentinelRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setVisibleCount((n) => n + PAGE_SIZE); },
+      { rootMargin: '200px' }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [breeds]);
+
+  const visible = breeds.slice(0, visibleCount);
+
   if (breeds.length === 0) {
     return (
       <Box sx={{ textAlign: 'center', mt: 10 }}>
@@ -447,19 +467,30 @@ function BreedGrid({ breeds, myList, onCardClick, onToggle, onEdit }) {
     );
   }
   return (
-    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-      {breeds.map((breed) => (
-        <Box key={breed.name} sx={{ width: 220, flexShrink: 0 }}>
+    <>
+      <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 2 }}>
+        {visible.map((breed) => (
           <BreedCard
+            key={breed.name}
             breed={breed}
             inMyList={myList.has(breed.name)}
             onCardClick={() => onCardClick(breed)}
             onToggle={() => onToggle(breed.name)}
             onEdit={() => onEdit(breed)}
           />
+        ))}
+      </Box>
+      {visibleCount < breeds.length && (
+        <Box ref={sentinelRef} sx={{ textAlign: 'center', py: 4 }}>
+          <Skeleton variant="rounded" width={120} height={20} sx={{ mx: 'auto' }} />
         </Box>
-      ))}
-    </Box>
+      )}
+      {visibleCount >= breeds.length && breeds.length > PAGE_SIZE && (
+        <Typography variant="caption" color="text.secondary" sx={{ display: 'block', textAlign: 'center', mt: 3 }}>
+          All {breeds.length} breeds loaded
+        </Typography>
+      )}
+    </>
   );
 }
 
@@ -605,39 +636,41 @@ export default function App() {
 
         {/* ── Nav bar ── */}
         <AppBar position="sticky" sx={{ bgcolor: '#1b4332', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
-          <Toolbar sx={{ gap: 1 }}>
-            <Typography variant="h6" sx={{ mr: 1, whiteSpace: 'nowrap' }}>🐄 Cattle Breeds</Typography>
+          <Toolbar sx={{ gap: 1, flexWrap: 'wrap', py: { xs: 0.5, sm: 0 } }}>
+            <Typography variant="h6" sx={{ mr: 1, whiteSpace: 'nowrap', display: { xs: 'none', sm: 'block' } }}>🐄 Cattle Breeds</Typography>
+            <Typography variant="h6" sx={{ mr: 1, whiteSpace: 'nowrap', display: { xs: 'block', sm: 'none' } }}>🐄</Typography>
             <Tabs
               value={tab}
               onChange={(_, v) => { setTab(v); setPurposeFilter(null); }}
               textColor="inherit"
               TabIndicatorProps={{ style: { backgroundColor: '#74c69d', height: 3, borderRadius: 2 } }}
-              sx={{ flexGrow: 1 }}
+              sx={{ flexGrow: 1, minHeight: 48 }}
             >
-              <Tab label={`All Breeds (${breeds.length})`} />
+              <Tab label={`All (${breeds.length})`} sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }} />
               <Tab label={
                 <Badge badgeContent={myList.size} color="error" showZero={false} sx={{ pr: myList.size > 0 ? 1.5 : 0 }}>
-                  My Selection
+                  <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>My Selection</Box>
+                  <Box component="span" sx={{ display: { xs: 'inline', sm: 'none' } }}>🔖</Box>
                 </Badge>
               } />
             </Tabs>
-            <Box sx={{ display: 'flex', gap: 0.75, flexShrink: 0 }}>
+            <Box sx={{ display: 'flex', gap: 0.5, flexShrink: 0 }}>
               <Tooltip title="Export visible as .md">
                 <Button size="small" variant="outlined" startIcon={<DownloadIcon />}
                   onClick={() => exportMd(filtered)}
-                  sx={{ color: 'rgba(255,255,255,0.85)', borderColor: 'rgba(255,255,255,0.25)', fontSize: '0.72rem' }}
-                >.md</Button>
+                  sx={{ color: 'rgba(255,255,255,0.85)', borderColor: 'rgba(255,255,255,0.25)', fontSize: '0.72rem', minWidth: 0, px: { xs: 0.75, sm: 1.5 } }}
+                ><Box sx={{ display: { xs: 'none', sm: 'inline' } }}>.md</Box></Button>
               </Tooltip>
               <Tooltip title="Export visible as .docx">
                 <Button size="small" variant="outlined" startIcon={<DownloadIcon />}
                   onClick={() => exportDocx(filtered)}
-                  sx={{ color: 'rgba(255,255,255,0.85)', borderColor: 'rgba(255,255,255,0.25)', fontSize: '0.72rem' }}
-                >.docx</Button>
+                  sx={{ color: 'rgba(255,255,255,0.85)', borderColor: 'rgba(255,255,255,0.25)', fontSize: '0.72rem', minWidth: 0, px: { xs: 0.75, sm: 1.5 } }}
+                ><Box sx={{ display: { xs: 'none', sm: 'inline' } }}>.docx</Box></Button>
               </Tooltip>
               <Tooltip title="Download breeds.json with your edits">
                 <Button size="small" variant="outlined"
                   onClick={downloadBreedsJson}
-                  sx={{ color: 'rgba(255,255,255,0.85)', borderColor: 'rgba(255,255,255,0.25)', fontSize: '0.72rem' }}
+                  sx={{ color: 'rgba(255,255,255,0.85)', borderColor: 'rgba(255,255,255,0.25)', fontSize: '0.72rem', display: { xs: 'none', sm: 'flex' } }}
                 >JSON</Button>
               </Tooltip>
             </Box>
