@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {
   AppBar,
+  Autocomplete,
   Avatar,
   Badge,
   Box,
@@ -163,36 +164,59 @@ const theme = createTheme({
   },
 });
 
-const PURPOSE_META = {
-  Meat:    { color: '#e63946', bg: '#fdecea' },
-  Dairy:   { color: '#457b9d', bg: '#e8f4f8' },
-  Draught: { color: '#b5651d', bg: '#fef3e2' },
-  Other:   { color: '#6c757d', bg: '#f0f0f0' },
-};
+const TAG_COLORS = [
+  { color: '#e63946', bg: '#fdecea' },
+  { color: '#457b9d', bg: '#e8f4f8' },
+  { color: '#2d6a4f', bg: '#e8f5e9' },
+  { color: '#b5651d', bg: '#fef3e2' },
+  { color: '#7b2d8b', bg: '#f3e5f5' },
+  { color: '#c9952a', bg: '#fff8e1' },
+  { color: '#00838f', bg: '#e0f7fa' },
+  { color: '#6c757d', bg: '#f0f0f0' },
+];
 
-function PurposeChips({ purpose, size = 'small' }) {
-  if (!purpose) return null;
+function tagColor(tag) {
+  let h = 0;
+  for (let i = 0; i < tag.length; i++) h = (h * 31 + tag.charCodeAt(i)) & 0xffff;
+  return TAG_COLORS[h % TAG_COLORS.length];
+}
+
+function TagChips({ tags, size = 'small' }) {
+  if (!tags?.length) return null;
   return (
     <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-      {purpose.split('/').map((p) => {
-        const key = Object.keys(PURPOSE_META).find((k) => p.includes(k)) ?? 'Other';
-        const meta = PURPOSE_META[key];
+      {tags.map((t) => {
+        const { color, bg } = tagColor(t);
+        const label = t.length > 10 ? t.slice(0, 10) + '…' : t;
         return (
-          <Chip
-            key={p}
-            label={p}
-            size={size}
-            sx={{
-              fontSize: '0.65rem',
-              color: meta.color,
-              bgcolor: meta.bg,
-              border: `1px solid ${meta.color}33`,
-              fontWeight: 600,
-            }}
+          <Chip key={t} label={label} title={t.length > 10 ? t : undefined} size={size}
+            sx={{ fontSize: '0.65rem', color, bgcolor: bg, border: `1px solid ${color}33`, fontWeight: 600 }}
           />
         );
       })}
     </Box>
+  );
+}
+
+function TagInput({ value, onChange, allTags }) {
+  const tags = Array.isArray(value) ? value : [];
+  return (
+    <Autocomplete
+      multiple freeSolo
+      value={tags}
+      onChange={(_, newVal) => onChange(newVal.map((v) => (typeof v === 'string' ? v.trim() : v)).filter(Boolean))}
+      options={allTags.filter((t) => !tags.includes(t))}
+      renderTags={(vals, getTagProps) =>
+        vals.map((tag, index) => {
+          const props = getTagProps({ index });
+          const label = tag.length > 10 ? tag.slice(0, 10) + '…' : tag;
+          return <Chip {...props} key={props.key} label={label} title={tag.length > 10 ? tag : undefined} size="small" />;
+        })
+      }
+      renderInput={(params) => (
+        <TextField {...params} size="small" label="Tags" placeholder={tags.length === 0 ? 'Add tag, press Enter…' : ''} />
+      )}
+    />
   );
 }
 
@@ -262,7 +286,7 @@ function BreedCard({ breed, inMyList, onCardClick, onToggle, onEdit, showEdit })
               📍 {breed.origin}
             </Typography>
           )}
-          <PurposeChips purpose={breed.purpose} />
+          <TagChips tags={breed.tags} />
         </CardContent>
       </CardActionArea>
       <Divider sx={{ mx: 1.5, opacity: 0.4 }} />
@@ -365,10 +389,10 @@ function BreedDialog({ breed, onClose, onEdit, onToggle, inMyList, showEdit }) {
               <Typography variant="body1">{breed.subspecies}</Typography>
             </Box>
           )}
-          {breed.purpose && (
+          {breed.tags?.length > 0 && (
             <Box>
-              <Typography variant="caption" color="text.secondary" fontWeight={700} letterSpacing={0.8} sx={{ textTransform: 'uppercase', display: 'block', mb: 0.5 }}>Purpose</Typography>
-              <PurposeChips purpose={breed.purpose} size="medium" />
+              <Typography variant="caption" color="text.secondary" fontWeight={700} letterSpacing={0.8} sx={{ textTransform: 'uppercase', display: 'block', mb: 0.5 }}>Tags</Typography>
+              <TagChips tags={breed.tags} size="medium" />
             </Box>
           )}
           {breed.wikiUrl && (
@@ -394,7 +418,7 @@ function BreedDialog({ breed, onClose, onEdit, onToggle, inMyList, showEdit }) {
   );
 }
 
-function EditDialog({ breed, onClose, onSave }) {
+function EditDialog({ breed, onClose, onSave, allTags }) {
   const [form, setForm] = useState({ ...breed });
   const [uploading, setUploading] = useState(false);
   const fileRef = useRef(null);
@@ -508,8 +532,8 @@ function EditDialog({ breed, onClose, onSave }) {
         <TextField fullWidth label="Name" size="small" value={form.name || ''} onChange={set('name')} />
         <TextField fullWidth label="Origin" size="small" value={form.origin || ''} onChange={set('origin')} />
         <TextField fullWidth label="Subspecies" size="small" value={form.subspecies || ''} onChange={set('subspecies')} />
-        <TextField fullWidth label="Purpose (e.g. Meat/Dairy)" size="small" value={form.purpose || ''} onChange={set('purpose')} />
         <TextField fullWidth label="Wikipedia URL" size="small" value={form.wikiUrl || ''} onChange={set('wikiUrl')} />
+        <TagInput value={form.tags} onChange={(tags) => setForm((f) => ({ ...f, tags }))} allTags={allTags} />
         <TextField fullWidth label="Comments" size="small" multiline minRows={3} value={form.comments || ''} onChange={set('comments')} />
       </DialogContent>
       <DialogActions sx={{ p: 2.5, gap: 1 }}>
@@ -581,8 +605,8 @@ function BreedGrid({ breeds, myList, onCardClick, onToggle, onEdit, showEdit }) 
   );
 }
 
-function AddBreedDialog({ onClose, onSave }) {
-  const [form, setForm] = useState({ name: '', origin: '', subspecies: '', purpose: '', wikiUrl: '', imageUrl: '' });
+function AddBreedDialog({ onClose, onSave, allTags }) {
+  const [form, setForm] = useState({ name: '', origin: '', subspecies: '', tags: [], wikiUrl: '', imageUrl: '' });
   const set = (field) => (e) => setForm((f) => ({ ...f, [field]: e.target.value }));
   return (
     <Dialog open onClose={onClose} maxWidth="sm" fullWidth>
@@ -594,8 +618,8 @@ function AddBreedDialog({ onClose, onSave }) {
         <TextField fullWidth label="Name *" size="small" value={form.name} onChange={set('name')} />
         <TextField fullWidth label="Origin" size="small" value={form.origin} onChange={set('origin')} />
         <TextField fullWidth label="Subspecies" size="small" value={form.subspecies} onChange={set('subspecies')} />
-        <TextField fullWidth label="Purpose (e.g. Meat/Dairy)" size="small" value={form.purpose} onChange={set('purpose')} />
         <TextField fullWidth label="Wikipedia URL" size="small" value={form.wikiUrl} onChange={set('wikiUrl')} />
+        <TagInput value={form.tags} onChange={(tags) => setForm((f) => ({ ...f, tags }))} allTags={allTags} />
         <TextField fullWidth label="Image URL" size="small" value={form.imageUrl} onChange={set('imageUrl')} />
       </DialogContent>
       <DialogActions sx={{ p: 2.5, gap: 1 }}>
@@ -762,7 +786,7 @@ export default function App() {
   const [editTarget, setEditTarget] = useState(null);
   const [editContext, setEditContext] = useState(null); // 'master' | 'myherd'
   const [tab, setTab]             = useState(0);
-  const [purposeFilter, setPurposeFilter] = useState(null);
+  const [tagFilter, setTagFilter] = useState(null);
   const [addOpen, setAddOpen]     = useState(false);
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [showLogin, setShowLogin] = useState(false);
@@ -832,6 +856,13 @@ export default function App() {
 
   // myList is a Set of IDs (or names for legacy items) for O(1) lookup
   const myList = useMemo(() => new Set(myHerd.map((b) => b.id ?? b.name)), [myHerd]);
+
+  // ── All unique tags across master breeds (for filter bar + autocomplete) ───
+  const allTags = useMemo(() => {
+    const counts = new Map();
+    breeds.forEach((b) => (b.tags || []).forEach((t) => counts.set(t, (counts.get(t) ?? 0) + 1)));
+    return [...counts.entries()].sort((a, b) => b[1] - a[1]).map(([t]) => t);
+  }, [breeds]);
 
   // ── Save my herd to server ──────────────────────────────────────────────────
   const saveMyHerd = async (nextHerd) => {
@@ -941,9 +972,9 @@ export default function App() {
   const exportMd = (list, filename = 'cattle-breeds.md') => {
     const rows = list.map((b) => {
       const img = b.imageUrl ? `![${b.name}](${b.imageUrl})` : '';
-      return `| ${b.name} | ${img} | ${b.origin || ''} | ${b.subspecies || ''} | ${b.purpose || ''} | ${b.wikiUrl ? `[link](${b.wikiUrl})` : ''} |`;
+      return `| ${b.name} | ${img} | ${b.origin || ''} | ${b.subspecies || ''} | ${(b.tags || []).join(', ')} | ${b.wikiUrl ? `[link](${b.wikiUrl})` : ''} |`;
     }).join('\n');
-    const md = `# Cattle Breeds\n\n| Name | Image | Origin | Subspecies | Purpose | Wikipedia |\n|------|-------|--------|------------|---------|----------|\n${rows}\n`;
+    const md = `# Cattle Breeds\n\n| Name | Image | Origin | Subspecies | Tags | Wikipedia |\n|------|-------|--------|------------|------|----------|\n${rows}\n`;
     const blob = new Blob([md], { type: 'text/markdown' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -964,7 +995,7 @@ export default function App() {
     };
 
     const headerRow = new DocxTableRow({
-      children: ['Name', 'Origin', 'Subspecies', 'Purpose', 'Wikipedia'].map(
+      children: ['Name', 'Origin', 'Subspecies', 'Tags', 'Wikipedia'].map(
         (h) => new DocxTableCell({ children: [new Paragraph({ children: [new TextRun({ text: h, bold: true })] })] })
       ),
     });
@@ -985,7 +1016,7 @@ export default function App() {
           imgCell,
           new DocxTableCell({ children: [new Paragraph(b.origin || '')] }),
           new DocxTableCell({ children: [new Paragraph(b.subspecies || '')] }),
-          new DocxTableCell({ children: [new Paragraph(b.purpose || '')] }),
+          new DocxTableCell({ children: [new Paragraph((b.tags || []).join(', '))] }),
           new DocxTableCell({ children: [new Paragraph(b.wikiUrl || '')] }),
         ],
       });
@@ -1019,11 +1050,11 @@ export default function App() {
       const matchesSearch = !q ||
         b.name.toLowerCase().includes(q) ||
         (b.origin && b.origin.toLowerCase().includes(q)) ||
-        (b.purpose && b.purpose.toLowerCase().includes(q));
-      const matchesPurpose = !purposeFilter || (b.purpose && b.purpose.includes(purposeFilter));
-      return matchesSearch && matchesPurpose;
+        (b.tags || []).some((t) => t.toLowerCase().includes(q));
+      const matchesTag = !tagFilter || (b.tags || []).includes(tagFilter);
+      return matchesSearch && matchesTag;
     });
-  }, [breeds, myHerd, search, tab, purposeFilter]);
+  }, [breeds, myHerd, search, tab, tagFilter]);
 
   const selectionList = myHerd;
 
@@ -1055,7 +1086,7 @@ export default function App() {
             <Typography variant="h6" sx={{ mr: 1, whiteSpace: 'nowrap', display: { xs: 'block', sm: 'none' } }}>🐄</Typography>
             <Tabs
               value={tab}
-              onChange={(_, v) => { if (v === 1 && !isUser) { setShowLogin(true); return; } setTab(v); setPurposeFilter(null); }}
+              onChange={(_, v) => { if (v === 1 && !isUser) { setShowLogin(true); return; } setTab(v); setTagFilter(null); }}
               textColor="inherit"
               TabIndicatorProps={{ style: { backgroundColor: '#74c69d', height: 3, borderRadius: 2 } }}
               sx={{ flexGrow: 1, minHeight: 48 }}
@@ -1144,19 +1175,22 @@ export default function App() {
               InputProps={{ startAdornment: <InputAdornment position="start"><SearchIcon /></InputAdornment> }}
             />
             <Box sx={{ display: 'flex', gap: 1, mt: 2, flexWrap: 'wrap', justifyContent: 'center' }}>
-              {['Meat', 'Dairy', 'Draught', 'Other'].map((p) => (
-                <Chip
-                  key={p} label={p}
-                  onClick={() => setPurposeFilter((prev) => prev === p ? null : p)}
-                  variant={purposeFilter === p ? 'filled' : 'outlined'}
-                  sx={{
-                    color: purposeFilter === p ? '#1b4332' : 'rgba(255,255,255,0.85)',
-                    bgcolor: purposeFilter === p ? '#74c69d' : 'transparent',
-                    borderColor: 'rgba(255,255,255,0.3)', fontWeight: 600,
-                    '&:hover': { bgcolor: purposeFilter === p ? '#74c69d' : 'rgba(255,255,255,0.12)' },
-                  }}
-                />
-              ))}
+              {allTags.map((t) => {
+                const label = t.length > 10 ? t.slice(0, 10) + '…' : t;
+                return (
+                  <Chip
+                    key={t} label={label} title={t.length > 10 ? t : undefined}
+                    onClick={() => setTagFilter((prev) => prev === t ? null : t)}
+                    variant={tagFilter === t ? 'filled' : 'outlined'}
+                    sx={{
+                      color: tagFilter === t ? '#1b4332' : 'rgba(255,255,255,0.85)',
+                      bgcolor: tagFilter === t ? '#74c69d' : 'transparent',
+                      borderColor: 'rgba(255,255,255,0.3)', fontWeight: 600,
+                      '&:hover': { bgcolor: tagFilter === t ? '#74c69d' : 'rgba(255,255,255,0.12)' },
+                    }}
+                  />
+                );
+              })}
             </Box>
           </Container>
         </Box>
@@ -1241,12 +1275,12 @@ export default function App() {
           showEdit={tab === 1 || isAdmin}
         />
         {editTarget && (
-          <EditDialog breed={editTarget} onClose={() => { setEditTarget(null); setEditContext(null); }} onSave={saveBreed} />
+          <EditDialog breed={editTarget} onClose={() => { setEditTarget(null); setEditContext(null); }} onSave={saveBreed} allTags={allTags} />
         )}
 
         {/* Admin: add breed dialog */}
         {addOpen && (
-          <AddBreedDialog onClose={() => setAddOpen(false)} onSave={addBreed} />
+          <AddBreedDialog onClose={() => setAddOpen(false)} onSave={addBreed} allTags={allTags} />
         )}
 
         {/* Admin: delete confirmation */}

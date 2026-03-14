@@ -59,6 +59,22 @@ async function seedDb() {
     console.log(`DB seeded — ${breeds.length} breeds`);
   }
 
+  // Migration: purpose string → tags array
+  {
+    let breeds = await loadDb(BREEDS_DB) ?? [];
+    let migrated = false;
+    breeds = breeds.map((b) => {
+      if (!Array.isArray(b.tags)) {
+        const tags = b.purpose ? b.purpose.split('/').map((t) => t.trim()).filter(Boolean) : [];
+        const { purpose, ...rest } = b;
+        migrated = true;
+        return { ...rest, tags };
+      }
+      return b;
+    });
+    if (migrated) { await saveDb(BREEDS_DB, breeds); console.log('Migrated purpose → tags'); }
+  }
+
   // Accounts — seed hardcoded admins + optional env-var admin
   let accounts = await loadDb(ACCOUNTS_DB) ?? [];
   const adminSeeds = [
@@ -237,7 +253,7 @@ app.post('/api/breeds', requireAdmin, async (req, res) => {
   try {
     const breeds = await loadDb(BREEDS_DB) ?? [];
     const nextId = breeds.reduce((m, b) => Math.max(m, b.id ?? 0), 0) + 1;
-    const newBreed = { id: nextId, name: '', origin: null, subspecies: null, purpose: null, imageUrl: null, wikiUrl: null, ...req.body, id: nextId };
+    const newBreed = { id: nextId, name: '', origin: null, subspecies: null, tags: [], imageUrl: null, wikiUrl: null, ...req.body, id: nextId };
     breeds.push(newBreed);
     await saveDb(BREEDS_DB, breeds);
     res.status(201).json(newBreed);
