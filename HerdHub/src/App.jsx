@@ -1,4 +1,5 @@
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useWindowVirtualizer } from '@tanstack/react-virtual';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {
   AppBar,
@@ -202,29 +203,32 @@ function tagColor(tag) {
   return result;
 }
 
-/** Derive the thumbnail URL from a full image URL: /images/foo.jpg → /api/thumb/foo.jpg */
+/** Derive the thumbnail URL for a breed image.
+ * Only local /images/ paths get a thumb route. External URLs return null (show placeholder). */
 function thumbUrl(imageUrl) {
-  if (!imageUrl) return null;
-  const filename = imageUrl.replace(/^\/images\//, '');
+  if (!imageUrl || !imageUrl.startsWith('/images/')) return null;
+  const filename = imageUrl.slice('/images/'.length);
   return `/api/thumb/${filename}`;
 }
 
-function TagChips({ tags, size = 'small' }) {
+function TagChips({ tags, size = 'small', alwaysExpanded = false }) {
   const [expanded, setExpanded] = useState(false);
   const containerRef = useRef(null);
   const [overflows, setOverflows] = useState(false);
 
   useEffect(() => {
     const el = containerRef.current;
-    if (!el) return;
+    if (!el || alwaysExpanded) return;
     const check = () => setOverflows(el.scrollHeight > el.clientHeight + 2);
     check();
     const ro = new ResizeObserver(check);
     ro.observe(el);
     return () => ro.disconnect();
-  }, [tags, expanded]);
+  }, [tags, expanded, alwaysExpanded]);
 
   if (!tags?.length) return null;
+
+  const isExpanded = alwaysExpanded || expanded;
 
   return (
     <Box sx={{ position: 'relative' }}>
@@ -233,9 +237,9 @@ function TagChips({ tags, size = 'small' }) {
         sx={{
           display: 'flex', flexWrap: 'wrap', gap: 0.5,
           overflow: 'hidden',
-          maxHeight: expanded ? 'none' : '26px',
+          maxHeight: isExpanded ? 'none' : '26px',
           // fade out the tail when collapsed and overflowing
-          maskImage: !expanded && overflows
+          maskImage: !isExpanded && overflows
             ? 'linear-gradient(to right, black 60%, transparent 100%)'
             : 'none',
         }}
@@ -250,7 +254,7 @@ function TagChips({ tags, size = 'small' }) {
           );
         })}
       </Box>
-      {(overflows || expanded) && (
+      {!alwaysExpanded && (overflows || expanded) && (
         <Box
           component="span"
           onClick={(e) => { e.stopPropagation(); setExpanded((v) => !v); }}
@@ -268,13 +272,24 @@ function TagChips({ tags, size = 'small' }) {
   );
 }
 
+function normalizeTag(t) {
+  const s = t.trim();
+  return s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
+}
+
 function TagInput({ value, onChange, allTags }) {
   const tags = Array.isArray(value) ? value : [];
   return (
     <Autocomplete
       multiple freeSolo
       value={tags}
-      onChange={(_, newVal) => onChange(newVal.map((v) => (typeof v === 'string' ? v.trim() : v)).filter(Boolean))}
+      onChange={(_, newVal) => {
+        const normalized = newVal.map((v) => normalizeTag(typeof v === 'string' ? v : v)).filter(Boolean);
+        // Deduplicate case-insensitively (keep last)
+        const seen = new Map();
+        normalized.forEach((t) => seen.set(t.toLowerCase(), t));
+        onChange([...seen.values()]);
+      }}
       options={allTags.filter((t) => !tags.includes(t))}
       renderTags={(vals, getTagProps) =>
         vals.map((tag, index) => {
@@ -359,10 +374,19 @@ function FilterChipRow({ allTags, tagFilter, setTagFilter }) {
 }
 
 const BreedCard = memo(function BreedCard({ breed, inMyList, onCardClick, onToggle, onEdit, showEdit }) {
-  // 0 = try thumb, 1 = fall back to original, 2 = show placeholder
+  const thumb = thumbUrl(breed.imageUrl);                    // null if not yet local
+  const isLocal = breed.imageUrl?.startsWith('/images/');
+  // stage 0 = thumb, stage 1 = full local image, stage 2 = cow placeholder
   const [imgStage, setImgStage] = useState(0);
-  const thumb = thumbUrl(breed.imageUrl);
-  const imgSrc = imgStage === 0 ? thumb : breed.imageUrl;
+  // Reset stage whenever the imageUrl changes (e.g. after polling updates external→local)
+  const [prevUrl, setPrevUrl] = useState(breed.imageUrl);
+  if (prevUrl !== breed.imageUrl) {
+    setPrevUrl(breed.imageUrl);
+    setImgStage(0);
+  }
+  // If no thumb yet (still external), jump straight to full image or placeholder
+  const effectiveStage = (!thumb && imgStage === 0) ? (isLocal ? 1 : 2) : imgStage;
+  const imgSrc = effectiveStage === 0 ? thumb : (effectiveStage === 1 && isLocal ? breed.imageUrl : null);
   // Stable per-breed callbacks so memo can skip re-renders when only unrelated state changes
   const handleClick = useCallback(() => onCardClick(breed), [onCardClick, breed]);
   const handleToggle = useCallback((e) => { e.stopPropagation(); onToggle(breed); }, [onToggle, breed]);
@@ -391,7 +415,7 @@ const BreedCard = memo(function BreedCard({ breed, inMyList, onCardClick, onTogg
         sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}
       >
         <Box sx={{ position: 'relative', overflow: 'hidden' }}>
-          {breed.imageUrl && imgStage < 2 ? (
+          {imgSrc ? (
             <CardMedia
               component="img"
               height="180"
@@ -481,11 +505,13 @@ function LoadingSkeleton() {
 
 function BreedDialog({ breed, onClose, onEdit, onToggle, inMyList, showEdit }) {
   const [imgErr, setImgErr] = useState(false);
+  // Only show local images — external URLs are placeholder while server downloads them
+  const isLocal = breed?.imageUrl?.startsWith('/images/');
   if (!breed) return null;
   return (
     <Dialog open onClose={onClose} maxWidth="sm" fullWidth TransitionProps={{ unmountOnExit: true }}>
       <Box sx={{ position: 'relative' }}>
-        {breed.imageUrl && !imgErr ? (
+        {isLocal && !imgErr ? (
           <Box
             component="img"
             src={breed.imageUrl}
@@ -539,7 +565,7 @@ function BreedDialog({ breed, onClose, onEdit, onToggle, inMyList, showEdit }) {
           {breed.tags?.length > 0 && (
             <Box>
               <Typography variant="caption" color="text.secondary" fontWeight={700} letterSpacing={0.8} sx={{ textTransform: 'uppercase', display: 'block', mb: 0.5 }}>Tags</Typography>
-              <TagChips tags={breed.tags} size="medium" />
+              <TagChips tags={breed.tags} size="medium" alwaysExpanded />
             </Box>
           )}
           {breed.wikiUrl && (
@@ -565,9 +591,10 @@ function BreedDialog({ breed, onClose, onEdit, onToggle, inMyList, showEdit }) {
   );
 }
 
-function EditDialog({ breed, onClose, onSave, allTags }) {
+function EditDialog({ breed, onClose, onSave, onDelete, allTags }) {
   const [form, setForm] = useState({ ...breed });
   const [uploading, setUploading] = useState(false);
+  const [imgLoadErr, setImgLoadErr] = useState(false);
   const fileRef = useRef(null);
   const pasteZoneRef = useRef(null);
 
@@ -579,10 +606,11 @@ function EditDialog({ breed, onClose, onSave, allTags }) {
       const resp = await fetch('/api/upload-image', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: form.name || breed.name, dataUrl }),
+        body: JSON.stringify({ name: form.name || breed.name, breedId: breed.id, dataUrl }),
       });
       const { path } = await resp.json();
       setForm((f) => ({ ...f, imageUrl: path }));
+      setImgLoadErr(false);
     } catch (err) {
       console.error('Upload failed', err);
     } finally {
@@ -638,12 +666,12 @@ function EditDialog({ breed, onClose, onSave, allTags }) {
           }}
           onClick={() => fileRef.current.click()}
         >
-          {form.imageUrl ? (
+          {form.imageUrl && !imgLoadErr ? (
             <Box sx={{ position: 'relative', display: 'inline-block' }}>
               <Box
                 component="img" src={form.imageUrl} alt={form.name}
                 sx={{ maxHeight: 160, maxWidth: '100%', objectFit: 'contain', borderRadius: 1, display: 'block', mx: 'auto' }}
-                onError={(e) => { e.target.style.display = 'none'; }}
+                onError={() => setImgLoadErr(true)}
               />
               <Tooltip title="Remove image">
                 <IconButton
@@ -674,7 +702,7 @@ function EditDialog({ breed, onClose, onSave, allTags }) {
         <input ref={fileRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={handleFile} />
 
         <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-          <TextField fullWidth label="Image URL" size="small" value={form.imageUrl || ''} onChange={set('imageUrl')} />
+          <TextField fullWidth label="Image URL" size="small" value={form.imageUrl || ''} onChange={(e) => { set('imageUrl')(e); setImgLoadErr(false); }} />
         </Box>
         <TextField fullWidth label="Name" size="small" value={form.name || ''} onChange={set('name')} />
         <TextField fullWidth label="Origin" size="small" value={form.origin || ''} onChange={set('origin')} />
@@ -684,6 +712,13 @@ function EditDialog({ breed, onClose, onSave, allTags }) {
         <TextField fullWidth label="Comments" size="small" multiline minRows={3} value={form.comments || ''} onChange={set('comments')} />
       </DialogContent>
       <DialogActions sx={{ p: 2.5, gap: 1 }}>
+        {onDelete && (
+          <Tooltip title="Delete breed">
+            <IconButton color="error" onClick={onDelete} sx={{ mr: 'auto' }}>
+              <DeleteIcon />
+            </IconButton>
+          </Tooltip>
+        )}
         <Button onClick={onClose} sx={{ flex: 1 }}>Cancel</Button>
         <Button variant="contained" onClick={() => onSave(form, breed.name)} sx={{ flex: 1 }} disabled={uploading}>Save changes</Button>
       </DialogActions>
@@ -691,32 +726,32 @@ function EditDialog({ breed, onClose, onSave, allTags }) {
   );
 }
 
-const PAGE_SIZE = 40;
+// Card slot width = min card (200px) + gap (16px)
+const COL_SLOT = 216;
+const ROW_HEIGHT_EST = 316; // estimated row height: 300px card + 16px gap
 
 function BreedGrid({ breeds, myList, onCardClick, onToggle, onEdit, showEdit }) {
-  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
-  const [lastBreeds, setLastBreeds] = useState(breeds);
-  const sentinelRef = useRef(null);
+  const containerRef = useRef(null);
+  const [cols, setCols] = useState(4);
 
-  // Reset pagination when the breed list changes (React's recommended pattern for derived state)
-  if (lastBreeds !== breeds) {
-    setLastBreeds(breeds);
-    setVisibleCount(PAGE_SIZE);
-  }
-
-  // Infinite scroll — bump visibleCount when sentinel enters viewport
+  // Track container width to compute column count matching the CSS auto-fill grid
   useEffect(() => {
-    const el = sentinelRef.current;
+    const el = containerRef.current;
     if (!el) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setVisibleCount((n) => n + PAGE_SIZE); },
-      { rootMargin: '200px' }
-    );
+    const calc = () => setCols(Math.max(1, Math.floor((el.getBoundingClientRect().width + 16) / COL_SLOT)));
+    calc();
+    const obs = new ResizeObserver(calc);
     obs.observe(el);
     return () => obs.disconnect();
-  }, [breeds]);
+  }, []);
 
-  const visible = breeds.slice(0, visibleCount);
+  const rowCount = Math.ceil(breeds.length / cols);
+
+  const virtualizer = useWindowVirtualizer({
+    count: rowCount,
+    estimateSize: () => ROW_HEIGHT_EST,
+    overscan: 3,
+  });
 
   if (breeds.length === 0) {
     return (
@@ -727,32 +762,48 @@ function BreedGrid({ breeds, myList, onCardClick, onToggle, onEdit, showEdit }) 
       </Box>
     );
   }
+
+  const items = virtualizer.getVirtualItems();
+
   return (
-    <>
-      <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 2 }}>
-        {visible.map((breed) => (
-          <BreedCard
-            key={breed.id ?? breed.name}
-            breed={breed}
-            inMyList={myList.has(breed.id ?? breed.name)}
-            onCardClick={onCardClick}
-            onToggle={onToggle}
-            onEdit={onEdit}
-            showEdit={showEdit}
-          />
-        ))}
-      </Box>
-      {visibleCount < breeds.length && (
-        <Box ref={sentinelRef} sx={{ textAlign: 'center', py: 4 }}>
-          <Skeleton variant="rounded" width={120} height={20} sx={{ mx: 'auto' }} />
+    <Box ref={containerRef}>
+      <Box sx={{ height: `${virtualizer.getTotalSize()}px`, position: 'relative' }}>
+        <Box sx={{
+          position: 'absolute', top: 0, left: 0, right: 0,
+          transform: `translateY(${items[0]?.start ?? 0}px)`,
+        }}>
+          {items.map((virtualRow) => {
+            const rowStart = virtualRow.index * cols;
+            const rowBreeds = breeds.slice(rowStart, rowStart + cols);
+            return (
+              <Box
+                key={virtualRow.key}
+                data-index={virtualRow.index}
+                ref={virtualizer.measureElement}
+                sx={{
+                  display: 'grid',
+                  gridTemplateColumns: `repeat(${cols}, 1fr)`,
+                  gap: 2,
+                  pb: 2,
+                }}
+              >
+                {rowBreeds.map((breed) => (
+                  <BreedCard
+                    key={breed.id ?? breed.name}
+                    breed={breed}
+                    inMyList={myList.has(breed.id ?? breed.name)}
+                    onCardClick={onCardClick}
+                    onToggle={onToggle}
+                    onEdit={onEdit}
+                    showEdit={showEdit}
+                  />
+                ))}
+              </Box>
+            );
+          })}
         </Box>
-      )}
-      {visibleCount >= breeds.length && breeds.length > PAGE_SIZE && (
-        <Typography variant="caption" color="text.secondary" sx={{ display: 'block', textAlign: 'center', mt: 3 }}>
-          All {breeds.length} breeds loaded
-        </Typography>
-      )}
-    </>
+      </Box>
+    </Box>
   );
 }
 
@@ -789,6 +840,9 @@ function AccountsPage({ onClose, onImpersonate, currentEmail }) {
   const [resetPw, setResetPw]     = useState('');
   const [resetError, setResetError] = useState('');
   const [delTarget, setDelTarget] = useState(null);
+  const [addOpen, setAddOpen]     = useState(false);
+  const [addForm, setAddForm]     = useState({ email: '', password: '', role: 'user' });
+  const [addError, setAddError]   = useState('');
 
   useEffect(() => {
     fetch('/api/accounts').then((r) => r.json()).then(setAccounts).finally(() => setFetching(false));
@@ -819,12 +873,32 @@ function AccountsPage({ onClose, onImpersonate, currentEmail }) {
     setDelTarget(null);
   };
 
+  const handleAddAccount = async () => {
+    setAddError('');
+    if (!addForm.email || !addForm.password) { setAddError('Email and password required'); return; }
+    if (addForm.password.length < 8) { setAddError('Password must be at least 8 characters'); return; }
+    const resp = await fetch('/api/accounts', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(addForm),
+    });
+    const data = await resp.json();
+    if (!resp.ok) { setAddError(data.error ?? 'Failed'); return; }
+    setAccounts((prev) => [...prev, data]);
+    setAddOpen(false);
+    setAddForm({ email: '', password: '', role: 'user' });
+  };
+
   return (
     <Box sx={{ p: { xs: 2, md: 4 }, maxWidth: 900, mx: 'auto' }}>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
         <Button startIcon={<CloseIcon />} onClick={onClose}>Back</Button>
         <Typography variant="h5" sx={{ fontWeight: 700 }}>Accounts</Typography>
         {!fetching && <Typography variant="body2" color="text.secondary">({accounts.length})</Typography>}
+        <Box sx={{ flexGrow: 1 }} />
+        <Button variant="contained" startIcon={<AddIcon />} onClick={() => { setAddError(''); setAddOpen(true); }}>
+          Add Account
+        </Button>
       </Box>
 
       {fetching ? <CircularProgress /> : (
@@ -922,6 +996,38 @@ function AccountsPage({ onClose, onImpersonate, currentEmail }) {
           </DialogActions>
         </Dialog>
       )}
+
+      {/* Add account dialog */}
+      <Dialog open={addOpen} onClose={() => setAddOpen(false)} maxWidth="xs" fullWidth>
+        <DialogTitle>Add Account</DialogTitle>
+        <DialogContent dividers sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: 2.5 }}>
+          {addError && (
+            <Box sx={{ bgcolor: '#fff0f0', border: '1px solid', borderColor: 'error.main', borderRadius: 2, p: 1.5 }}>
+              <Typography variant="body2" color="error.main">{addError}</Typography>
+            </Box>
+          )}
+          <TextField
+            label="Email" type="email" size="small" fullWidth autoFocus
+            value={addForm.email} onChange={(e) => setAddForm((f) => ({ ...f, email: e.target.value }))}
+          />
+          <TextField
+            label="Password" type="password" size="small" fullWidth
+            value={addForm.password} onChange={(e) => setAddForm((f) => ({ ...f, password: e.target.value }))}
+            helperText="At least 8 characters"
+          />
+          <FormControl size="small" fullWidth>
+            <InputLabel>Role</InputLabel>
+            <Select label="Role" value={addForm.role} onChange={(e) => setAddForm((f) => ({ ...f, role: e.target.value }))}>
+              <MenuItem value="user">user</MenuItem>
+              <MenuItem value="admin">admin</MenuItem>
+            </Select>
+          </FormControl>
+        </DialogContent>
+        <DialogActions sx={{ p: 2, gap: 1 }}>
+          <Button onClick={() => setAddOpen(false)} sx={{ flex: 1 }}>Cancel</Button>
+          <Button variant="contained" onClick={handleAddAccount} sx={{ flex: 1 }}>Create</Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }
@@ -970,6 +1076,24 @@ export default function App() {
         fetch('/api/breeds').then((r) => r.json()).then(setBreeds).catch(() => {});
       })
       .finally(() => setLoading(false));
+  }, []);
+
+  // ── Auto-refetch breeds while server is still localising external images ───
+  useEffect(() => {
+    let timer;
+    const check = () => {
+      fetch('/api/breeds')
+        .then((r) => r.json())
+        .then((data) => {
+          const hasExternal = data.some((b) => b.imageUrl && !b.imageUrl.startsWith('/images/'));
+          setBreeds(data);
+          if (hasExternal) timer = setTimeout(check, 10000);
+        })
+        .catch(() => {});
+    };
+    // Start polling after initial load (slight delay so initial fetch finishes first)
+    timer = setTimeout(check, 5000);
+    return () => clearTimeout(timer);
   }, []);
 
   // ── Handle successful login / register ─────────────────────────────────────
@@ -1090,6 +1214,7 @@ export default function App() {
 
   // ── JSON export / import ────────────────────────────────────────────────────
   const importFileRef = useRef(null);
+  const importZipRef  = useRef(null);
   const importContextRef = useRef(null); // 'master' | 'myherd'
 
   const exportJson = (list, filename) => {
@@ -1127,6 +1252,47 @@ export default function App() {
       }
     } catch (err) {
       alert('Failed to parse file: ' + err.message);
+    }
+  };
+
+  // ── ZIP export / import ─────────────────────────────────────────────────────
+  const triggerImportZip = (context) => {
+    importContextRef.current = context;
+    importZipRef.current.value = '';
+    importZipRef.current.click();
+  };
+
+  const exportZip = (context) => {
+    const url = context === 'myherd' ? '/api/myherd/export-zip' : '/api/export-zip';
+    const a = document.createElement('a');
+    a.href = url;
+    a.click();
+  };
+
+  const handleImportZip = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const url = importContextRef.current === 'myherd'
+      ? '/api/myherd/import-zip'
+      : '/api/import-zip';
+    try {
+      const resp = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/zip' },
+        body: file,
+      });
+      const result = await resp.json();
+      if (!resp.ok) { alert('Import failed: ' + result.error); return; }
+      if (importContextRef.current === 'myherd') {
+        const herd = await fetch('/api/myherd').then((r) => r.json());
+        setMyHerd(herd);
+      } else {
+        const list = await fetch('/api/breeds').then((r) => r.json());
+        setBreeds(list);
+      }
+      alert(`Imported ${result.breeds} breed(s) and ${result.images} image(s).`);
+    } catch (err) {
+      alert('Import failed: ' + err.message);
     }
   };
 
@@ -1366,11 +1532,21 @@ export default function App() {
                     <Button variant="outlined" startIcon={<DownloadIcon />}
                       onClick={() => exportJson(breeds, 'all-breeds.json')}
                     >Export JSON ({breeds.length})</Button>
+                    {/* Export All as ZIP (breeds + images) */}
+                    <Button variant="outlined" startIcon={<DownloadIcon />}
+                      onClick={() => exportZip('master')}
+                    >Export .zip</Button>
                     {/* Import All — admin only */}
                     {isAdmin && (
                       <Button variant="outlined" startIcon={<UploadIcon />}
                         onClick={() => triggerImport('master')}
                       >Import JSON</Button>
+                    )}
+                    {/* Import ZIP — admin only */}
+                    {isAdmin && (
+                      <Button variant="outlined" startIcon={<UploadIcon />}
+                        onClick={() => triggerImportZip('master')}
+                      >Import .zip</Button>
                     )}
                     {/* Add breed — admin only */}
                     {isAdmin && (
@@ -1387,10 +1563,19 @@ export default function App() {
                       onClick={() => exportJson(myHerd, 'my-herd.json')}
                       disabled={myHerd.length === 0}
                     >Export JSON ({myHerd.length})</Button>
-                    {/* Import My Herd */}
+                    {/* Export My Herd as ZIP (breeds + images) */}
+                    <Button variant="outlined" startIcon={<DownloadIcon />}
+                      onClick={() => exportZip('myherd')}
+                      disabled={myHerd.length === 0}
+                    >Export .zip</Button>
+                    {/* Import My Herd JSON */}
                     <Button variant="outlined" startIcon={<UploadIcon />}
                       onClick={() => triggerImport('myherd')}
                     >Import JSON</Button>
+                    {/* Import My Herd ZIP */}
+                    <Button variant="outlined" startIcon={<UploadIcon />}
+                      onClick={() => triggerImportZip('myherd')}
+                    >Import .zip</Button>
                     {/* Existing .md / .docx exports */}
                     <Button variant="outlined" startIcon={<DownloadIcon />}
                       onClick={() => exportMd(selectionList, 'my-selection.md')}
@@ -1429,7 +1614,13 @@ export default function App() {
           showEdit={tab === 1 || isAdmin}
         />
         {editTarget && (
-          <EditDialog breed={editTarget} onClose={() => { setEditTarget(null); setEditContext(null); }} onSave={saveBreed} allTags={allTags} />
+          <EditDialog
+            breed={editTarget}
+            onClose={() => { setEditTarget(null); setEditContext(null); }}
+            onSave={saveBreed}
+            onDelete={editContext === 'master' ? () => { setEditTarget(null); setEditContext(null); setDeleteTarget(editTarget); } : undefined}
+            allTags={allTags}
+          />
         )}
 
         {/* Admin: add breed dialog */}
@@ -1457,6 +1648,14 @@ export default function App() {
           accept="application/json,.json"
           style={{ display: 'none' }}
           onChange={handleImportFile}
+        />
+        {/* Hidden file input for ZIP import */}
+        <input
+          ref={importZipRef}
+          type="file"
+          accept=".zip,application/zip"
+          style={{ display: 'none' }}
+          onChange={handleImportZip}
         />
       </Box>
     </ThemeProvider>
