@@ -1,15 +1,17 @@
 // Express server — HerdHub API + serves the built React frontend
 import express from 'express';
-import { writeFile, mkdir, readFile } from 'fs/promises';
+import { writeFile, mkdir, readFile, readdir } from 'fs/promises';
 import { existsSync } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import session from 'express-session';
 import bcrypt from 'bcryptjs';
+import sharp from 'sharp';
 
 const __dirname      = path.dirname(fileURLToPath(import.meta.url));
 const DATA_DIR       = process.env.DATA_DIR || path.join(__dirname, 'data');
 const IMG_DIR        = path.join(DATA_DIR, 'images');
+const THUMB_DIR      = path.join(IMG_DIR, 'thumbs');
 const DIST_DIR       = path.join(__dirname, 'dist');
 const DB_DIR         = path.join(DATA_DIR, 'db');
 const BREEDS_DB      = path.join(DB_DIR, 'breeds.json');
@@ -334,6 +336,8 @@ app.post('/api/upload-image', requireUser, async (req, res) => {
     await writeFile(path.join(IMG_DIR, filename), Buffer.from(base64, 'base64'));
 
     res.json({ path: `/images/${filename}` });
+    // Generate thumbnail in background — don't block the response
+    generateThumb(filename).catch((e) => console.warn('Thumb gen failed:', e.message));
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: String(err) });
@@ -343,12 +347,45 @@ app.post('/api/upload-image', requireUser, async (req, res) => {
 // ── Static frontend (production) ──────────────────────────────────────────────
 app.use(express.static(DIST_DIR));
 app.use('/images', express.static(IMG_DIR));
+// Thumbnails served from thumbs subdir (already covered by /images static above via path)
 
 // SPA fallback — all non-API routes serve index.html
 app.get('*', (req, res) => {
   res.sendFile(path.join(DIST_DIR, 'index.html'));
 });
 
+// ── Thumbnail helpers ────────────────────────────────────────────────────────
+const IMAGE_EXTS = new Set(['.jpg', '.jpeg', '.png', '.webp', '.gif', '.avif']);
+
+/** Resize one image to a 400px-wide thumbnail. Skips if thumb already exists. */
+async function generateThumb(filename) {
+  const src = path.join(IMG_DIR, filename);
+  const dst = path.join(THUMB_DIR, filename);
+  if (existsSync(dst)) return; // already cached
+  await mkdir(THUMB_DIR, { recursive: true });
+  await sharp(src)
+    .resize({ width: 400, height: 300, fit: 'cover', position: 'centre' })
+    .toFile(dst);
+}
+
+/** Walk IMG_DIR and generate any missing thumbnails in the background. */
+async function ensureAllThumbs() {
+  try {
+    await mkdir(THUMB_DIR, { recursive: true });
+    const files = await readdir(IMG_DIR);
+    const images = files.filter((f) => IMAGE_EXTS.has(path.extname(f).toLowerCase()));
+    // Process sequentially to avoid saturating CPU on startup
+    for (const f of images) {
+      await generateThumb(f).catch((e) => console.warn(`Thumb skip ${f}:`, e.message));
+    }
+    if (images.length) console.log(`Thumbnails ready (${images.length} images)`);
+  } catch (e) {
+    console.warn('ensureAllThumbs error:', e.message);
+  }
+}
+
 // ── Start ─────────────────────────────────────────────────────────────────────
 await seedDb();
+// Thumbnail generation runs in background — server is ready immediately
+ensureAllThumbs();
 app.listen(PORT, () => console.log(`HerdHub → http://localhost:${PORT}`));

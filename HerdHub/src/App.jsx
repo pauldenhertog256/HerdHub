@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {
   AppBar,
@@ -175,10 +175,21 @@ const TAG_COLORS = [
   { color: '#6c757d', bg: '#f0f0f0' },
 ];
 
+const _tagColorCache = new Map();
 function tagColor(tag) {
+  if (_tagColorCache.has(tag)) return _tagColorCache.get(tag);
   let h = 0;
   for (let i = 0; i < tag.length; i++) h = (h * 31 + tag.charCodeAt(i)) & 0xffff;
-  return TAG_COLORS[h % TAG_COLORS.length];
+  const result = TAG_COLORS[h % TAG_COLORS.length];
+  _tagColorCache.set(tag, result);
+  return result;
+}
+
+/** Derive the thumbnail URL from a full image URL: /images/foo.jpg → /images/thumbs/foo.jpg */
+function thumbUrl(imageUrl) {
+  if (!imageUrl) return null;
+  // imageUrl looks like /images/<filename>
+  return imageUrl.replace(/^\/images\//, '/images/thumbs/');
 }
 
 function TagChips({ tags, size = 'small' }) {
@@ -220,8 +231,15 @@ function TagInput({ value, onChange, allTags }) {
   );
 }
 
-function BreedCard({ breed, inMyList, onCardClick, onToggle, onEdit, showEdit }) {
-  const [imgErr, setImgErr] = useState(false);
+const BreedCard = memo(function BreedCard({ breed, inMyList, onCardClick, onToggle, onEdit, showEdit }) {
+  // 0 = try thumb, 1 = fall back to original, 2 = show placeholder
+  const [imgStage, setImgStage] = useState(0);
+  const thumb = thumbUrl(breed.imageUrl);
+  const imgSrc = imgStage === 0 ? thumb : breed.imageUrl;
+  // Stable per-breed callbacks so memo can skip re-renders when only unrelated state changes
+  const handleClick = useCallback(() => onCardClick(breed), [onCardClick, breed]);
+  const handleToggle = useCallback((e) => { e.stopPropagation(); onToggle(breed); }, [onToggle, breed]);
+  const handleEdit = useCallback((e) => { e.stopPropagation(); onEdit(breed); }, [onEdit, breed]);
   return (
     <Card
       elevation={0}
@@ -242,17 +260,19 @@ function BreedCard({ breed, inMyList, onCardClick, onToggle, onEdit, showEdit })
       }}
     >
       <CardActionArea
-        onClick={onCardClick}
+        onClick={handleClick}
         sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}
       >
         <Box sx={{ position: 'relative', overflow: 'hidden' }}>
-          {breed.imageUrl && !imgErr ? (
+          {breed.imageUrl && imgStage < 2 ? (
             <CardMedia
               component="img"
               height="180"
-              image={breed.imageUrl}
+              image={imgSrc}
               alt={breed.name}
-              onError={() => setImgErr(true)}
+              loading="lazy"
+              decoding="async"
+              onError={() => setImgStage((s) => s + 1)}
               sx={{ objectFit: 'cover', transition: 'transform 0.3s', '&:hover': { transform: 'scale(1.04)' } }}
             />
           ) : (
@@ -293,7 +313,7 @@ function BreedCard({ breed, inMyList, onCardClick, onToggle, onEdit, showEdit })
       <Box sx={{ px: 1, py: 0.5, display: 'flex', justifyContent: 'space-between' }}>
         {showEdit ? (
           <Tooltip title="Edit breed">
-            <IconButton size="small" onClick={(e) => { e.stopPropagation(); onEdit(); }}>
+            <IconButton size="small" onClick={handleEdit}>
               <EditIcon sx={{ fontSize: 16 }} />
             </IconButton>
           </Tooltip>
@@ -302,7 +322,7 @@ function BreedCard({ breed, inMyList, onCardClick, onToggle, onEdit, showEdit })
           <IconButton
             size="small"
             sx={{ color: inMyList ? '#2d6a4f' : 'text.secondary' }}
-            onClick={(e) => { e.stopPropagation(); onToggle(); }}
+            onClick={handleToggle}
           >
             {inMyList ? <BookmarkRemoveIcon sx={{ fontSize: 18 }} /> : <BookmarkAddIcon sx={{ fontSize: 18 }} />}
           </IconButton>
@@ -310,7 +330,7 @@ function BreedCard({ breed, inMyList, onCardClick, onToggle, onEdit, showEdit })
       </Box>
     </Card>
   );
-}
+});
 
 function LoadingSkeleton() {
   return (
@@ -548,10 +568,14 @@ const PAGE_SIZE = 40;
 
 function BreedGrid({ breeds, myList, onCardClick, onToggle, onEdit, showEdit }) {
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+  const [lastBreeds, setLastBreeds] = useState(breeds);
   const sentinelRef = useRef(null);
 
-  // Reset when the list changes (new search / filter / tab)
-  useEffect(() => { setVisibleCount(PAGE_SIZE); }, [breeds]);
+  // Reset pagination when the breed list changes (React's recommended pattern for derived state)
+  if (lastBreeds !== breeds) {
+    setLastBreeds(breeds);
+    setVisibleCount(PAGE_SIZE);
+  }
 
   // Infinite scroll — bump visibleCount when sentinel enters viewport
   useEffect(() => {
@@ -584,9 +608,9 @@ function BreedGrid({ breeds, myList, onCardClick, onToggle, onEdit, showEdit }) 
             key={breed.id ?? breed.name}
             breed={breed}
             inMyList={myList.has(breed.id ?? breed.name)}
-            onCardClick={() => onCardClick(breed)}
-            onToggle={() => onToggle(breed)}
-            onEdit={() => onEdit(breed)}
+            onCardClick={onCardClick}
+            onToggle={onToggle}
+            onEdit={onEdit}
             showEdit={showEdit}
           />
         ))}
@@ -865,25 +889,29 @@ export default function App() {
   }, [breeds]);
 
   // ── Save my herd to server ──────────────────────────────────────────────────
-  const saveMyHerd = async (nextHerd) => {
+  const saveMyHerd = useCallback(async (nextHerd) => {
     setMyHerd(nextHerd);
     await fetch('/api/myherd', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(nextHerd),
     });
-  };
+  }, []); // setMyHerd is stable; fetch is global — no deps needed
+
+  // Use a ref updated after render so toggle's useCallback stays stable across myHerd changes
+  const myHerdRef = useRef(myHerd);
+  useEffect(() => { myHerdRef.current = myHerd; });
 
   // ── Toggle a breed in My Herd (add full copy / remove) ─────────────────────
-  const toggle = (breed) => {
+  const toggle = useCallback((breed) => {
     if (!isUser) { setShowLogin(true); return; }
     const key = breed.id ?? breed.name;
-    if (myList.has(key)) {
-      saveMyHerd(myHerd.filter((b) => (b.id ?? b.name) !== key));
-    } else {
-      saveMyHerd([...myHerd, { ...breed }]);
-    }
-  };
+    const herd = myHerdRef.current;
+    const nextHerd = herd.some((b) => (b.id ?? b.name) === key)
+      ? herd.filter((b) => (b.id ?? b.name) !== key)
+      : [...herd, { ...breed }];
+    saveMyHerd(nextHerd);
+  }, [isUser, saveMyHerd]);
 
   // ── Save breed edit ─────────────────────────────────────────────────────────
   const saveBreed = async (updated, originalName) => {
