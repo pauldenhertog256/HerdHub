@@ -439,6 +439,24 @@ function findImageSrc(filename) {
  */
 async function downloadAndSaveImage(externalUrl, breedId, breedName, slot = 1, localImageHint = null) {
   const nameSlug = breedName.replace(/[^a-zA-Z0-9]/g, '_').replace(/_+/g, '_').toLowerCase();
+
+  // Handle inline base64 data URLs — decode directly, no HTTP needed
+  if (externalUrl.startsWith('data:')) {
+    const m = externalUrl.match(/^data:image\/([a-zA-Z0-9+]+);base64,(.+)$/);
+    if (!m) throw new Error('Unrecognised data URL format');
+    let mimeExt = '.' + m[1].split('+')[0]; // e.g. image/jpeg → .jpeg, image/svg+xml → .svg
+    if (mimeExt === '.jpeg') mimeExt = '.jpg';
+    if (!IMAGE_EXTS.has(mimeExt)) mimeExt = '.jpg';
+    const filename = `${breedId}_${nameSlug}_${slot}${mimeExt}`;
+    const dest = path.join(IMG_DIR, filename);
+    if (!existsSync(dest)) {
+      await mkdir(IMG_DIR, { recursive: true });
+      await writeFile(dest, Buffer.from(m[2], 'base64'));
+    }
+    generateThumb(filename).catch(() => {});
+    return `/images/${filename}`;
+  }
+
   let ext;
   try { ext = path.extname(new URL(externalUrl).pathname).toLowerCase(); } catch { ext = ''; }
   // Try to infer ext from the localImage hint if the URL ext is unhelpful
@@ -456,7 +474,11 @@ async function downloadAndSaveImage(externalUrl, breedId, breedName, slot = 1, l
       const { copyFile } = await import('fs/promises');
       await copyFile(hint, dest);
     } else {
-      const resp = await fetch(externalUrl, { signal: AbortSignal.timeout(20000) });
+      // Wikimedia (and many CDNs) require a proper User-Agent or they return 403
+      const resp = await fetch(externalUrl, {
+        signal: AbortSignal.timeout(20000),
+        headers: { 'User-Agent': 'HerdHub/1.0 (https://github.com/pauldenhertog256/HerdHub; cattle breed catalogue)' },
+      });
       if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
       await writeFile(dest, Buffer.from(await resp.arrayBuffer()));
     }
@@ -655,7 +677,7 @@ async function ensureAllThumbs() {
 async function ensureLocalImages() {
   try {
     let breeds = await loadDb(BREEDS_DB) ?? [];
-    const external = breeds.filter((b) => b.imageUrl && /^https?:\/\//.test(b.imageUrl));
+    const external = breeds.filter((b) => b.imageUrl && (b.imageUrl.startsWith('data:') || /^https?:\/\//.test(b.imageUrl)));
     if (!external.length) return;
     console.log(`Localising ${external.length} external breed images (copying from local stash where available)…`);
 
