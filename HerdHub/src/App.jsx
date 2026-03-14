@@ -19,11 +19,23 @@ import {
   DialogContent,
   DialogTitle,
   Divider,
+  FormControl,
   IconButton,
   InputAdornment,
+  InputLabel,
+  Menu,
+  MenuItem,
+  Paper,
+  Select,
   Skeleton,
   Stack,
   Tab,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
   Tabs,
   TextField,
   Toolbar,
@@ -42,38 +54,82 @@ import EditIcon from '@mui/icons-material/Edit';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
+import PeopleIcon from '@mui/icons-material/People';
 import {
-  Document, Paragraph, Table, TableCell, TableRow,
+  Document, Paragraph,
+  Table as DocxTable, TableCell as DocxTableCell, TableRow as DocxTableRow,
   TextRun, ImageRun, WidthType, HeadingLevel, Packer,
 } from 'docx';
 
-// ── Login page ────────────────────────────────────────────────────────────────
-function LoginPage({ error }) {
+// ── Login / Register page ─────────────────────────────────────────────────────
+function LoginPage({ onAuth }) {
+  const [mode, setMode]       = useState('login'); // 'login' | 'register'
+  const [email, setEmail]     = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError]     = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const submit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+    try {
+      const resp = await fetch(mode === 'login' ? '/api/login' : '/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await resp.json();
+      if (!resp.ok) { setError(data.error ?? 'Something went wrong'); return; }
+      onAuth(data);
+    } catch {
+      setError('Network error — try again');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Box sx={{
       minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center',
       background: 'linear-gradient(145deg, #1b4332 0%, #2d6a4f 100%)',
     }}>
-      <Card elevation={8} sx={{ p: 4, borderRadius: 4, textAlign: 'center', maxWidth: 360, width: '100%', mx: 2 }}>
-        <Typography sx={{ fontSize: '3.5rem', mb: 1 }}>🐄</Typography>
-        <Typography variant="h5" sx={{ mb: 0.5 }}>HerdHub</Typography>
-        <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>Cattle breed reference</Typography>
-        {error === 'unauthorized' && (
-          <Box sx={{ bgcolor: '#fff0f0', border: '1px solid', borderColor: 'error.main', borderRadius: 2, p: 1.5, mb: 2 }}>
-            <Typography variant="body2" color="error.main">Your email is not on the access list.</Typography>
-          </Box>
-        )}
-        <Button
-          fullWidth variant="contained" size="large"
-          href="/auth/google"
-          sx={{
-            bgcolor: '#4285f4', color: 'white', fontWeight: 600, py: 1.5,
-            textTransform: 'none', fontSize: '1rem', borderRadius: 2,
-            '&:hover': { bgcolor: '#3367d6' },
-          }}
-        >
-          Sign in with Google
-        </Button>
+      <Card elevation={8} sx={{ p: 4, borderRadius: 4, maxWidth: 380, width: '100%', mx: 2 }}>
+        <Box sx={{ textAlign: 'center', mb: 3 }}>
+          <Typography sx={{ fontSize: '3rem', mb: 0.5 }}>🐄</Typography>
+          <Typography variant="h5">HerdHub</Typography>
+          <Typography variant="body2" color="text.secondary">Cattle breed reference</Typography>
+        </Box>
+        <form onSubmit={submit}>
+          <Stack spacing={2}>
+            {error && (
+              <Box sx={{ bgcolor: '#fff0f0', border: '1px solid', borderColor: 'error.main', borderRadius: 2, p: 1.5 }}>
+                <Typography variant="body2" color="error.main">{error}</Typography>
+              </Box>
+            )}
+            <TextField
+              label="Email" type="email" size="small" fullWidth required
+              value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email"
+            />
+            <TextField
+              label="Password" type="password" size="small" fullWidth required
+              value={password} onChange={(e) => setPassword(e.target.value)}
+              autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
+              helperText={mode === 'register' ? 'At least 8 characters' : ''}
+            />
+            <Button type="submit" variant="contained" fullWidth size="large" disabled={loading}>
+              {loading ? <CircularProgress size={22} sx={{ color: 'white' }} /> : (mode === 'login' ? 'Sign in' : 'Create account')}
+            </Button>
+          </Stack>
+        </form>
+        <Divider sx={{ my: 2 }} />
+        <Typography variant="body2" color="text.secondary" align="center">
+          {mode === 'login' ? "Don't have an account? " : 'Already have an account? '}
+          <Box component="span"
+            onClick={() => { setMode(mode === 'login' ? 'register' : 'login'); setError(''); }}
+            sx={{ color: 'primary.main', cursor: 'pointer', fontWeight: 600 }}
+          >{mode === 'login' ? 'Sign up' : 'Sign in'}</Box>
+        </Typography>
       </Card>
     </Box>
   );
@@ -106,8 +162,6 @@ const theme = createTheme({
     MuiTab:       { styleOverrides: { root: { textTransform: 'none', fontWeight: 600, minWidth: 'auto' } } },
   },
 });
-
-const ADMIN_EMAILS = new Set(['pauldenhertog256@gmail.com', 'hamata25@gmail.com']);
 
 const PURPOSE_META = {
   Meat:    { color: '#e63946', bg: '#fdecea' },
@@ -552,45 +606,229 @@ function AddBreedDialog({ onClose, onSave }) {
   );
 }
 
-export default function App() {
-  const [authState, setAuthState] = useState('loading'); // 'loading'|'unauthenticated'|'authenticated'
-  const [user, setUser]     = useState(null);
-  const [breeds, setBreeds] = useState([]);
-  const [myHerd, setMyHerd] = useState([]); // full breed copies, server-persisted
-  const [loading, setLoading]           = useState(true);
-  const [search, setSearch]             = useState('');
-  const [selected, setSelected]         = useState(null);
-  const [editTarget, setEditTarget]     = useState(null);
-  const [editContext, setEditContext]   = useState(null); // 'master' | 'myherd'
-  const [tab, setTab]                   = useState(0);
-  const [purposeFilter, setPurposeFilter] = useState(null);
-  const [addOpen, setAddOpen]           = useState(false);
-  const [deleteTarget, setDeleteTarget] = useState(null);
+// ── Account management page (admin only) ──────────────────────────────────────
+function AccountsPage({ onClose, onImpersonate, currentEmail }) {
+  const [accounts, setAccounts]   = useState([]);
+  const [fetching, setFetching]   = useState(true);
+  const [resetTarget, setResetTarget] = useState(null);
+  const [resetPw, setResetPw]     = useState('');
+  const [resetError, setResetError] = useState('');
+  const [delTarget, setDelTarget] = useState(null);
 
-  const isAdmin = ADMIN_EMAILS.has(user?.email ?? '');
-  // In dev mode (no auth) treat as admin too
-  const effectiveAdmin = isAdmin || user?.isAdmin;
-
-  // ── Step 1: check auth ──────────────────────────────────────────────────────
   useEffect(() => {
-    fetch('/api/me')
-      .then((r) => r.ok ? r.json() : Promise.reject())
-      .then((u) => { setUser(u); setAuthState('authenticated'); })
-      .catch(() => { setAuthState('unauthenticated'); setLoading(false); });
+    fetch('/api/accounts').then((r) => r.json()).then(setAccounts).finally(() => setFetching(false));
   }, []);
 
-  // ── Step 2: load breeds + my herd when authenticated ───────────────────────
-  useEffect(() => {
-    if (authState !== 'authenticated') return;
-    Promise.all([
-      fetch('/api/breeds').then((r) => r.json()),
-      fetch('/api/myherd').then((r) => r.json()),
-    ]).then(([masterData, herdData]) => {
-      setBreeds(masterData);
-      setMyHerd(herdData);
-      setLoading(false);
+  const patchAccount = async (id, body) => {
+    const resp = await fetch(`/api/accounts/${id}`, {
+      method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body),
     });
-  }, [authState]);
+    return resp;
+  };
+
+  const handleRoleChange = async (account, newRole) => {
+    await patchAccount(account.id, { role: newRole });
+    setAccounts((prev) => prev.map((a) => a.id === account.id ? { ...a, role: newRole } : a));
+  };
+
+  const handleResetPassword = async () => {
+    setResetError('');
+    const resp = await patchAccount(resetTarget.id, { password: resetPw });
+    if (!resp.ok) { const d = await resp.json(); setResetError(d.error ?? 'Failed'); return; }
+    setResetTarget(null); setResetPw('');
+  };
+
+  const handleDelete = async () => {
+    await fetch(`/api/accounts/${delTarget.id}`, { method: 'DELETE' });
+    setAccounts((prev) => prev.filter((a) => a.id !== delTarget.id));
+    setDelTarget(null);
+  };
+
+  return (
+    <Box sx={{ p: { xs: 2, md: 4 }, maxWidth: 900, mx: 'auto' }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
+        <Button startIcon={<CloseIcon />} onClick={onClose}>Back</Button>
+        <Typography variant="h5" sx={{ fontWeight: 700 }}>Accounts</Typography>
+        {!fetching && <Typography variant="body2" color="text.secondary">({accounts.length})</Typography>}
+      </Box>
+
+      {fetching ? <CircularProgress /> : (
+        <TableContainer component={Paper} sx={{ borderRadius: 2 }}>
+          <Table size="small">
+            <TableHead>
+              <TableRow sx={{ bgcolor: '#f5f5f5' }}>
+                <TableCell sx={{ fontWeight: 700 }}>Email</TableCell>
+                <TableCell sx={{ fontWeight: 700 }}>Role</TableCell>
+                <TableCell sx={{ fontWeight: 700 }}>Created</TableCell>
+                <TableCell sx={{ fontWeight: 700 }} align="right">Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {accounts.map((a) => (
+                <TableRow key={a.id} hover sx={{ '&:last-child td': { border: 0 } }}>
+                  <TableCell>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <Typography variant="body2" sx={{ fontFamily: 'monospace', fontSize: '0.8rem' }}>
+                        {a.email}
+                      </Typography>
+                      {a.email === currentEmail && (
+                        <Chip label="you" size="small" sx={{ height: 18, fontSize: '0.65rem' }} />
+                      )}
+                    </Box>
+                  </TableCell>
+                  <TableCell>
+                    <Select
+                      size="small" value={a.role}
+                      onChange={(e) => handleRoleChange(a, e.target.value)}
+                      sx={{ fontSize: '0.8rem', minWidth: 90 }}
+                    >
+                      <MenuItem value="user">user</MenuItem>
+                      <MenuItem value="admin">admin</MenuItem>
+                    </Select>
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="body2" color="text.secondary">
+                      {a.createdAt ? new Date(a.createdAt).toLocaleDateString() : '—'}
+                    </Typography>
+                  </TableCell>
+                  <TableCell align="right">
+                    <Stack direction="row" spacing={0.5} justifyContent="flex-end">
+                      <Button size="small" variant="outlined"
+                        onClick={() => { setResetTarget(a); setResetPw(''); setResetError(''); }}
+                        sx={{ fontSize: '0.72rem' }}
+                      >Reset PW</Button>
+                      {a.email !== currentEmail && (
+                        <Button size="small" variant="outlined" color="info"
+                          onClick={() => onImpersonate(a.id)}
+                          sx={{ fontSize: '0.72rem' }}
+                        >Login as</Button>
+                      )}
+                      {a.email !== currentEmail && (
+                        <Button size="small" variant="outlined" color="error"
+                          onClick={() => setDelTarget(a)}
+                          sx={{ fontSize: '0.72rem' }}
+                        >Delete</Button>
+                      )}
+                    </Stack>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
+
+      {/* Reset Password dialog */}
+      {resetTarget && (
+        <Dialog open onClose={() => setResetTarget(null)} maxWidth="xs" fullWidth>
+          <DialogTitle>Reset password — {resetTarget.email}</DialogTitle>
+          <DialogContent sx={{ pt: 2 }}>
+            {resetError && <Typography color="error" variant="body2" sx={{ mb: 1 }}>{resetError}</Typography>}
+            <TextField fullWidth size="small" type="password" label="New password (min 8 chars)"
+              value={resetPw} onChange={(e) => setResetPw(e.target.value)} autoFocus />
+          </DialogContent>
+          <DialogActions sx={{ p: 2, gap: 1 }}>
+            <Button onClick={() => setResetTarget(null)} sx={{ flex: 1 }}>Cancel</Button>
+            <Button variant="contained" onClick={handleResetPassword} disabled={resetPw.length < 8} sx={{ flex: 1 }}>Save</Button>
+          </DialogActions>
+        </Dialog>
+      )}
+
+      {/* Delete confirmation dialog */}
+      {delTarget && (
+        <Dialog open onClose={() => setDelTarget(null)} maxWidth="xs" fullWidth>
+          <DialogTitle>Delete account?</DialogTitle>
+          <DialogContent>
+            <Typography>Remove <strong>{delTarget.email}</strong>? This cannot be undone.</Typography>
+          </DialogContent>
+          <DialogActions sx={{ p: 2, gap: 1 }}>
+            <Button onClick={() => setDelTarget(null)} sx={{ flex: 1 }}>Cancel</Button>
+            <Button variant="contained" color="error" onClick={handleDelete} sx={{ flex: 1 }}>Delete</Button>
+          </DialogActions>
+        </Dialog>
+      )}
+    </Box>
+  );
+}
+
+export default function App() {
+  const [role, setRole]           = useState('loading'); // 'loading'|'guest'|'user'|'admin'
+  const [user, setUser]           = useState(null);
+  const [breeds, setBreeds]       = useState([]);
+  const [myHerd, setMyHerd]       = useState([]); // full breed copies, server-persisted
+  const [loading, setLoading]     = useState(true);
+  const [search, setSearch]       = useState('');
+  const [selected, setSelected]   = useState(null);
+  const [editTarget, setEditTarget] = useState(null);
+  const [editContext, setEditContext] = useState(null); // 'master' | 'myherd'
+  const [tab, setTab]             = useState(0);
+  const [purposeFilter, setPurposeFilter] = useState(null);
+  const [addOpen, setAddOpen]     = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState(null);
+  const [showLogin, setShowLogin] = useState(false);
+  const [showAccounts, setShowAccounts] = useState(false);
+  const [impersonating, setImpersonating] = useState(false);
+  const [avatarMenu, setAvatarMenu] = useState(null);
+
+  const isAdmin = role === 'admin';
+  const isUser  = role === 'user' || role === 'admin';
+
+  // ── Init: check session + load breeds (guests can browse) ──────────────────
+  useEffect(() => {
+    fetch('/api/me')
+      .then((r) => r.json())
+      .then((data) => {
+        const loggedIn = data.role && data.role !== 'guest';
+        if (loggedIn) { setUser(data); setRole(data.role); setImpersonating(!!data.impersonating); }
+        else { setRole('guest'); }
+        return fetch('/api/breeds')
+          .then((r) => r.json())
+          .then((masterData) => {
+            setBreeds(masterData);
+            if (loggedIn) {
+              return fetch('/api/myherd').then((r) => r.json()).then(setMyHerd);
+            }
+          });
+      })
+      .catch(() => {
+        setRole('guest');
+        fetch('/api/breeds').then((r) => r.json()).then(setBreeds).catch(() => {});
+      })
+      .finally(() => setLoading(false));
+  }, []);
+
+  // ── Handle successful login / register ─────────────────────────────────────
+  const handleAuth = async (data) => {
+    setUser(data);
+    setRole(data.role);
+    setShowLogin(false);
+    fetch('/api/myherd').then((r) => r.json()).then(setMyHerd).catch(() => {});
+  };
+
+  // ── Handle unimpersonate (return to admin) ─────────────────────────────────
+  const handleUnimpersonate = async () => {
+    const resp = await fetch('/api/unimpersonate', { method: 'POST' });
+    const data = await resp.json();
+    setUser(data); setRole(data.role); setImpersonating(false);
+    setMyHerd([]); setTab(0);
+    fetch('/api/myherd').then((r) => r.json()).then(setMyHerd).catch(() => {});
+  };
+
+  // ── Handle logout ──────────────────────────────────────────────────────────
+  const handleLogout = async () => {
+    if (impersonating) { await handleUnimpersonate(); return; }
+    await fetch('/api/logout', { method: 'POST' });
+    setUser(null); setRole('guest'); setMyHerd([]); setTab(0);
+  };
+
+  // ── Handle impersonate ─────────────────────────────────────────────────────
+  const handleImpersonate = async (accountId) => {
+    const resp = await fetch(`/api/impersonate/${accountId}`, { method: 'POST' });
+    const data = await resp.json();
+    setUser(data); setRole(data.role); setImpersonating(true);
+    setMyHerd([]); setTab(0); setShowAccounts(false);
+    fetch('/api/myherd').then((r) => r.json()).then(setMyHerd).catch(() => {});
+  };
 
   // myList is a Set of IDs (or names for legacy items) for O(1) lookup
   const myList = useMemo(() => new Set(myHerd.map((b) => b.id ?? b.name)), [myHerd]);
@@ -607,6 +845,7 @@ export default function App() {
 
   // ── Toggle a breed in My Herd (add full copy / remove) ─────────────────────
   const toggle = (breed) => {
+    if (!isUser) { setShowLogin(true); return; }
     const key = breed.id ?? breed.name;
     if (myList.has(key)) {
       saveMyHerd(myHerd.filter((b) => (b.id ?? b.name) !== key));
@@ -724,9 +963,9 @@ export default function App() {
       } catch { return null; }
     };
 
-    const headerRow = new TableRow({
+    const headerRow = new DocxTableRow({
       children: ['Name', 'Origin', 'Subspecies', 'Purpose', 'Wikipedia'].map(
-        (h) => new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: h, bold: true })] })] })
+        (h) => new DocxTableCell({ children: [new Paragraph({ children: [new TextRun({ text: h, bold: true })] })] })
       ),
     });
 
@@ -735,19 +974,19 @@ export default function App() {
       if (b.imageUrl) {
         const bytes = await fetchImageBytes(b.imageUrl);
         imgCell = bytes
-          ? new TableCell({ children: [new Paragraph({ children: [new ImageRun({ data: bytes, transformation: { width: 80, height: 60 } })] })] })
-          : new TableCell({ children: [new Paragraph({ children: [new TextRun(b.imageUrl)] })] });
+          ? new DocxTableCell({ children: [new Paragraph({ children: [new ImageRun({ data: bytes, transformation: { width: 80, height: 60 } })] })] })
+          : new DocxTableCell({ children: [new Paragraph({ children: [new TextRun(b.imageUrl)] })] });
       } else {
-        imgCell = new TableCell({ children: [new Paragraph('')] });
+        imgCell = new DocxTableCell({ children: [new Paragraph('')] });
       }
-      return new TableRow({
+      return new DocxTableRow({
         children: [
-          new TableCell({ children: [new Paragraph(b.name || '')] }),
+          new DocxTableCell({ children: [new Paragraph(b.name || '')] }),
           imgCell,
-          new TableCell({ children: [new Paragraph(b.origin || '')] }),
-          new TableCell({ children: [new Paragraph(b.subspecies || '')] }),
-          new TableCell({ children: [new Paragraph(b.purpose || '')] }),
-          new TableCell({ children: [new Paragraph(b.wikiUrl || '')] }),
+          new DocxTableCell({ children: [new Paragraph(b.origin || '')] }),
+          new DocxTableCell({ children: [new Paragraph(b.subspecies || '')] }),
+          new DocxTableCell({ children: [new Paragraph(b.purpose || '')] }),
+          new DocxTableCell({ children: [new Paragraph(b.wikiUrl || '')] }),
         ],
       });
     }));
@@ -756,7 +995,7 @@ export default function App() {
       sections: [{
         children: [
           new Paragraph({ text: 'Cattle Breeds', heading: HeadingLevel.HEADING_1 }),
-          new Table({
+          new DocxTable({
             width: { size: 100, type: WidthType.PERCENTAGE },
             rows: [headerRow, ...dataRows],
           }),
@@ -788,15 +1027,20 @@ export default function App() {
 
   const selectionList = myHerd;
 
-  // Auth gates
-  const errorParam = new URLSearchParams(window.location.search).get('error');
-  if (authState === 'loading') return (
+  if (role === 'loading') return (
     <Box sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', bgcolor: '#1b4332' }}>
       <CircularProgress sx={{ color: '#74c69d' }} />
     </Box>
   );
-  if (authState === 'unauthenticated') return (
-    <ThemeProvider theme={theme}><CssBaseline /><LoginPage error={errorParam} /></ThemeProvider>
+
+  if (showLogin) return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <LoginPage onAuth={handleAuth} />
+      <Box sx={{ textAlign: 'center', mt: -2, pb: 3 }}>
+        <Button variant="text" size="small" onClick={() => setShowLogin(false)}>← Back to browsing</Button>
+      </Box>
+    </ThemeProvider>
   );
 
   return (
@@ -811,7 +1055,7 @@ export default function App() {
             <Typography variant="h6" sx={{ mr: 1, whiteSpace: 'nowrap', display: { xs: 'block', sm: 'none' } }}>🐄</Typography>
             <Tabs
               value={tab}
-              onChange={(_, v) => { setTab(v); setPurposeFilter(null); }}
+              onChange={(_, v) => { if (v === 1 && !isUser) { setShowLogin(true); return; } setTab(v); setPurposeFilter(null); }}
               textColor="inherit"
               TabIndicatorProps={{ style: { backgroundColor: '#74c69d', height: 3, borderRadius: 2 } }}
               sx={{ flexGrow: 1, minHeight: 48 }}
@@ -824,32 +1068,58 @@ export default function App() {
                 </Badge>
               } />
             </Tabs>
-            <Box sx={{ display: 'flex', gap: 0.5, flexShrink: 0 }}>
-              {/* Admin: add breed */}
-              {effectiveAdmin && (
-                <Tooltip title="Add new breed">
-                  <Button size="small" variant="outlined" startIcon={<AddIcon />}
-                    onClick={() => setAddOpen(true)}
-                    sx={{ color: '#74c69d', borderColor: '#74c69d', fontSize: '0.72rem', display: { xs: 'none', sm: 'flex' } }}
-                  >Add</Button>
+            {/* Auth controls */}
+            {isUser ? (
+              <>
+                <Tooltip title={user?.email}>
+                  <Avatar
+                    onClick={(e) => setAvatarMenu(e.currentTarget)}
+                    sx={{ width: 30, height: 30, bgcolor: impersonating ? '#d97706' : '#40916c', fontSize: '0.8rem', cursor: 'pointer', flexShrink: 0 }}
+                  >
+                    {user?.email?.[0]?.toUpperCase()}
+                  </Avatar>
                 </Tooltip>
-              )}
-            </Box>
-            {/* User avatar + logout */}
-            <Tooltip title={user?.email}>
-              <Avatar src={user?.photo} sx={{ width: 30, height: 30, bgcolor: '#40916c', fontSize: '0.8rem', cursor: 'default', flexShrink: 0 }}>
-                {user?.name?.[0]}
-              </Avatar>
-            </Tooltip>
-            <Tooltip title="Sign out">
-              <IconButton size="small" href="/auth/logout" sx={{ color: 'rgba(255,255,255,0.7)', flexShrink: 0 }}>
-                <LogoutIcon fontSize="small" />
-              </IconButton>
-            </Tooltip>
+                <Menu anchorEl={avatarMenu} open={Boolean(avatarMenu)} onClose={() => setAvatarMenu(null)}>
+                  {isAdmin && !impersonating && (
+                    <MenuItem onClick={() => { setAvatarMenu(null); setShowAccounts(true); }}>
+                      <PeopleIcon sx={{ mr: 1.5, fontSize: '1.1rem' }} /> Manage Accounts
+                    </MenuItem>
+                  )}
+                  <MenuItem onClick={() => { setAvatarMenu(null); handleLogout(); }}>
+                    <LogoutIcon sx={{ mr: 1.5, fontSize: '1.1rem' }} />
+                    {impersonating ? 'Return to admin' : 'Sign out'}
+                  </MenuItem>
+                </Menu>
+              </>
+            ) : (
+              <Button size="small" variant="outlined"
+                onClick={() => setShowLogin(true)}
+                sx={{ color: '#74c69d', borderColor: '#74c69d', fontSize: '0.72rem', flexShrink: 0 }}
+              >Sign in</Button>
+            )}
           </Toolbar>
         </AppBar>
 
+        {/* ── Impersonation banner ── */}
+        {impersonating && (
+          <Box sx={{ bgcolor: '#d97706', color: 'white', py: 0.75, px: 2, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2 }}>
+            <Typography variant="body2" sx={{ fontWeight: 600 }}>
+              👤 Viewing as {user?.email}
+            </Typography>
+            <Button size="small" variant="outlined" onClick={handleUnimpersonate}
+              sx={{ color: 'white', borderColor: 'rgba(255,255,255,0.6)', fontSize: '0.72rem' }}
+            >Return to admin</Button>
+          </Box>
+        )}
+
         {/* ── Hero search ── */}
+        {showAccounts ? (
+          <AccountsPage
+            onClose={() => setShowAccounts(false)}
+            onImpersonate={handleImpersonate}
+            currentEmail={user?.email}
+          />
+        ) : (<>
         <Box sx={{ background: 'linear-gradient(160deg, #1b4332 0%, #2d6a4f 60%, #40916c 100%)', py: 4, px: 2 }}>
           <Container maxWidth="md">
             <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.55)', mb: 1, textAlign: 'center' }}>
@@ -906,10 +1176,16 @@ export default function App() {
                       onClick={() => exportJson(breeds, 'all-breeds.json')}
                     >Export JSON ({breeds.length})</Button>
                     {/* Import All — admin only */}
-                    {effectiveAdmin && (
+                    {isAdmin && (
                       <Button variant="outlined" startIcon={<UploadIcon />}
                         onClick={() => triggerImport('master')}
                       >Import JSON</Button>
+                    )}
+                    {/* Add breed — admin only */}
+                    {isAdmin && (
+                      <Button variant="outlined" startIcon={<AddIcon />}
+                        onClick={() => setAddOpen(true)}
+                      >Add breed</Button>
                     )}
                   </>
                 )}
@@ -943,13 +1219,14 @@ export default function App() {
                 onToggle={toggle}
                 onEdit={(breed) => {
                   setEditTarget(breed);
-                  setEditContext(tab === 1 ? 'myherd' : (effectiveAdmin ? 'master' : 'myherd'));
+                  setEditContext(tab === 1 ? 'myherd' : (isAdmin ? 'master' : 'myherd'));
                 }}
-                showEdit={tab === 1 || effectiveAdmin}
+                showEdit={tab === 1 || isAdmin}
               />
             </>
           )}
         </Container>
+        </>)}
 
         {/* ── Dialogs ── */}
         <BreedDialog
@@ -957,11 +1234,11 @@ export default function App() {
           onClose={() => setSelected(null)}
           onEdit={(breed) => {
             setEditTarget(breed);
-            setEditContext(tab === 1 ? 'myherd' : (effectiveAdmin ? 'master' : 'myherd'));
+            setEditContext(tab === 1 ? 'myherd' : (isAdmin ? 'master' : 'myherd'));
           }}
           onToggle={() => selected && toggle(selected)}
           inMyList={selected ? myList.has(selected.id ?? selected.name) : false}
-          showEdit={tab === 1 || effectiveAdmin}
+          showEdit={tab === 1 || isAdmin}
         />
         {editTarget && (
           <EditDialog breed={editTarget} onClose={() => { setEditTarget(null); setEditContext(null); }} onSave={saveBreed} />

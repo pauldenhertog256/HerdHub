@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Runtime data (volume-mounted in production)
+data/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

@@ -1,37 +1,22 @@
-// Express server — image upload API + serves the built React frontend
+// Express server — HerdHub API + serves the built React frontend
 import express from 'express';
 import { writeFile, mkdir, readFile } from 'fs/promises';
 import { existsSync } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import session from 'express-session';
-import passport from 'passport';
-import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
+import bcrypt from 'bcryptjs';
 
-const __dirname   = path.dirname(fileURLToPath(import.meta.url));
-const IMG_DIR     = path.join(__dirname, 'public', 'images');
-const DIST_DIR    = path.join(__dirname, 'dist');
-const DB_DIR      = path.join(IMG_DIR, 'db');
-const BREEDS_DB   = path.join(DB_DIR, 'breeds.json');
-const USERS_DIR   = path.join(DB_DIR, 'users');
+const __dirname      = path.dirname(fileURLToPath(import.meta.url));
+const DATA_DIR       = process.env.DATA_DIR || path.join(__dirname, 'data');
+const IMG_DIR        = path.join(DATA_DIR, 'images');
+const DIST_DIR       = path.join(__dirname, 'dist');
+const DB_DIR         = path.join(DATA_DIR, 'db');
+const BREEDS_DB      = path.join(DB_DIR, 'breeds.json');
+const ACCOUNTS_DB    = path.join(DB_DIR, 'accounts.json');
+const USERS_DIR      = path.join(DB_DIR, 'users');
 const BREEDS_BUNDLED = path.join(__dirname, 'public', 'breeds.json');
-const PORT = process.env.PORT || 3001;
-
-// Auth is only active when Google credentials are provided (skipped in local dev)
-const AUTH_ENABLED = !!process.env.GOOGLE_CLIENT_ID;
-
-const ALLOWED_EMAILS = new Set([
-  'hamata25@gmail.com',
-  'pauldenhertog256@gmail.com',
-  'omarghanidenhertog@gmail.com',
-  'mariamdenhertog256@gmail.com',
-  'user@gmail.com',
-]);
-
-const ADMIN_EMAILS = new Set([
-  'pauldenhertog256@gmail.com',
-  'hamata25@gmail.com',
-]);
+const PORT           = process.env.PORT || 3001;
 
 // ── DB helpers ────────────────────────────────────────────────────────────────
 async function loadDb(file) {
@@ -47,44 +32,57 @@ async function saveDb(file, data) {
   await writeFile(file, JSON.stringify(data, null, 2));
 }
 
-function getUserEmail(req) {
-  return req.user?.email ?? 'dev@local';
-}
-
 function userMyherdFile(email) {
   // Use base64 of email as directory name to avoid filesystem issues
   const safe = Buffer.from(email).toString('base64url');
   return path.join(USERS_DIR, safe, 'myherd.json');
 }
 
+function sessionUser(req) {
+  return req.session?.user ?? null;
+}
+
 // ── Startup: migrate / seed breeds.json with IDs ─────────────────────────────
 async function seedDb() {
-  if (existsSync(BREEDS_DB)) return; // Already initialised
-
-  // Load from old persistent file or bundled fallback
-  let breeds = null;
-  const oldPersistent = path.join(IMG_DIR, '_breeds.json');
-  if (existsSync(oldPersistent)) {
-    breeds = await loadDb(oldPersistent);
+  // Breeds
+  if (!existsSync(BREEDS_DB)) {
+    let breeds = null;
+    const oldPersistent = path.join(IMG_DIR, '_breeds.json');
+    if (existsSync(oldPersistent)) breeds = await loadDb(oldPersistent);
+    if (!breeds) breeds = await loadDb(BREEDS_BUNDLED) ?? [];
+    let nextId = 1;
+    breeds = breeds.map((b) => {
+      if (b.id) { nextId = Math.max(nextId, b.id + 1); return b; }
+      return { id: nextId++, ...b };
+    });
+    await saveDb(BREEDS_DB, breeds);
+    console.log(`DB seeded — ${breeds.length} breeds`);
   }
-  if (!breeds) {
-    breeds = await loadDb(BREEDS_BUNDLED);
-  }
-  if (!breeds) {
-    console.warn('No breeds source found — starting with empty list');
-    breeds = [];
-  }
 
-  // Assign sequential IDs where missing
-  let nextId = 1;
-  breeds = breeds.map((b) => {
-    if (!b.id) return { id: nextId++, ...b };
-    nextId = Math.max(nextId, b.id + 1);
-    return b;
-  });
-
-  await saveDb(BREEDS_DB, breeds);
-  console.log(`DB seeded with ${breeds.length} breeds → ${BREEDS_DB}`);
+  // Accounts — seed hardcoded admins + optional env-var admin
+  let accounts = await loadDb(ACCOUNTS_DB) ?? [];
+  const adminSeeds = [
+    { email: 'hamata25@gmail.com',         password: 'PipoPassword*' },
+    { email: 'pauldenhertog256@gmail.com', password: 'PipoPassword*' },
+  ];
+  if (process.env.ADMIN_EMAIL && process.env.ADMIN_PASS) {
+    adminSeeds.push({ email: process.env.ADMIN_EMAIL, password: process.env.ADMIN_PASS });
+  }
+  let changed = false;
+  for (const seed of adminSeeds) {
+    if (!accounts.find((a) => a.email === seed.email)) {
+      accounts.push({
+        id: Date.now() + Math.random(),
+        email: seed.email,
+        passwordHash: await bcrypt.hash(seed.password, 12),
+        role: 'admin',
+        createdAt: new Date().toISOString(),
+      });
+      console.log(`Admin seeded: ${seed.email}`);
+      changed = true;
+    }
+  }
+  if (changed) await saveDb(ACCOUNTS_DB, accounts);
 }
 
 const app = express();
@@ -101,73 +99,116 @@ app.use(session({
   },
 }));
 
-// ── Google OAuth (only when credentials are set) ───────────────────────────────
-if (AUTH_ENABLED) {
-  passport.use(new GoogleStrategy(
-    {
-      clientID: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: process.env.GOOGLE_CALLBACK_URL || '/auth/google/callback',
-    },
-    (_accessToken, _refreshToken, profile, done) => {
-      const email = profile.emails?.[0]?.value?.toLowerCase();
-      if (!email || !ALLOWED_EMAILS.has(email)) return done(null, false);
-      done(null, {
-        id: profile.id,
-        email,
-        name: profile.displayName,
-        photo: profile.photos?.[0]?.value,
-      });
-    },
-  ));
-  passport.serializeUser((user, done) => done(null, user));
-  passport.deserializeUser((user, done) => done(null, user));
-
-  app.use(passport.initialize());
-  app.use(passport.session());
-
-  app.get('/auth/google',
-    passport.authenticate('google', { scope: ['email', 'profile'] }),
-  );
-  app.get('/auth/google/callback',
-    passport.authenticate('google', { failureRedirect: '/?error=unauthorized' }),
-    (_req, res) => res.redirect('/'),
-  );
-}
-
-// ── Auth logout (always available) ────────────────────────────────────────────
-app.get('/auth/logout', (req, res) => {
-  if (typeof req.logout === 'function') {
-    req.logout(() => res.redirect('/'));
-  } else {
-    res.redirect('/');
-  }
-});
-
 // ── Auth middleware ────────────────────────────────────────────────────────────
-function requireAuth(req, res, next) {
-  if (!AUTH_ENABLED || req.isAuthenticated()) return next();
-  res.status(401).json({ error: 'Unauthorized' });
-}
-
-function requireAdmin(req, res, next) {
-  if (!AUTH_ENABLED) return next(); // dev mode — all allowed
-  const email = req.user?.email;
-  if (!email || !ADMIN_EMAILS.has(email)) return res.status(403).json({ error: 'Forbidden' });
+function requireUser(req, res, next) {
+  if (!sessionUser(req)) return res.status(401).json({ error: 'Login required' });
   next();
 }
 
-// ── API: who am I ─────────────────────────────────────────────────────────────
+function requireAdmin(req, res, next) {
+  const u = sessionUser(req);
+  if (!u || u.role !== 'admin') return res.status(403).json({ error: 'Forbidden' });
+  next();
+}
+
+// ── API: auth ─────────────────────────────────────────────────────────────────
+
 app.get('/api/me', (req, res) => {
-  if (!AUTH_ENABLED) return res.json({ email: 'dev@local', name: 'Developer', isAdmin: true });
-  if (!req.isAuthenticated()) return res.status(401).json({ error: 'Unauthenticated' });
-  res.json({ ...req.user, isAdmin: ADMIN_EMAILS.has(req.user.email) });
+  const u = sessionUser(req);
+  if (!u) return res.json({ role: 'guest' });
+  res.json({ email: u.email, role: u.role, impersonating: !!req.session.adminBackup });
 });
 
-// ── API: breeds (master list) ─────────────────────────────────────────────────
+app.post('/api/login', async (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) return res.status(400).json({ error: 'Email and password required' });
+  const accounts = await loadDb(ACCOUNTS_DB) ?? [];
+  const account = accounts.find((a) => a.email.toLowerCase() === email.toLowerCase());
+  if (!account) return res.status(401).json({ error: 'Invalid email or password' });
+  const ok = await bcrypt.compare(password, account.passwordHash);
+  if (!ok) return res.status(401).json({ error: 'Invalid email or password' });
+  req.session.user = { email: account.email, role: account.role };
+  res.json({ email: account.email, role: account.role });
+});
 
-// GET all breeds
-app.get('/api/breeds', requireAuth, async (req, res) => {
+app.post('/api/logout', (req, res) => {
+  req.session.destroy(() => res.json({ ok: true }));
+});
+
+app.post('/api/register', async (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) return res.status(400).json({ error: 'Email and password required' });
+  if (password.length < 8) return res.status(400).json({ error: 'Password must be at least 8 characters' });
+  const accounts = await loadDb(ACCOUNTS_DB) ?? [];
+  if (accounts.find((a) => a.email.toLowerCase() === email.toLowerCase())) {
+    return res.status(409).json({ error: 'Email already registered' });
+  }
+  const passwordHash = await bcrypt.hash(password, 12);
+  const newAccount = {
+    id: Date.now() + Math.random(),
+    email: email.toLowerCase(),
+    passwordHash,
+    role: 'user',
+    createdAt: new Date().toISOString(),
+  };
+  accounts.push(newAccount);
+  await saveDb(ACCOUNTS_DB, accounts);
+  req.session.user = { email: newAccount.email, role: newAccount.role };
+  res.status(201).json({ email: newAccount.email, role: newAccount.role });
+});
+
+// ── API: account management (admin only) ──────────────────────────────────────
+
+app.get('/api/accounts', requireAdmin, async (req, res) => {
+  const accounts = await loadDb(ACCOUNTS_DB) ?? [];
+  res.json(accounts.map(({ passwordHash: _, ...rest }) => rest));
+});
+
+app.patch('/api/accounts/:id', requireAdmin, async (req, res) => {
+  const accounts = await loadDb(ACCOUNTS_DB) ?? [];
+  const idx = accounts.findIndex((a) => String(a.id) === String(req.params.id));
+  if (idx === -1) return res.status(404).json({ error: 'Not found' });
+  const { role, password } = req.body;
+  if (role) accounts[idx].role = role;
+  if (password) {
+    if (password.length < 8) return res.status(400).json({ error: 'Password must be at least 8 characters' });
+    accounts[idx].passwordHash = await bcrypt.hash(password, 12);
+  }
+  await saveDb(ACCOUNTS_DB, accounts);
+  const { passwordHash: _, ...safe } = accounts[idx];
+  res.json(safe);
+});
+
+app.delete('/api/accounts/:id', requireAdmin, async (req, res) => {
+  let accounts = await loadDb(ACCOUNTS_DB) ?? [];
+  const before = accounts.length;
+  accounts = accounts.filter((a) => String(a.id) !== String(req.params.id));
+  if (accounts.length === before) return res.status(404).json({ error: 'Not found' });
+  await saveDb(ACCOUNTS_DB, accounts);
+  res.json({ ok: true });
+});
+
+// ── API: admin impersonation ───────────────────────────────────────────────────
+
+app.post('/api/impersonate/:id', requireAdmin, async (req, res) => {
+  if (req.session.adminBackup) return res.status(400).json({ error: 'Already impersonating' });
+  const accounts = await loadDb(ACCOUNTS_DB) ?? [];
+  const target = accounts.find((a) => String(a.id) === String(req.params.id));
+  if (!target) return res.status(404).json({ error: 'Account not found' });
+  req.session.adminBackup = req.session.user;
+  req.session.user = { email: target.email, role: target.role };
+  res.json({ email: target.email, role: target.role, impersonating: true });
+});
+
+app.post('/api/unimpersonate', (req, res) => {
+  if (!req.session?.adminBackup) return res.status(400).json({ error: 'Not impersonating' });
+  req.session.user = req.session.adminBackup;
+  delete req.session.adminBackup;
+  res.json({ email: req.session.user.email, role: req.session.user.role });
+});
+
+// GET all breeds — no auth, guests can browse
+app.get('/api/breeds', async (req, res) => {
   try {
     const breeds = await loadDb(BREEDS_DB) ?? [];
     res.json(breeds);
@@ -177,7 +218,7 @@ app.get('/api/breeds', requireAuth, async (req, res) => {
 });
 
 // PATCH one breed (admin only) — partial update to master list
-app.patch('/api/breeds/:id', requireAuth, requireAdmin, async (req, res) => {
+app.patch('/api/breeds/:id', requireAdmin, async (req, res) => {
   try {
     const id = Number(req.params.id);
     const breeds = await loadDb(BREEDS_DB) ?? [];
@@ -192,7 +233,7 @@ app.patch('/api/breeds/:id', requireAuth, requireAdmin, async (req, res) => {
 });
 
 // POST new breed (admin only)
-app.post('/api/breeds', requireAuth, requireAdmin, async (req, res) => {
+app.post('/api/breeds', requireAdmin, async (req, res) => {
   try {
     const breeds = await loadDb(BREEDS_DB) ?? [];
     const nextId = breeds.reduce((m, b) => Math.max(m, b.id ?? 0), 0) + 1;
@@ -207,7 +248,7 @@ app.post('/api/breeds', requireAuth, requireAdmin, async (req, res) => {
 
 // POST /api/breeds/import — replace entire master list (admin only)
 // Accepts a JSON array; ensures every entry has a stable id
-app.post('/api/breeds/import', requireAuth, requireAdmin, async (req, res) => {
+app.post('/api/breeds/import', requireAdmin, async (req, res) => {
   try {
     const incoming = req.body;
     if (!Array.isArray(incoming)) return res.status(400).json({ error: 'Expected array' });
@@ -224,7 +265,7 @@ app.post('/api/breeds/import', requireAuth, requireAdmin, async (req, res) => {
 });
 
 // DELETE breed (admin only)
-app.delete('/api/breeds/:id', requireAuth, requireAdmin, async (req, res) => {
+app.delete('/api/breeds/:id', requireAdmin, async (req, res) => {
   try {
     const id = Number(req.params.id);
     let breeds = await loadDb(BREEDS_DB) ?? [];
@@ -238,12 +279,12 @@ app.delete('/api/breeds/:id', requireAuth, requireAdmin, async (req, res) => {
   }
 });
 
-// ── API: my herd (per-user private list) ──────────────────────────────────────
+// ── API: my herd (registered users only) ─────────────────────────────────────
 
 // GET user's herd
-app.get('/api/myherd', requireAuth, async (req, res) => {
+app.get('/api/myherd', requireUser, async (req, res) => {
   try {
-    const herd = await loadDb(userMyherdFile(getUserEmail(req))) ?? [];
+    const herd = await loadDb(userMyherdFile(sessionUser(req).email)) ?? [];
     res.json(herd);
   } catch (err) {
     res.status(500).json({ error: String(err) });
@@ -251,19 +292,19 @@ app.get('/api/myherd', requireAuth, async (req, res) => {
 });
 
 // PUT replace user's entire herd
-app.put('/api/myherd', requireAuth, async (req, res) => {
+app.put('/api/myherd', requireUser, async (req, res) => {
   try {
     const herd = req.body;
     if (!Array.isArray(herd)) return res.status(400).json({ error: 'Expected array' });
-    await saveDb(userMyherdFile(getUserEmail(req)), herd);
+    await saveDb(userMyherdFile(sessionUser(req).email), herd);
     res.json({ ok: true, count: herd.length });
   } catch (err) {
     res.status(500).json({ error: String(err) });
   }
 });
 
-// ── API: image upload ─────────────────────────────────────────────────────────
-app.post('/api/upload-image', requireAuth, async (req, res) => {
+// ── API: image upload (registered users only) ─────────────────────────────────
+app.post('/api/upload-image', requireUser, async (req, res) => {
   try {
     const { name, dataUrl } = req.body;
     if (!name || !dataUrl) return res.status(400).json({ error: 'Missing name or dataUrl' });
@@ -285,7 +326,7 @@ app.post('/api/upload-image', requireAuth, async (req, res) => {
 
 // ── Static frontend (production) ──────────────────────────────────────────────
 app.use(express.static(DIST_DIR));
-app.use('/images', express.static(path.join(__dirname, 'public', 'images')));
+app.use('/images', express.static(IMG_DIR));
 
 // SPA fallback — all non-API routes serve index.html
 app.get('*', (req, res) => {
