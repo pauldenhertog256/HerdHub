@@ -7,7 +7,7 @@ import { fileURLToPath } from 'url';
 import session from 'express-session';
 import bcrypt from 'bcryptjs';
 import sharp from 'sharp';
-railway link --service HerdHubimport archiver from 'archiver';
+import archiver from 'archiver';
 import unzipper from 'unzipper';
 import compression from 'compression';
 
