@@ -210,18 +210,60 @@ function thumbUrl(imageUrl) {
 }
 
 function TagChips({ tags, size = 'small' }) {
+  const [expanded, setExpanded] = useState(false);
+  const containerRef = useRef(null);
+  const [overflows, setOverflows] = useState(false);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const check = () => setOverflows(el.scrollHeight > el.clientHeight + 2);
+    check();
+    const ro = new ResizeObserver(check);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [tags, expanded]);
+
   if (!tags?.length) return null;
+
   return (
-    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-      {tags.map((t) => {
-        const { color, bg } = tagColor(t);
-        const label = t.length > 10 ? t.slice(0, 10) + '…' : t;
-        return (
-          <Chip key={t} label={label} title={t.length > 10 ? t : undefined} size={size}
-            sx={{ fontSize: '0.65rem', color, bgcolor: bg, border: `1px solid ${color}33`, fontWeight: 600 }}
-          />
-        );
-      })}
+    <Box sx={{ position: 'relative' }}>
+      <Box
+        ref={containerRef}
+        sx={{
+          display: 'flex', flexWrap: 'wrap', gap: 0.5,
+          overflow: 'hidden',
+          maxHeight: expanded ? 'none' : '26px',
+          // fade out the tail when collapsed and overflowing
+          maskImage: !expanded && overflows
+            ? 'linear-gradient(to right, black 60%, transparent 100%)'
+            : 'none',
+        }}
+      >
+        {tags.map((t) => {
+          const { color, bg } = tagColor(t);
+          const label = t.length > 10 ? t.slice(0, 10) + '…' : t;
+          return (
+            <Chip key={t} label={label} title={t.length > 10 ? t : undefined} size={size}
+              sx={{ fontSize: '0.65rem', color, bgcolor: bg, border: `1px solid ${color}33`, fontWeight: 600 }}
+            />
+          );
+        })}
+      </Box>
+      {(overflows || expanded) && (
+        <Box
+          component="span"
+          onClick={(e) => { e.stopPropagation(); setExpanded((v) => !v); }}
+          sx={{
+            display: 'inline-block', mt: 0.25,
+            fontSize: '0.6rem', fontWeight: 700, cursor: 'pointer',
+            color: 'text.disabled',
+            '&:hover': { color: 'text.secondary' },
+          }}
+        >
+          {expanded ? '▲ less' : `▼ +${tags.length - 1} more`}
+        </Box>
+      )}
     </Box>
   );
 }
@@ -245,6 +287,74 @@ function TagInput({ value, onChange, allTags }) {
         <TextField {...params} size="small" label="Tags" placeholder={tags.length === 0 ? 'Add tag, press Enter…' : ''} />
       )}
     />
+  );
+}
+
+function FilterChipRow({ allTags, tagFilter, setTagFilter }) {
+  const [expanded, setExpanded] = useState(false);
+  const rowRef = useRef(null);
+  const [overflows, setOverflows] = useState(false);
+
+  useEffect(() => {
+    const el = rowRef.current;
+    if (!el) return;
+    const check = () => setOverflows(el.scrollHeight > el.clientHeight + 2);
+    check();
+    const ro = new ResizeObserver(check);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [allTags, expanded]);
+
+  if (!allTags.length) return null;
+
+  return (
+    <Box sx={{ mt: 2, position: 'relative' }}>
+      <Box
+        ref={rowRef}
+        sx={{
+          display: 'flex', gap: 1, flexWrap: 'wrap', justifyContent: 'center',
+          overflow: 'hidden',
+          maxHeight: expanded ? 'none' : '36px',
+          // leave room on the right for the arrow button when collapsed
+          pr: (overflows && !expanded) || expanded ? '40px' : 0,
+        }}
+      >
+        {allTags.map((t) => {
+          const label = t.length > 12 ? t.slice(0, 12) + '…' : t;
+          return (
+            <Chip
+              key={t} label={label} title={t.length > 12 ? t : undefined}
+              onClick={() => setTagFilter((prev) => prev === t ? null : t)}
+              variant={tagFilter === t ? 'filled' : 'outlined'}
+              sx={{
+                color: tagFilter === t ? '#1b4332' : 'rgba(255,255,255,0.85)',
+                bgcolor: tagFilter === t ? '#74c69d' : 'transparent',
+                borderColor: 'rgba(255,255,255,0.3)', fontWeight: 600,
+                '&:hover': { bgcolor: tagFilter === t ? '#74c69d' : 'rgba(255,255,255,0.12)' },
+              }}
+            />
+          );
+        })}
+      </Box>
+      {(overflows || expanded) && (
+        <Box
+          component="span"
+          onClick={() => setExpanded((v) => !v)}
+          title={expanded ? 'Show fewer' : 'Show all filters'}
+          sx={{
+            position: 'absolute', right: 0, top: 0,
+            width: 32, height: 32,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            bgcolor: 'rgba(255,255,255,0.12)', borderRadius: '50%',
+            color: 'rgba(255,255,255,0.75)', fontSize: '0.75rem',
+            cursor: 'pointer', transition: 'background 0.2s',
+            '&:hover': { bgcolor: 'rgba(255,255,255,0.22)' },
+          }}
+        >
+          {expanded ? '▲' : '▼'}
+        </Box>
+      )}
+    </Box>
   );
 }
 
@@ -1238,24 +1348,7 @@ export default function App() {
               }}
               InputProps={{ startAdornment: <InputAdornment position="start"><SearchIcon /></InputAdornment> }}
             />
-            <Box sx={{ display: 'flex', gap: 1, mt: 2, flexWrap: 'wrap', justifyContent: 'center' }}>
-              {allTags.map((t) => {
-                const label = t.length > 10 ? t.slice(0, 10) + '…' : t;
-                return (
-                  <Chip
-                    key={t} label={label} title={t.length > 10 ? t : undefined}
-                    onClick={() => setTagFilter((prev) => prev === t ? null : t)}
-                    variant={tagFilter === t ? 'filled' : 'outlined'}
-                    sx={{
-                      color: tagFilter === t ? '#1b4332' : 'rgba(255,255,255,0.85)',
-                      bgcolor: tagFilter === t ? '#74c69d' : 'transparent',
-                      borderColor: 'rgba(255,255,255,0.3)', fontWeight: 600,
-                      '&:hover': { bgcolor: tagFilter === t ? '#74c69d' : 'rgba(255,255,255,0.12)' },
-                    }}
-                  />
-                );
-              })}
-            </Box>
+            <FilterChipRow allTags={allTags} tagFilter={tagFilter} setTagFilter={setTagFilter} />
           </Container>
         </Box>
 

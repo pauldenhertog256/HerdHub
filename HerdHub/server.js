@@ -18,7 +18,7 @@ const BREEDS_DB      = path.join(DB_DIR, 'breeds.json');
 const ACCOUNTS_DB    = path.join(DB_DIR, 'accounts.json');
 const USERS_DIR      = path.join(DB_DIR, 'users');
 const BREEDS_BUNDLED = path.join(__dirname, 'public', 'breeds.json');
-const PORT           = process.env.PORT || 3001;
+const PORT           = process.env.PORT || 5176;
 
 // ── DB helpers ────────────────────────────────────────────────────────────────
 async function loadDb(file) {
@@ -145,9 +145,13 @@ app.post('/api/login', async (req, res) => {
   if (!account) return res.status(401).json({ error: 'Invalid email or password' });
   const ok = await bcrypt.compare(password, account.passwordHash);
   if (!ok) return res.status(401).json({ error: 'Invalid email or password' });
-  // remember=true (default) → 30-day persistent cookie; false → session cookie
+  // remember=true → 30-day persistent cookie; false → expires when browser closes
   const remember = req.body.remember !== false;
-  req.session.cookie.maxAge = remember ? 30 * 24 * 60 * 60 * 1000 : undefined;
+  if (remember) {
+    req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000;
+  } else {
+    req.session.cookie.expires = false; // session cookie — cleared on browser close
+  }
   req.session.user = { email: account.email, role: account.role };
   res.json({ email: account.email, role: account.role });
 });

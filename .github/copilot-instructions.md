@@ -56,10 +56,10 @@
 ## Dev Ports
 | Service          | Port  |
 |------------------|-------|
-| Express API      | 3001  |
-| Vite (HerdHub)   | 5175  |
+| Express API      | 5176  |
+| Vite (HerdHub)   | 5177  |
 
-Other dev servers the user runs start at 5176 and count up.
+Other dev servers the user runs start at 5178 and count up.
 
 ## Dev Workflow
 ```powershell
