@@ -145,6 +145,9 @@ app.post('/api/login', async (req, res) => {
   if (!account) return res.status(401).json({ error: 'Invalid email or password' });
   const ok = await bcrypt.compare(password, account.passwordHash);
   if (!ok) return res.status(401).json({ error: 'Invalid email or password' });
+  // remember=true (default) → 30-day persistent cookie; false → session cookie
+  const remember = req.body.remember !== false;
+  req.session.cookie.maxAge = remember ? 30 * 24 * 60 * 60 * 1000 : undefined;
   req.session.user = { email: account.email, role: account.role };
   res.json({ email: account.email, role: account.role });
 });
@@ -336,49 +339,91 @@ app.post('/api/upload-image', requireUser, async (req, res) => {
     await writeFile(path.join(IMG_DIR, filename), Buffer.from(base64, 'base64'));
 
     res.json({ path: `/images/${filename}` });
-    // Generate thumbnail in background — don't block the response
-    generateThumb(filename).catch((e) => console.warn('Thumb gen failed:', e.message));
+    // Warm thumbnail cache in background — don't block the response
+    generateThumb(filename).catch(() => {});
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: String(err) });
   }
 });
 
+// ── Thumbnail helpers ────────────────────────────────────────────────────────
+// Thumbnails are cached in DATA_DIR/images/thumbs/ which is the persistent Railway volume
+const IMAGE_EXTS = new Set(['.jpg', '.jpeg', '.png', '.webp', '.gif', '.avif']);
+const PUBLIC_IMG = path.join(__dirname, 'public', 'images');
+const DIST_IMG   = path.join(DIST_DIR, 'images');
+
+/** Find the source file for a given image filename across all image locations. */
+function findImageSrc(filename) {
+  for (const dir of [IMG_DIR, DIST_IMG, PUBLIC_IMG]) {
+    const p = path.join(dir, filename);
+    if (existsSync(p)) return p;
+  }
+  return null;
+}
+
+// Deduplication: if concurrent requests arrive for the same thumb, share one promise
+const thumbsInProgress = new Map();
+
+/** Generate a 400×300 thumbnail cached in DATA_DIR/images/thumbs/. Idempotent + concurrent-safe. */
+async function generateThumb(filename) {
+  const dst = path.join(THUMB_DIR, filename);
+  if (existsSync(dst)) return dst;
+  if (thumbsInProgress.has(filename)) return thumbsInProgress.get(filename);
+  const promise = (async () => {
+    const src = findImageSrc(filename);
+    if (!src) return null;
+    await mkdir(THUMB_DIR, { recursive: true });
+    await sharp(src)
+      .resize({ width: 400, height: 300, fit: 'cover', position: 'centre' })
+      .toFile(dst);
+    return dst;
+  })();
+  promise.finally(() => thumbsInProgress.delete(filename));
+  thumbsInProgress.set(filename, promise);
+  return promise;
+}
+
+// GET /api/thumb/:filename — MUST be before the SPA catch-all
+app.get('/api/thumb/:filename', async (req, res) => {
+  const filename = req.params.filename;
+  if (!filename || filename.includes('..') || filename.includes('/')) return res.status(400).end();
+  if (!IMAGE_EXTS.has(path.extname(filename).toLowerCase())) return res.status(400).end();
+  try {
+    const dst = await generateThumb(filename);
+    if (!dst) return res.status(404).end();
+    res.sendFile(dst);
+  } catch (e) {
+    console.warn('Thumb error:', e.message);
+    res.status(500).end();
+  }
+});
+
 // ── Static frontend (production) ──────────────────────────────────────────────
 app.use(express.static(DIST_DIR));
 app.use('/images', express.static(IMG_DIR));
-// Thumbnails served from thumbs subdir (already covered by /images static above via path)
 
 // SPA fallback — all non-API routes serve index.html
 app.get('*', (req, res) => {
   res.sendFile(path.join(DIST_DIR, 'index.html'));
 });
 
-// ── Thumbnail helpers ────────────────────────────────────────────────────────
-const IMAGE_EXTS = new Set(['.jpg', '.jpeg', '.png', '.webp', '.gif', '.avif']);
-
-/** Resize one image to a 400px-wide thumbnail. Skips if thumb already exists. */
-async function generateThumb(filename) {
-  const src = path.join(IMG_DIR, filename);
-  const dst = path.join(THUMB_DIR, filename);
-  if (existsSync(dst)) return; // already cached
-  await mkdir(THUMB_DIR, { recursive: true });
-  await sharp(src)
-    .resize({ width: 400, height: 300, fit: 'cover', position: 'centre' })
-    .toFile(dst);
-}
-
-/** Walk IMG_DIR and generate any missing thumbnails in the background. */
+/** Warm the thumbnail cache in the background at startup. */
 async function ensureAllThumbs() {
   try {
-    await mkdir(THUMB_DIR, { recursive: true });
-    const files = await readdir(IMG_DIR);
-    const images = files.filter((f) => IMAGE_EXTS.has(path.extname(f).toLowerCase()));
-    // Process sequentially to avoid saturating CPU on startup
-    for (const f of images) {
-      await generateThumb(f).catch((e) => console.warn(`Thumb skip ${f}:`, e.message));
+    const dirs = [IMG_DIR, PUBLIC_IMG, DIST_IMG];
+    const seen = new Set();
+    for (const dir of dirs) {
+      if (!existsSync(dir)) continue;
+      const files = await readdir(dir);
+      for (const f of files) {
+        if (IMAGE_EXTS.has(path.extname(f).toLowerCase())) seen.add(f);
+      }
     }
-    if (images.length) console.log(`Thumbnails ready (${images.length} images)`);
+    if (!seen.size) return;
+    await mkdir(THUMB_DIR, { recursive: true });
+    for (const f of seen) await generateThumb(f).catch(() => {});
+    console.log(`Thumbnails ready (${seen.size} images)`);
   } catch (e) {
     console.warn('ensureAllThumbs error:', e.message);
   }

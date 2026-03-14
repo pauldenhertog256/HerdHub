@@ -11,6 +11,7 @@ import {
   CardActionArea,
   CardContent,
   CardMedia,
+  Checkbox,
   Chip,
   CircularProgress,
   CssBaseline,
@@ -21,6 +22,7 @@ import {
   DialogTitle,
   Divider,
   FormControl,
+  FormControlLabel,
   IconButton,
   InputAdornment,
   InputLabel,
@@ -67,6 +69,7 @@ function LoginPage({ onAuth }) {
   const [mode, setMode]       = useState('login'); // 'login' | 'register'
   const [email, setEmail]     = useState('');
   const [password, setPassword] = useState('');
+  const [remember, setRemember] = useState(true);
   const [error, setError]     = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -78,7 +81,7 @@ function LoginPage({ onAuth }) {
       const resp = await fetch(mode === 'login' ? '/api/login' : '/api/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password, remember: mode === 'login' ? remember : true }),
       });
       const data = await resp.json();
       if (!resp.ok) { setError(data.error ?? 'Something went wrong'); return; }
@@ -118,6 +121,20 @@ function LoginPage({ onAuth }) {
               autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
               helperText={mode === 'register' ? 'At least 8 characters' : ''}
             />
+            {mode === 'login' && (
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={remember}
+                    onChange={(e) => setRemember(e.target.checked)}
+                    size="small"
+                    sx={{ color: '#2d6a4f', '&.Mui-checked': { color: '#2d6a4f' } }}
+                  />
+                }
+                label={<Typography variant="body2" color="text.secondary">Remember me for 30 days</Typography>}
+                sx={{ mx: 0 }}
+              />
+            )}
             <Button type="submit" variant="contained" fullWidth size="large" disabled={loading}>
               {loading ? <CircularProgress size={22} sx={{ color: 'white' }} /> : (mode === 'login' ? 'Sign in' : 'Create account')}
             </Button>
@@ -185,11 +202,11 @@ function tagColor(tag) {
   return result;
 }
 
-/** Derive the thumbnail URL from a full image URL: /images/foo.jpg → /images/thumbs/foo.jpg */
+/** Derive the thumbnail URL from a full image URL: /images/foo.jpg → /api/thumb/foo.jpg */
 function thumbUrl(imageUrl) {
   if (!imageUrl) return null;
-  // imageUrl looks like /images/<filename>
-  return imageUrl.replace(/^\/images\//, '/images/thumbs/');
+  const filename = imageUrl.replace(/^\/images\//, '');
+  return `/api/thumb/${filename}`;
 }
 
 function TagChips({ tags, size = 'small' }) {
@@ -913,6 +930,12 @@ export default function App() {
     saveMyHerd(nextHerd);
   }, [isUser, saveMyHerd]);
 
+  // ── Edit handler (stable ref for memo) ───────────────────────────────────────
+  const handleEditBreed = useCallback((breed) => {
+    setEditTarget(breed);
+    setEditContext(tab === 1 ? 'myherd' : (isAdmin ? 'master' : 'myherd'));
+  }, [tab, isAdmin]);
+
   // ── Save breed edit ─────────────────────────────────────────────────────────
   const saveBreed = async (updated, originalName) => {
     if (editContext === 'master') {
@@ -1119,13 +1142,26 @@ export default function App() {
               TabIndicatorProps={{ style: { backgroundColor: '#74c69d', height: 3, borderRadius: 2 } }}
               sx={{ flexGrow: 1, minHeight: 48 }}
             >
-              <Tab label={`All (${breeds.length})`} sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }} />
               <Tab label={
-                <Badge badgeContent={myHerd.length} color="error" showZero={false} sx={{ pr: myHerd.length > 0 ? 1.5 : 0 }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
+                  <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>All</Box>
+                  <Box component="span" sx={{ display: { xs: 'inline', sm: 'none' } }}>All</Box>
+                  <Box component="span" sx={{ bgcolor: 'rgba(255,255,255,0.18)', color: '#d8f3dc', borderRadius: '999px', px: 0.9, py: 0.1, fontSize: '0.7rem', fontWeight: 700, lineHeight: 1.6 }}>
+                    {breeds.length}
+                  </Box>
+                </Box>
+              } sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }} />
+              <Tab label={
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
                   <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>My Herd</Box>
                   <Box component="span" sx={{ display: { xs: 'inline', sm: 'none' } }}>🔖</Box>
-                </Badge>
-              } />
+                  {myHerd.length > 0 && (
+                    <Box component="span" sx={{ bgcolor: '#e63946', color: '#fff', borderRadius: '999px', px: 0.9, py: 0.1, fontSize: '0.7rem', fontWeight: 700, lineHeight: 1.6 }}>
+                      {myHerd.length}
+                    </Box>
+                  )}
+                </Box>
+              } sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }} />
             </Tabs>
             {/* Auth controls */}
             {isUser ? (
@@ -1279,10 +1315,7 @@ export default function App() {
                 myList={myList}
                 onCardClick={setSelected}
                 onToggle={toggle}
-                onEdit={(breed) => {
-                  setEditTarget(breed);
-                  setEditContext(tab === 1 ? 'myherd' : (isAdmin ? 'master' : 'myherd'));
-                }}
+                onEdit={handleEditBreed}
                 showEdit={tab === 1 || isAdmin}
               />
             </>
