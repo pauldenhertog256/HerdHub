@@ -7,7 +7,7 @@ import { fileURLToPath } from 'url';
 import session from 'express-session';
 import bcrypt from 'bcryptjs';
 import sharp from 'sharp';
-import archiver from 'archiver';
+railway link --service HerdHubimport archiver from 'archiver';
 import unzipper from 'unzipper';
 import compression from 'compression';
 
@@ -681,25 +681,25 @@ async function ensureLocalImages() {
     if (!external.length) return;
     console.log(`Localising ${external.length} external breed images (copying from local stash where available)…`);
 
-    let saved = 0;
-    let failed = 0;
-    const BATCH = 20;
-    for (let i = 0; i < breeds.length; i += BATCH) {
-      let batchDirty = false;
-      await Promise.all(breeds.slice(i, i + BATCH).map(async (b, bi) => {
-        if (!b.imageUrl || !/^https?:\/\//.test(b.imageUrl)) return;
-        try {
-          const localUrl = await downloadAndSaveImage(b.imageUrl, b.id, b.name, 1, b.localImage ?? null);
-          breeds[i + bi] = { ...b, imageUrl: localUrl };
-          batchDirty = true;
-          saved++;
-        } catch (err) {
-          console.warn(`  Failed "${b.name}": ${err.message}`);
-          failed++;
-        }
-      }));
-      if (batchDirty) await saveDb(BREEDS_DB, breeds);
+    let saved = 0, failed = 0, dirty = false;
+    for (const b of external) {
+      const idx = breeds.findIndex((x) => x.id === b.id);
+      if (idx === -1) continue;
+      try {
+        const localUrl = await downloadAndSaveImage(b.imageUrl, b.id, b.name, 1, b.localImage ?? null);
+        breeds[idx] = { ...breeds[idx], imageUrl: localUrl };
+        dirty = true;
+        saved++;
+        // Persist every 10 downloads so progress survives a restart
+        if (saved % 10 === 0) { await saveDb(BREEDS_DB, breeds); dirty = false; }
+      } catch (err) {
+        console.warn(`  Failed "${b.name}": ${err.message}`);
+        failed++;
+      }
+      // 500 ms between requests — avoids Wikimedia 429 rate-limiting
+      if (/^https?:\/\//.test(b.imageUrl)) await new Promise((r) => setTimeout(r, 500));
     }
+    if (dirty) await saveDb(BREEDS_DB, breeds);
     console.log(`Image localisation done — ${saved} saved, ${failed} failed.`);
   } catch (e) {
     console.warn('ensureLocalImages error:', e.message);
