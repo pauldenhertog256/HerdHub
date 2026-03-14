@@ -37,8 +37,11 @@ import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
 import BookmarkAddedIcon from '@mui/icons-material/BookmarkAdded';
 import BookmarkRemoveIcon from '@mui/icons-material/BookmarkRemove';
 import DownloadIcon from '@mui/icons-material/Download';
+import UploadIcon from '@mui/icons-material/Upload';
 import EditIcon from '@mui/icons-material/Edit';
 import LogoutIcon from '@mui/icons-material/Logout';
+import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
 import {
   Document, Paragraph, Table, TableCell, TableRow,
   TextRun, ImageRun, WidthType, HeadingLevel, Packer,
@@ -104,17 +107,7 @@ const theme = createTheme({
   },
 });
 
-const MYLIST_KEY = 'cowMyList';
-const loadMyList = () => {
-  try { return new Set(JSON.parse(localStorage.getItem(MYLIST_KEY) || '[]')); }
-  catch { return new Set(); }
-};
-
-const STORAGE_KEY = 'cowBreedEdits';
-const loadEdits = () => {
-  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
-  catch { return {}; }
-};
+const ADMIN_EMAILS = new Set(['pauldenhertog256@gmail.com', 'hamata25@gmail.com']);
 
 const PURPOSE_META = {
   Meat:    { color: '#e63946', bg: '#fdecea' },
@@ -149,7 +142,7 @@ function PurposeChips({ purpose, size = 'small' }) {
   );
 }
 
-function BreedCard({ breed, inMyList, onCardClick, onToggle, onEdit }) {
+function BreedCard({ breed, inMyList, onCardClick, onToggle, onEdit, showEdit }) {
   const [imgErr, setImgErr] = useState(false);
   return (
     <Card
@@ -220,11 +213,13 @@ function BreedCard({ breed, inMyList, onCardClick, onToggle, onEdit }) {
       </CardActionArea>
       <Divider sx={{ mx: 1.5, opacity: 0.4 }} />
       <Box sx={{ px: 1, py: 0.5, display: 'flex', justifyContent: 'space-between' }}>
-        <Tooltip title="Edit breed">
-          <IconButton size="small" onClick={(e) => { e.stopPropagation(); onEdit(); }}>
-            <EditIcon sx={{ fontSize: 16 }} />
-          </IconButton>
-        </Tooltip>
+        {showEdit ? (
+          <Tooltip title="Edit breed">
+            <IconButton size="small" onClick={(e) => { e.stopPropagation(); onEdit(); }}>
+              <EditIcon sx={{ fontSize: 16 }} />
+            </IconButton>
+          </Tooltip>
+        ) : <Box />}
         <Tooltip title={inMyList ? 'Remove from My Herd' : 'Add to My Herd'}>
           <IconButton
             size="small"
@@ -259,7 +254,7 @@ function LoadingSkeleton() {
   );
 }
 
-function BreedDialog({ breed, onClose, onEdit, onToggle, inMyList }) {
+function BreedDialog({ breed, onClose, onEdit, onToggle, inMyList, showEdit }) {
   const [imgErr, setImgErr] = useState(false);
   if (!breed) return null;
   return (
@@ -291,9 +286,11 @@ function BreedDialog({ breed, onClose, onEdit, onToggle, inMyList }) {
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1.5 }}>
           <Typography variant="h5" sx={{ flex: 1 }}>{breed.name}</Typography>
           <Box sx={{ display: 'flex', gap: 0.5, ml: 1 }}>
-            <Tooltip title="Edit">
-              <IconButton size="small" onClick={() => { onClose(); onEdit(breed); }}><EditIcon /></IconButton>
-            </Tooltip>
+            {showEdit && (
+              <Tooltip title="Edit">
+                <IconButton size="small" onClick={() => { onClose(); onEdit(breed); }}><EditIcon /></IconButton>
+              </Tooltip>
+            )}
             <Tooltip title={inMyList ? 'Remove from selection' : 'Add to selection'}>
               <IconButton size="small" sx={{ color: inMyList ? '#2d6a4f' : 'text.secondary' }} onClick={onToggle}>
                 {inMyList ? <BookmarkRemoveIcon /> : <BookmarkAddIcon />}
@@ -471,7 +468,7 @@ function EditDialog({ breed, onClose, onSave }) {
 
 const PAGE_SIZE = 40;
 
-function BreedGrid({ breeds, myList, onCardClick, onToggle, onEdit }) {
+function BreedGrid({ breeds, myList, onCardClick, onToggle, onEdit, showEdit }) {
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const sentinelRef = useRef(null);
 
@@ -506,12 +503,13 @@ function BreedGrid({ breeds, myList, onCardClick, onToggle, onEdit }) {
       <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 2 }}>
         {visible.map((breed) => (
           <BreedCard
-            key={breed.name}
+            key={breed.id ?? breed.name}
             breed={breed}
-            inMyList={myList.has(breed.name)}
+            inMyList={myList.has(breed.id ?? breed.name)}
             onCardClick={() => onCardClick(breed)}
-            onToggle={() => onToggle(breed.name)}
+            onToggle={() => onToggle(breed)}
             onEdit={() => onEdit(breed)}
+            showEdit={showEdit}
           />
         ))}
       </Box>
@@ -529,19 +527,51 @@ function BreedGrid({ breeds, myList, onCardClick, onToggle, onEdit }) {
   );
 }
 
+function AddBreedDialog({ onClose, onSave }) {
+  const [form, setForm] = useState({ name: '', origin: '', subspecies: '', purpose: '', wikiUrl: '', imageUrl: '' });
+  const set = (field) => (e) => setForm((f) => ({ ...f, [field]: e.target.value }));
+  return (
+    <Dialog open onClose={onClose} maxWidth="sm" fullWidth>
+      <DialogTitle>
+        Add New Breed
+        <IconButton onClick={onClose} sx={{ position: 'absolute', right: 8, top: 8 }}><CloseIcon /></IconButton>
+      </DialogTitle>
+      <DialogContent dividers sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: 2.5 }}>
+        <TextField fullWidth label="Name *" size="small" value={form.name} onChange={set('name')} />
+        <TextField fullWidth label="Origin" size="small" value={form.origin} onChange={set('origin')} />
+        <TextField fullWidth label="Subspecies" size="small" value={form.subspecies} onChange={set('subspecies')} />
+        <TextField fullWidth label="Purpose (e.g. Meat/Dairy)" size="small" value={form.purpose} onChange={set('purpose')} />
+        <TextField fullWidth label="Wikipedia URL" size="small" value={form.wikiUrl} onChange={set('wikiUrl')} />
+        <TextField fullWidth label="Image URL" size="small" value={form.imageUrl} onChange={set('imageUrl')} />
+      </DialogContent>
+      <DialogActions sx={{ p: 2.5, gap: 1 }}>
+        <Button onClick={onClose} sx={{ flex: 1 }}>Cancel</Button>
+        <Button variant="contained" onClick={() => onSave(form)} disabled={!form.name.trim()} sx={{ flex: 1 }}>Add Breed</Button>
+      </DialogActions>
+    </Dialog>
+  );
+}
+
 export default function App() {
   const [authState, setAuthState] = useState('loading'); // 'loading'|'unauthenticated'|'authenticated'
-  const [user, setUser] = useState(null);
+  const [user, setUser]     = useState(null);
   const [breeds, setBreeds] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState('');
-  const [selected, setSelected] = useState(null);
-  const [editTarget, setEditTarget] = useState(null);
-  const [tab, setTab] = useState(0);
-  const [myList, setMyList] = useState(() => loadMyList());
+  const [myHerd, setMyHerd] = useState([]); // full breed copies, server-persisted
+  const [loading, setLoading]           = useState(true);
+  const [search, setSearch]             = useState('');
+  const [selected, setSelected]         = useState(null);
+  const [editTarget, setEditTarget]     = useState(null);
+  const [editContext, setEditContext]   = useState(null); // 'master' | 'myherd'
+  const [tab, setTab]                   = useState(0);
   const [purposeFilter, setPurposeFilter] = useState(null);
+  const [addOpen, setAddOpen]           = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState(null);
 
-  // Step 1: check auth
+  const isAdmin = ADMIN_EMAILS.has(user?.email ?? '');
+  // In dev mode (no auth) treat as admin too
+  const effectiveAdmin = isAdmin || user?.isAdmin;
+
+  // ── Step 1: check auth ──────────────────────────────────────────────────────
   useEffect(() => {
     fetch('/api/me')
       .then((r) => r.ok ? r.json() : Promise.reject())
@@ -549,55 +579,124 @@ export default function App() {
       .catch(() => { setAuthState('unauthenticated'); setLoading(false); });
   }, []);
 
-  // Step 2: load breeds only when authenticated
+  // ── Step 2: load breeds + my herd when authenticated ───────────────────────
   useEffect(() => {
     if (authState !== 'authenticated') return;
-    fetch('/api/breeds')
-      .then((r) => r.json())
-      .then((data) => {
-        const edits = loadEdits();
-        setBreeds(data.map((b) => ({ ...b, ...(edits[b.name] || {}) })));
-        setLoading(false);
-      });
+    Promise.all([
+      fetch('/api/breeds').then((r) => r.json()),
+      fetch('/api/myherd').then((r) => r.json()),
+    ]).then(([masterData, herdData]) => {
+      setBreeds(masterData);
+      setMyHerd(herdData);
+      setLoading(false);
+    });
   }, [authState]);
 
-  const saveBreed = (updated, originalName) => {
-    const edits = loadEdits();
-    if (updated.name !== originalName) delete edits[originalName];
-    edits[updated.name] = updated;
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(edits));
-    setBreeds((prev) => prev.map((b) => b.name === originalName ? updated : b));
-    setEditTarget(null);
+  // myList is a Set of IDs (or names for legacy items) for O(1) lookup
+  const myList = useMemo(() => new Set(myHerd.map((b) => b.id ?? b.name)), [myHerd]);
+
+  // ── Save my herd to server ──────────────────────────────────────────────────
+  const saveMyHerd = async (nextHerd) => {
+    setMyHerd(nextHerd);
+    await fetch('/api/myherd', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(nextHerd),
+    });
   };
 
-  const downloadBreedsJson = async () => {
-    // Save to server (persists in volume across redeploys)
-    try {
-      await fetch('/api/save-breeds', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(breeds),
-      });
-    } catch (err) {
-      console.error('Server save failed', err);
+  // ── Toggle a breed in My Herd (add full copy / remove) ─────────────────────
+  const toggle = (breed) => {
+    const key = breed.id ?? breed.name;
+    if (myList.has(key)) {
+      saveMyHerd(myHerd.filter((b) => (b.id ?? b.name) !== key));
+    } else {
+      saveMyHerd([...myHerd, { ...breed }]);
     }
-    // Also download locally as backup
-    const blob = new Blob([JSON.stringify(breeds, null, 2)], { type: 'application/json' });
+  };
+
+  // ── Save breed edit ─────────────────────────────────────────────────────────
+  const saveBreed = async (updated, originalName) => {
+    if (editContext === 'master') {
+      // Admin: patch master list
+      await fetch(`/api/breeds/${updated.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updated),
+      });
+      setBreeds((prev) => prev.map((b) => b.id === updated.id ? updated : b));
+      // If this breed is in user's herd, keep the herd copy independent (no propagation)
+    } else {
+      // My Herd edit: update private copy only
+      const nextHerd = myHerd.map((b) =>
+        (b.id ?? b.name) === (updated.id ?? originalName) ? { ...b, ...updated } : b
+      );
+      await saveMyHerd(nextHerd);
+    }
+    setEditTarget(null);
+    setEditContext(null);
+  };
+
+  // ── Admin: add new breed ────────────────────────────────────────────────────
+  const addBreed = async (fields) => {
+    const resp = await fetch('/api/breeds', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(fields),
+    });
+    const newBreed = await resp.json();
+    setBreeds((prev) => [...prev, newBreed]);
+    setAddOpen(false);
+  };
+
+  // ── Admin: delete breed from master ────────────────────────────────────────
+  const confirmDelete = async () => {
+    if (!deleteTarget) return;
+    await fetch(`/api/breeds/${deleteTarget.id}`, { method: 'DELETE' });
+    setBreeds((prev) => prev.filter((b) => b.id !== deleteTarget.id));
+    setDeleteTarget(null);
+  };
+
+  // ── JSON export / import ────────────────────────────────────────────────────
+  const importFileRef = useRef(null);
+  const importContextRef = useRef(null); // 'master' | 'myherd'
+
+  const exportJson = (list, filename) => {
+    const blob = new Blob([JSON.stringify(list, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
-    a.href = url;
-    a.download = 'breeds.json';
-    a.click();
+    a.href = url; a.download = filename; a.click();
     URL.revokeObjectURL(url);
   };
 
-  const toggle = (name) => {
-    setMyList((prev) => {
-      const next = new Set(prev);
-      next.has(name) ? next.delete(name) : next.add(name);
-      localStorage.setItem(MYLIST_KEY, JSON.stringify([...next]));
-      return next;
-    });
+  const triggerImport = (context) => {
+    importContextRef.current = context;
+    importFileRef.current.value = '';
+    importFileRef.current.click();
+  };
+
+  const handleImportFile = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    try {
+      const text = await file.text();
+      const data = JSON.parse(text);
+      if (!Array.isArray(data)) { alert('Invalid file: expected a JSON array.'); return; }
+      if (importContextRef.current === 'master') {
+        const resp = await fetch('/api/breeds/import', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+        const result = await resp.json();
+        if (!resp.ok) { alert('Import failed: ' + result.error); return; }
+        setBreeds(data);
+      } else {
+        await saveMyHerd(data);
+      }
+    } catch (err) {
+      alert('Failed to parse file: ' + err.message);
+    }
   };
 
   const exportMd = (list, filename = 'cattle-breeds.md') => {
@@ -614,6 +713,7 @@ export default function App() {
     a.click();
     URL.revokeObjectURL(url);
   };
+
   const exportDocx = async (list, filename = 'cattle-breeds.docx') => {
     const fetchImageBytes = async (url) => {
       try {
@@ -672,9 +772,10 @@ export default function App() {
     a.click();
     URL.revokeObjectURL(url);
   };
+
   const filtered = useMemo(() => {
     const q = search.toLowerCase();
-    const base = tab === 1 ? breeds.filter((b) => myList.has(b.name)) : breeds;
+    const base = tab === 1 ? myHerd : breeds;
     return base.filter((b) => {
       const matchesSearch = !q ||
         b.name.toLowerCase().includes(q) ||
@@ -683,9 +784,9 @@ export default function App() {
       const matchesPurpose = !purposeFilter || (b.purpose && b.purpose.includes(purposeFilter));
       return matchesSearch && matchesPurpose;
     });
-  }, [breeds, search, tab, myList, purposeFilter]);
+  }, [breeds, myHerd, search, tab, purposeFilter]);
 
-  const selectionList = breeds.filter((b) => myList.has(b.name));
+  const selectionList = myHerd;
 
   // Auth gates
   const errorParam = new URLSearchParams(window.location.search).get('error');
@@ -717,31 +818,22 @@ export default function App() {
             >
               <Tab label={`All (${breeds.length})`} sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }} />
               <Tab label={
-                <Badge badgeContent={myList.size} color="error" showZero={false} sx={{ pr: myList.size > 0 ? 1.5 : 0 }}>
+                <Badge badgeContent={myHerd.length} color="error" showZero={false} sx={{ pr: myHerd.length > 0 ? 1.5 : 0 }}>
                   <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>My Herd</Box>
                   <Box component="span" sx={{ display: { xs: 'inline', sm: 'none' } }}>🔖</Box>
                 </Badge>
               } />
             </Tabs>
             <Box sx={{ display: 'flex', gap: 0.5, flexShrink: 0 }}>
-              <Tooltip title="Export visible as .md">
-                <Button size="small" variant="outlined" startIcon={<DownloadIcon />}
-                  onClick={() => exportMd(filtered)}
-                  sx={{ color: 'rgba(255,255,255,0.85)', borderColor: 'rgba(255,255,255,0.25)', fontSize: '0.72rem', minWidth: 0, px: { xs: 0.75, sm: 1.5 } }}
-                ><Box sx={{ display: { xs: 'none', sm: 'inline' } }}>.md</Box></Button>
-              </Tooltip>
-              <Tooltip title="Export visible as .docx">
-                <Button size="small" variant="outlined" startIcon={<DownloadIcon />}
-                  onClick={() => exportDocx(filtered)}
-                  sx={{ color: 'rgba(255,255,255,0.85)', borderColor: 'rgba(255,255,255,0.25)', fontSize: '0.72rem', minWidth: 0, px: { xs: 0.75, sm: 1.5 } }}
-                ><Box sx={{ display: { xs: 'none', sm: 'inline' } }}>.docx</Box></Button>
-              </Tooltip>
-              <Tooltip title="Save all edits to server">
-                <Button size="small" variant="outlined"
-                  onClick={downloadBreedsJson}
-                  sx={{ color: 'rgba(255,255,255,0.85)', borderColor: 'rgba(255,255,255,0.25)', fontSize: '0.72rem', display: { xs: 'none', sm: 'flex' } }}
-                >JSON</Button>
-              </Tooltip>
+              {/* Admin: add breed */}
+              {effectiveAdmin && (
+                <Tooltip title="Add new breed">
+                  <Button size="small" variant="outlined" startIcon={<AddIcon />}
+                    onClick={() => setAddOpen(true)}
+                    sx={{ color: '#74c69d', borderColor: '#74c69d', fontSize: '0.72rem', display: { xs: 'none', sm: 'flex' } }}
+                  >Add</Button>
+                </Tooltip>
+              )}
             </Box>
             {/* User avatar + logout */}
             <Tooltip title={user?.email}>
@@ -761,7 +853,7 @@ export default function App() {
         <Box sx={{ background: 'linear-gradient(160deg, #1b4332 0%, #2d6a4f 60%, #40916c 100%)', py: 4, px: 2 }}>
           <Container maxWidth="md">
             <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.55)', mb: 1, textAlign: 'center' }}>
-              {filtered.length} of {breeds.length} breeds
+              {filtered.length} of {tab === 1 ? myHerd.length : breeds.length} breeds
             </Typography>
             <TextField
               fullWidth
@@ -805,42 +897,103 @@ export default function App() {
             <LoadingSkeleton />
           ) : (
             <>
-              {tab === 1 && (
-                <Box sx={{ mb: 3, display: 'flex', justifyContent: 'flex-end', gap: 1, flexWrap: 'wrap' }}>
-                  <Button variant="outlined" startIcon={<DownloadIcon />}
-                    onClick={() => exportMd(selectionList, 'my-selection.md')}
-                    disabled={myList.size === 0}
-                  >Export .md ({myList.size})</Button>
-                  <Button variant="contained" startIcon={<DownloadIcon />}
-                    onClick={() => exportDocx(selectionList, 'my-selection.docx')}
-                    disabled={myList.size === 0}
-                  >Export .docx ({myList.size})</Button>
-                </Box>
-              )}
+              {/* ── Per-tab toolbar ── */}
+              <Box sx={{ mb: 3, display: 'flex', justifyContent: 'flex-end', gap: 1, flexWrap: 'wrap' }}>
+                {tab === 0 && (
+                  <>
+                    {/* Export All as JSON */}
+                    <Button variant="outlined" startIcon={<DownloadIcon />}
+                      onClick={() => exportJson(breeds, 'all-breeds.json')}
+                    >Export JSON ({breeds.length})</Button>
+                    {/* Import All — admin only */}
+                    {effectiveAdmin && (
+                      <Button variant="outlined" startIcon={<UploadIcon />}
+                        onClick={() => triggerImport('master')}
+                      >Import JSON</Button>
+                    )}
+                  </>
+                )}
+                {tab === 1 && (
+                  <>
+                    {/* Export My Herd as JSON */}
+                    <Button variant="outlined" startIcon={<DownloadIcon />}
+                      onClick={() => exportJson(myHerd, 'my-herd.json')}
+                      disabled={myHerd.length === 0}
+                    >Export JSON ({myHerd.length})</Button>
+                    {/* Import My Herd */}
+                    <Button variant="outlined" startIcon={<UploadIcon />}
+                      onClick={() => triggerImport('myherd')}
+                    >Import JSON</Button>
+                    {/* Existing .md / .docx exports */}
+                    <Button variant="outlined" startIcon={<DownloadIcon />}
+                      onClick={() => exportMd(selectionList, 'my-selection.md')}
+                      disabled={myHerd.length === 0}
+                    >Export .md</Button>
+                    <Button variant="contained" startIcon={<DownloadIcon />}
+                      onClick={() => exportDocx(selectionList, 'my-selection.docx')}
+                      disabled={myHerd.length === 0}
+                    >Export .docx</Button>
+                  </>
+                )}
+              </Box>
               <BreedGrid
                 breeds={filtered}
                 myList={myList}
                 onCardClick={setSelected}
                 onToggle={toggle}
-                onEdit={setEditTarget}
+                onEdit={(breed) => {
+                  setEditTarget(breed);
+                  setEditContext(tab === 1 ? 'myherd' : (effectiveAdmin ? 'master' : 'myherd'));
+                }}
+                showEdit={tab === 1 || effectiveAdmin}
               />
             </>
           )}
         </Container>
 
+        {/* ── Dialogs ── */}
         <BreedDialog
           breed={selected}
           onClose={() => setSelected(null)}
-          onEdit={setEditTarget}
-          onToggle={() => selected && toggle(selected.name)}
-          inMyList={selected ? myList.has(selected.name) : false}
+          onEdit={(breed) => {
+            setEditTarget(breed);
+            setEditContext(tab === 1 ? 'myherd' : (effectiveAdmin ? 'master' : 'myherd'));
+          }}
+          onToggle={() => selected && toggle(selected)}
+          inMyList={selected ? myList.has(selected.id ?? selected.name) : false}
+          showEdit={tab === 1 || effectiveAdmin}
         />
         {editTarget && (
-          <EditDialog breed={editTarget} onClose={() => setEditTarget(null)} onSave={saveBreed} />
+          <EditDialog breed={editTarget} onClose={() => { setEditTarget(null); setEditContext(null); }} onSave={saveBreed} />
         )}
+
+        {/* Admin: add breed dialog */}
+        {addOpen && (
+          <AddBreedDialog onClose={() => setAddOpen(false)} onSave={addBreed} />
+        )}
+
+        {/* Admin: delete confirmation */}
+        {deleteTarget && (
+          <Dialog open onClose={() => setDeleteTarget(null)} maxWidth="xs" fullWidth>
+            <DialogTitle>Delete breed?</DialogTitle>
+            <DialogContent>
+              <Typography>Remove <strong>{deleteTarget.name}</strong> from the master list? This cannot be undone.</Typography>
+            </DialogContent>
+            <DialogActions sx={{ p: 2, gap: 1 }}>
+              <Button onClick={() => setDeleteTarget(null)} sx={{ flex: 1 }}>Cancel</Button>
+              <Button variant="contained" color="error" onClick={confirmDelete} sx={{ flex: 1 }}>Delete</Button>
+            </DialogActions>
+          </Dialog>
+        )}
+        {/* Hidden file input for JSON import */}
+        <input
+          ref={importFileRef}
+          type="file"
+          accept="application/json,.json"
+          style={{ display: 'none' }}
+          onChange={handleImportFile}
+        />
       </Box>
     </ThemeProvider>
   );
 }
-
-
