@@ -397,20 +397,34 @@ app.put('/api/myherd', requireUser, async (req, res) => {
 // ── API: image upload (registered users only) ─────────────────────────────────
 app.post('/api/upload-image', requireUser, async (req, res) => {
   try {
-    const { name, breedId, dataUrl } = req.body;
+    const { name, breedId, dataUrl, context } = req.body;
     if (!name || !dataUrl) return res.status(400).json({ error: 'Missing name or dataUrl' });
+
+    const user = sessionUser(req);
+    // Admin uploading for the master list → global images dir; everyone else → user-scoped subdir
+    const isAdminMaster = user.role === 'admin' && context === 'master';
 
     const nameSlug = name.replace(/[^a-zA-Z0-9]/g, '_').replace(/_+/g, '_').toLowerCase();
     const stem = breedId ? `${breedId}_${nameSlug}_1` : nameSlug;
     const ext = dataUrl.match(/^data:image\/(\w+);/)?.[1]?.replace('jpeg', 'jpg') ?? 'jpg';
     const filename = `${stem}.${ext}`;
 
-    const base64 = dataUrl.replace(/^data:image\/\w+;base64,/, '');
-    await mkdir(IMG_DIR, { recursive: true });
-    await writeFile(path.join(IMG_DIR, filename), Buffer.from(base64, 'base64'));
+    let destDir, relpath;
+    if (isAdminMaster) {
+      destDir = IMG_DIR;
+      relpath = filename;
+    } else {
+      const b64email = Buffer.from(user.email).toString('base64url');
+      destDir = path.join(IMG_DIR, 'users', b64email);
+      relpath = `users/${b64email}/${filename}`;
+    }
 
-    res.json({ path: `/images/${filename}` });
-    generateThumb(filename).catch(() => {});
+    const base64 = dataUrl.replace(/^data:image\/\w+;base64,/, '');
+    await mkdir(destDir, { recursive: true });
+    await writeFile(path.join(destDir, filename), Buffer.from(base64, 'base64'));
+
+    res.json({ path: `/images/${relpath}` });
+    generateThumb(relpath).catch(() => {});
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: String(err) });
@@ -424,10 +438,16 @@ const DIST_IMG   = path.join(DIST_DIR, 'images');
 // Pre-downloaded images from the scrape script at the workspace root
 const COW_IMG    = path.join(__dirname, '..', 'images');
 
-/** Find the source file for a given image filename across all image locations. */
-function findImageSrc(filename) {
-  for (const dir of [IMG_DIR, DIST_IMG, PUBLIC_IMG, COW_IMG]) {
-    const p = path.join(dir, filename);
+/** Find the source file for a given relative image path across all known image locations.
+ * relpath may be a flat filename ('file.jpg') or user-scoped ('users/<b64>/<file>.jpg'). */
+function findImageSrc(relpath) {
+  // Try full relative path first (handles user subdirs in IMG_DIR)
+  const inVolume = path.join(IMG_DIR, relpath);
+  if (existsSync(inVolume)) return inVolume;
+  // Basename-only fallback for legacy/static locations
+  const fn = path.basename(relpath);
+  for (const dir of [DIST_IMG, PUBLIC_IMG, COW_IMG]) {
+    const p = path.join(dir, fn);
     if (existsSync(p)) return p;
   }
   return null;
@@ -490,15 +510,17 @@ async function downloadAndSaveImage(externalUrl, breedId, breedName, slot = 1, l
 // Deduplication: if concurrent requests arrive for the same thumb, share one promise
 const thumbsInProgress = new Map();
 
-/** Generate a 400×300 WebP thumbnail. Output name: [stem]_thumb.webp. Idempotent + concurrent-safe. */
-async function generateThumb(filename) {
-  const stem = path.basename(filename, path.extname(filename));
-  const thumbName = `${stem}_thumb.webp`;
+/** Generate a 400×300 WebP thumbnail. Output name: [flat_stem]_thumb.webp. Idempotent + concurrent-safe.
+ * relpath may include subdirs e.g. 'users/<b64>/file.jpg' — flattened to 'users_b64_file_thumb.webp'. */
+async function generateThumb(relpath) {
+  // Flatten path separators so user subdirs get unique thumb names
+  const flatStem = relpath.replace(/[/\\]/g, '_').replace(/\.[^.]+$/, '');
+  const thumbName = `${flatStem}_thumb.webp`;
   const dst = path.join(THUMB_DIR, thumbName);
   if (existsSync(dst)) return dst;
   if (thumbsInProgress.has(thumbName)) return thumbsInProgress.get(thumbName);
   const promise = (async () => {
-    const src = findImageSrc(filename);
+    const src = findImageSrc(relpath);
     if (!src) return null;
     await mkdir(THUMB_DIR, { recursive: true });
     await sharp(src)
@@ -514,13 +536,18 @@ async function generateThumb(filename) {
 
 // GET /api/thumb/:filename — serve WebP thumbnail for locally-stored images.
 // If thumbnail not yet cached, serve the original immediately and generate in background.
-app.get('/api/thumb/:filename', async (req, res) => {
-  const filename = req.params.filename;
-  if (!filename || filename.includes('..') || filename.includes('/')) return res.status(400).end();
-  if (!IMAGE_EXTS.has(path.extname(filename).toLowerCase())) return res.status(400).end();
+app.get('/api/thumb/*', async (req, res) => {
+  const relpath = req.params[0];
+  // Security: reject path traversal, null bytes, or overly deep paths
+  if (!relpath || relpath.includes('..') || relpath.includes('\0')) return res.status(400).end();
+  const segments = relpath.split('/');
+  if (segments.length > 3) return res.status(400).end();
+  // Each segment: alphanumeric, dots, hyphens, underscores (covers base64url + normal filenames)
+  if (!segments.every((s) => /^[a-zA-Z0-9._\-]+$/.test(s))) return res.status(400).end();
+  if (!IMAGE_EXTS.has(path.extname(segments[segments.length - 1]).toLowerCase())) return res.status(400).end();
 
-  const stem = path.basename(filename, path.extname(filename));
-  const thumbName = `${stem}_thumb.webp`;
+  const flatStem = relpath.replace(/[/\\]/g, '_').replace(/\.[^.]+$/, '');
+  const thumbName = `${flatStem}_thumb.webp`;
   const dst = path.join(THUMB_DIR, thumbName);
   if (existsSync(dst)) {
     res.setHeader('Cache-Control', 'public, max-age=2592000, immutable');
@@ -529,9 +556,9 @@ app.get('/api/thumb/:filename', async (req, res) => {
   }
 
   // Not cached yet: serve the original while generating thumb in background
-  const src = findImageSrc(filename);
+  const src = findImageSrc(relpath);
   if (!src) return res.status(404).end();
-  generateThumb(filename).catch(() => {});
+  generateThumb(relpath).catch(() => {});
   res.setHeader('Cache-Control', 'public, max-age=2592000, immutable');
   res.sendFile(src);
 });
@@ -647,18 +674,33 @@ app.get('*', (req, res) => {
 /** Warm the thumbnail cache in the background at startup. Runs 10 concurrent. */
 async function ensureAllThumbs() {
   try {
-    const dirs = [IMG_DIR, PUBLIC_IMG, DIST_IMG];
-    const seen = new Set();
-    for (const dir of dirs) {
-      if (!existsSync(dir)) continue;
-      const files = await readdir(dir);
-      for (const f of files) {
-        if (IMAGE_EXTS.has(path.extname(f).toLowerCase())) seen.add(f);
+    const relpaths = new Set();
+    // Flat master images in IMG_DIR
+    if (existsSync(IMG_DIR)) {
+      for (const f of await readdir(IMG_DIR)) {
+        if (IMAGE_EXTS.has(path.extname(f).toLowerCase())) relpaths.add(f);
+      }
+      // User-scoped subdirs: IMG_DIR/users/<b64email>/
+      const usersDir = path.join(IMG_DIR, 'users');
+      if (existsSync(usersDir)) {
+        for (const userSlug of await readdir(usersDir)) {
+          const userPath = path.join(usersDir, userSlug);
+          for (const f of (await readdir(userPath).catch(() => []))) {
+            if (IMAGE_EXTS.has(path.extname(f).toLowerCase())) relpaths.add(`users/${userSlug}/${f}`);
+          }
+        }
       }
     }
-    if (!seen.size) return;
+    // Legacy/build static dirs (flat filenames only)
+    for (const dir of [PUBLIC_IMG, DIST_IMG]) {
+      if (!existsSync(dir)) continue;
+      for (const f of await readdir(dir)) {
+        if (IMAGE_EXTS.has(path.extname(f).toLowerCase())) relpaths.add(f);
+      }
+    }
+    if (!relpaths.size) return;
     await mkdir(THUMB_DIR, { recursive: true });
-    const arr = [...seen];
+    const arr = [...relpaths];
     const BATCH = 10;
     for (let i = 0; i < arr.length; i += BATCH) {
       await Promise.all(arr.slice(i, i + BATCH).map((f) => generateThumb(f).catch(() => {})));

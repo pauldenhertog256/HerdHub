@@ -591,7 +591,7 @@ function BreedDialog({ breed, onClose, onEdit, onToggle, inMyList, showEdit }) {
   );
 }
 
-function EditDialog({ breed, onClose, onSave, onDelete, allTags }) {
+function EditDialog({ breed, onClose, onSave, onDelete, allTags, context }) {
   const [form, setForm] = useState({ ...breed });
   const [uploading, setUploading] = useState(false);
   const [imgLoadErr, setImgLoadErr] = useState(false);
@@ -606,7 +606,7 @@ function EditDialog({ breed, onClose, onSave, onDelete, allTags }) {
       const resp = await fetch('/api/upload-image', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: form.name || breed.name, breedId: breed.id, dataUrl }),
+        body: JSON.stringify({ name: form.name || breed.name, breedId: breed.id, dataUrl, context }),
       });
       const { path } = await resp.json();
       setForm((f) => ({ ...f, imageUrl: path }));
@@ -1199,9 +1199,15 @@ export default function App() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(fields),
     });
-    const newBreed = await resp.json();
-    setBreeds((prev) => [...prev, newBreed]);
+    if (!resp.ok) return;
     setAddOpen(false);
+    // Reload both grids from server so they reflect the saved state
+    const [masterData, herdData] = await Promise.all([
+      fetch('/api/breeds').then((r) => r.json()),
+      isUser ? fetch('/api/myherd').then((r) => r.json()) : Promise.resolve(null),
+    ]);
+    setBreeds(masterData);
+    if (herdData !== null) setMyHerd(herdData);
   };
 
   // ── Admin: delete breed from master ────────────────────────────────────────
@@ -1620,6 +1626,7 @@ export default function App() {
             onSave={saveBreed}
             onDelete={editContext === 'master' ? () => { setEditTarget(null); setEditContext(null); setDeleteTarget(editTarget); } : undefined}
             allTags={allTags}
+            context={editContext}
           />
         )}
 
