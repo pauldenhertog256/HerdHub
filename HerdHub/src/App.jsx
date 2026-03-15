@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useRef, useState, Children, cloneElement } from 'react';
 import { useWindowVirtualizer } from '@tanstack/react-virtual';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {
@@ -739,6 +739,24 @@ function EditDialog({ breed, onClose, onSave, onDelete, allTags, context }) {
   );
 }
 
+// ── DropdownMenu helper ──────────────────────────────────────────────────────
+function DropdownMenu({ label, children }) {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  return (
+    <>
+      <Button variant="outlined" onClick={(e) => setAnchorEl(e.currentTarget)}>{label}</Button>
+      <Menu anchorEl={anchorEl} open={open} onClose={() => setAnchorEl(null)}>
+        {Children.map(children, (child) =>
+          child ? cloneElement(child, {
+            onClick: (e) => { child.props.onClick?.(e); setAnchorEl(null); }
+          }) : null
+        )}
+      </Menu>
+    </>
+  );
+}
+
 // Card slot width = min card (200px) + gap (16px)
 const COL_SLOT = 216;
 const ROW_HEIGHT_EST = 316; // estimated row height: 300px card + 16px gap
@@ -1326,7 +1344,6 @@ export default function App() {
     });
     if (!resp.ok) return;
     setAddOpen(false);
-    // Reload both grids from server so they reflect the saved state
     const [masterData, herdData] = await Promise.all([
       fetch('/api/breeds').then((r) => r.json()),
       isUser ? fetch('/api/myherd').then((r) => r.json()) : Promise.resolve(null),
@@ -1659,67 +1676,35 @@ export default function App() {
               <Box sx={{ mb: 3, display: 'flex', justifyContent: 'flex-end', gap: 1, flexWrap: 'wrap' }}>
                 {tab === 0 && (
                   <>
-                    {/* Export All as JSON */}
-                    <Button variant="outlined" startIcon={<DownloadIcon />}
-                      onClick={() => exportJson(breeds, 'all-breeds.json')}
-                    >Export JSON ({breeds.length})</Button>
-                    {/* Export All as ZIP (breeds + images) */}
-                    <Button variant="outlined" startIcon={<DownloadIcon />}
-                      onClick={() => exportZip('master')}
-                    >Export .zip</Button>
-                    {/* Import All — admin only */}
+                    <DropdownMenu label="Import/Export">
+                      <MenuItem onClick={() => exportJson(breeds, 'all-breeds.json')}>Export JSON ({breeds.length})</MenuItem>
+                      <MenuItem onClick={() => exportZip('master')}>Export .zip</MenuItem>
+                      {isAdmin && <MenuItem onClick={() => triggerImport('master')}>Import JSON</MenuItem>}
+                      {isAdmin && <MenuItem onClick={() => triggerImportZip('master')}>Import .zip</MenuItem>}
+                    </DropdownMenu>
+                    {/* Add breed  admin only */}
                     {isAdmin && (
-                      <Button variant="outlined" startIcon={<UploadIcon />}
-                        onClick={() => triggerImport('master')}
-                      >Import JSON</Button>
-                    )}
-                    {/* Import ZIP — admin only */}
-                    {isAdmin && (
-                      <Button variant="outlined" startIcon={<UploadIcon />}
-                        onClick={() => triggerImportZip('master')}
-                      >Import .zip</Button>
-                    )}
-                    {/* Add breed — admin only */}
-                    {isAdmin && (
-                      <Button variant="outlined" startIcon={<AddIcon />}
+                      <Button variant="contained" startIcon={<AddIcon />}
                         onClick={() => setAddOpen(true)}
+                        sx={{ bgcolor: '#2d6a4f', '&:hover': { bgcolor: '#1b4332' } }}
                       >Add breed</Button>
                     )}
                   </>
                 )}
                 {tab === 1 && (
                   <>
-                    {/* Export My Herd as JSON */}
-                    <Button variant="outlined" startIcon={<DownloadIcon />}
-                      onClick={() => exportJson(myHerd, 'my-herd.json')}
-                      disabled={myHerd.length === 0}
-                    >Export JSON ({myHerd.length})</Button>
-                    {/* Export My Herd as ZIP (breeds + images) */}
-                    <Button variant="outlined" startIcon={<DownloadIcon />}
-                      onClick={() => exportZip('myherd')}
-                      disabled={myHerd.length === 0}
-                    >Export .zip</Button>
-                    {/* Import My Herd JSON */}
-                    <Button variant="outlined" startIcon={<UploadIcon />}
-                      onClick={() => triggerImport('myherd')}
-                    >Import JSON</Button>
-                    {/* Import My Herd ZIP */}
-                    <Button variant="outlined" startIcon={<UploadIcon />}
-                      onClick={() => triggerImportZip('myherd')}
-                    >Import .zip</Button>
-                    {/* Add breed to My Herd */}
+                    <DropdownMenu label="Import/Export">
+                      <MenuItem onClick={() => exportJson(myHerd, 'my-herd.json')} disabled={myHerd.length === 0}>Export JSON ({myHerd.length})</MenuItem>
+                      <MenuItem onClick={() => exportZip('myherd')} disabled={myHerd.length === 0}>Export .zip</MenuItem>
+                      <MenuItem onClick={() => exportMd(selectionList, 'my-selection.md')} disabled={myHerd.length === 0}>Export .md</MenuItem>
+                      <MenuItem onClick={() => exportDocx(selectionList, 'my-selection.docx')} disabled={myHerd.length === 0}>Export .docx</MenuItem>
+                      <MenuItem onClick={() => triggerImport('myherd')}>Import JSON</MenuItem>
+                      <MenuItem onClick={() => triggerImportZip('myherd')}>Import .zip</MenuItem>
+                    </DropdownMenu>
                     <Button variant="contained" startIcon={<AddIcon />}
                       onClick={() => setAddOpen(true)}
+                      sx={{ bgcolor: '#2d6a4f', '&:hover': { bgcolor: '#1b4332' } }}
                     >Add breed</Button>
-                    {/* Existing .md / .docx exports */}
-                    <Button variant="outlined" startIcon={<DownloadIcon />}
-                      onClick={() => exportMd(selectionList, 'my-selection.md')}
-                      disabled={myHerd.length === 0}
-                    >Export .md</Button>
-                    <Button variant="contained" startIcon={<DownloadIcon />}
-                      onClick={() => exportDocx(selectionList, 'my-selection.docx')}
-                      disabled={myHerd.length === 0}
-                    >Export .docx</Button>
                   </>
                 )}
               </Box>
@@ -1765,16 +1750,23 @@ export default function App() {
             onClose={() => setAddOpen(false)}
             onSave={tab === 1 ? async (fields) => {
               setAddOpen(false);
-              // Add to My Herd only
-              const nextHerd = [...myHerd, { ...fields, id: fields.id ?? fields.name }];
+              let imageUrl = fields.imageUrl;
+              if (imageUrl && imageUrl.startsWith('data:image/')) {
+                const resp = await fetch('/api/upload-image', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ name: fields.name, dataUrl: imageUrl, context: 'myherd' }),
+                });
+                const { path } = await resp.json();
+                imageUrl = path;
+              }
+              const nextHerd = [...myHerd, { ...fields, id: fields.id ?? fields.name, imageUrl }];
               await saveMyHerd(nextHerd);
               setMyHerd(nextHerd);
             } : addBreed}
             allTags={allTags}
           />
         )}
-
-        {/* Admin: delete confirmation */}
         {deleteTarget && (
           <Dialog open onClose={() => setDeleteTarget(null)} maxWidth="xs" fullWidth>
             <DialogTitle>Delete breed?</DialogTitle>
