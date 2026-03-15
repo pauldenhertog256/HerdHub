@@ -425,18 +425,24 @@ app.post('/api/upload-image', requireUser, async (req, res) => {
     }
 
     const base64 = dataUrl.replace(/^data:image\/\w+;base64,/, '');
+    const imgBuf = Buffer.from(base64, 'base64');
     await mkdir(destDir, { recursive: true });
-    await writeFile(path.join(destDir, filename), Buffer.from(base64, 'base64'));
+    await writeFile(path.join(destDir, filename), imgBuf);
 
-    // Delete stale thumbnail so it gets regenerated from the new image
+    // Delete stale thumbnail
     const { unlink } = await import('fs/promises');
     const flatStem = relpath.replace(/[\/\\]/g, '_').replace(/\.[^.]+$/, '');
-    const staleThumb = path.join(THUMB_DIR, `${flatStem}_thumb.webp`);
+    const thumbName = `${flatStem}_thumb.webp`;
+    const staleThumb = path.join(THUMB_DIR, thumbName);
     await unlink(staleThumb).catch(() => {});
+
+    // Generate thumbnail from the in-memory buffer — avoids any file lock on the source image.
+    // Using the buffer means Windows can't lock the just-written file via libvips.
+    await mkdir(THUMB_DIR, { recursive: true });
+    await sharp(imgBuf).resize(400, 300, { fit: 'inside' }).webp({ quality: 75 }).toFile(staleThumb);
 
     // Return path with cache-busting timestamp so the browser fetches the new thumbnail
     res.json({ path: `/images/${relpath}?t=${Date.now()}` });
-    generateThumb(relpath).catch(() => {});
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: String(err) });
