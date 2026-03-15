@@ -601,12 +601,16 @@ function EditDialog({ breed, onClose, onSave, onDelete, allTags, context }) {
   const set = (field) => (e) => setForm((f) => ({ ...f, [field]: e.target.value }));
 
   const uploadDataUrl = async (dataUrl) => {
+    if (!form.name.trim()) {
+      alert('Enter a breed name before uploading an image.');
+      return;
+    }
     setUploading(true);
     try {
       const resp = await fetch('/api/upload-image', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: form.name || breed.name, breedId: breed.id, dataUrl, context }),
+        body: JSON.stringify({ name: form.name, dataUrl, context: 'myherd' }),
       });
       const { path } = await resp.json();
       setForm((f) => ({ ...f, imageUrl: path }));
@@ -619,6 +623,10 @@ function EditDialog({ breed, onClose, onSave, onDelete, allTags, context }) {
   };
 
   const handleFile = (e) => {
+    if (!form.name.trim()) {
+      alert('Enter a breed name before uploading an image.');
+      return;
+    }
     const file = e.target.files[0];
     if (!file) return;
     const reader = new FileReader();
@@ -627,6 +635,10 @@ function EditDialog({ breed, onClose, onSave, onDelete, allTags, context }) {
   };
 
   const handlePaste = (e) => {
+    if (!form.name.trim()) {
+      alert('Enter a breed name before uploading an image.');
+      return;
+    }
     const items = [...(e.clipboardData?.items || [])];
     const imgItem = items.find((i) => i.type.startsWith('image/'));
     if (!imgItem) return;
@@ -658,13 +670,14 @@ function EditDialog({ breed, onClose, onSave, onDelete, allTags, context }) {
             borderRadius: 2,
             p: 1.5,
             textAlign: 'center',
-            cursor: 'pointer',
+            cursor: form.name.trim() ? 'pointer' : 'not-allowed',
             outline: 'none',
             bgcolor: uploading ? 'primary.50' : 'grey.50',
             transition: 'all 0.2s',
+            opacity: form.name.trim() ? 1 : 0.5,
             '&:focus': { borderColor: 'primary.main', bgcolor: 'primary.50' },
           }}
-          onClick={() => fileRef.current.click()}
+          onClick={() => form.name.trim() && fileRef.current.click()}
         >
           {form.imageUrl && !imgLoadErr ? (
             <Box sx={{ position: 'relative', display: 'inline-block' }}>
@@ -704,10 +717,10 @@ function EditDialog({ breed, onClose, onSave, onDelete, allTags, context }) {
         <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
           <TextField fullWidth label="Image URL" size="small" value={form.imageUrl || ''} onChange={(e) => { set('imageUrl')(e); setImgLoadErr(false); }} />
         </Box>
-        <TextField fullWidth label="Name" size="small" value={form.name || ''} onChange={set('name')} />
-        <TextField fullWidth label="Origin" size="small" value={form.origin || ''} onChange={set('origin')} />
-        <TextField fullWidth label="Subspecies" size="small" value={form.subspecies || ''} onChange={set('subspecies')} />
-        <TextField fullWidth label="Wikipedia URL" size="small" value={form.wikiUrl || ''} onChange={set('wikiUrl')} />
+        <TextField fullWidth label="Name *" size="small" value={form.name} onChange={set('name')} />
+        <TextField fullWidth label="Origin" size="small" value={form.origin} onChange={set('origin')} />
+        <TextField fullWidth label="Subspecies" size="small" value={form.subspecies} onChange={set('subspecies')} />
+        <TextField fullWidth label="Wikipedia URL" size="small" value={form.wikiUrl} onChange={set('wikiUrl')} />
         <TagInput value={form.tags} onChange={(tags) => setForm((f) => ({ ...f, tags }))} allTags={allTags} />
         <TextField fullWidth label="Comments" size="small" multiline minRows={3} value={form.comments || ''} onChange={set('comments')} />
       </DialogContent>
@@ -809,7 +822,61 @@ function BreedGrid({ breeds, myList, onCardClick, onToggle, onEdit, showEdit }) 
 
 function AddBreedDialog({ onClose, onSave, allTags }) {
   const [form, setForm] = useState({ name: '', origin: '', subspecies: '', tags: [], wikiUrl: '', imageUrl: '' });
+  const [uploading, setUploading] = useState(false);
+  const [imgLoadErr, setImgLoadErr] = useState(false);
+  const fileRef = useRef(null);
+  const pasteZoneRef = useRef(null);
   const set = (field) => (e) => setForm((f) => ({ ...f, [field]: e.target.value }));
+
+  const uploadDataUrl = async (dataUrl) => {
+    if (!form.name.trim()) {
+      alert('Enter a breed name before uploading an image.');
+      return;
+    }
+    setUploading(true);
+    try {
+      const resp = await fetch('/api/upload-image', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: form.name, dataUrl, context: 'myherd' }),
+      });
+      const { path } = await resp.json();
+      setForm((f) => ({ ...f, imageUrl: path }));
+      setImgLoadErr(false);
+    } catch (err) {
+      console.error('Upload failed', err);
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleFile = (e) => {
+    if (!form.name.trim()) {
+      alert('Enter a breed name before uploading an image.');
+      return;
+    }
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => uploadDataUrl(ev.target.result);
+    reader.readAsDataURL(file);
+  };
+
+  const handlePaste = (e) => {
+    if (!form.name.trim()) {
+      alert('Enter a breed name before uploading an image.');
+      return;
+    }
+    const items = [...(e.clipboardData?.items || [])];
+    const imgItem = items.find((i) => i.type.startsWith('image/'));
+    if (!imgItem) return;
+    e.preventDefault();
+    const file = imgItem.getAsFile();
+    const reader = new FileReader();
+    reader.onload = (ev) => uploadDataUrl(ev.target.result);
+    reader.readAsDataURL(file);
+  };
+
   return (
     <Dialog open onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle>
@@ -817,12 +884,70 @@ function AddBreedDialog({ onClose, onSave, allTags }) {
         <IconButton onClick={onClose} sx={{ position: 'absolute', right: 8, top: 8 }}><CloseIcon /></IconButton>
       </DialogTitle>
       <DialogContent dividers sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: 2.5 }}>
+        {/* Paste zone */}
+        <Box
+          ref={pasteZoneRef}
+          tabIndex={0}
+          onPaste={handlePaste}
+          sx={{
+            border: '2px dashed',
+            borderColor: uploading ? 'primary.main' : 'grey.300',
+            borderRadius: 2,
+            p: 1.5,
+            textAlign: 'center',
+            cursor: form.name.trim() ? 'pointer' : 'not-allowed',
+            outline: 'none',
+            bgcolor: uploading ? 'primary.50' : 'grey.50',
+            transition: 'all 0.2s',
+            opacity: form.name.trim() ? 1 : 0.5,
+            '&:focus': { borderColor: 'primary.main', bgcolor: 'primary.50' },
+          }}
+          onClick={() => form.name.trim() && fileRef.current.click()}
+        >
+          {form.imageUrl && !imgLoadErr ? (
+            <Box sx={{ position: 'relative', display: 'inline-block' }}>
+              <Box
+                component="img" src={form.imageUrl} alt={form.name}
+                sx={{ maxHeight: 160, maxWidth: '100%', objectFit: 'contain', borderRadius: 1, display: 'block', mx: 'auto' }}
+                onError={() => setImgLoadErr(true)}
+              />
+              <Tooltip title="Remove image">
+                <IconButton
+                  size="small"
+                  onClick={(e) => { e.stopPropagation(); setForm((f) => ({ ...f, imageUrl: '' })); }}
+                  sx={{
+                    position: 'absolute', top: -10, right: -10,
+                    bgcolor: 'error.main', color: 'white', width: 24, height: 24,
+                    '&:hover': { bgcolor: 'error.dark' },
+                  }}
+                >
+                  <CloseIcon sx={{ fontSize: 14 }} />
+                </IconButton>
+              </Tooltip>
+            </Box>
+          ) : (
+            <Typography variant="body2" color="text.secondary" sx={{ py: 2 }}>
+              📷 Tap to choose a photo · or paste (Ctrl+V) on desktop
+            </Typography>
+          )}
+          {uploading && (
+            <Typography variant="caption" color="primary" sx={{ display: 'block', mt: 0.5 }}>
+              Saving image…
+            </Typography>
+          )}
+        </Box>
+        {/* hidden file input — accept image from gallery or camera */}
+        <input ref={fileRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={handleFile} />
+
+        <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+          <TextField fullWidth label="Image URL" size="small" value={form.imageUrl || ''} onChange={(e) => { set('imageUrl')(e); setImgLoadErr(false); }} />
+        </Box>
         <TextField fullWidth label="Name *" size="small" value={form.name} onChange={set('name')} />
         <TextField fullWidth label="Origin" size="small" value={form.origin} onChange={set('origin')} />
         <TextField fullWidth label="Subspecies" size="small" value={form.subspecies} onChange={set('subspecies')} />
         <TextField fullWidth label="Wikipedia URL" size="small" value={form.wikiUrl} onChange={set('wikiUrl')} />
         <TagInput value={form.tags} onChange={(tags) => setForm((f) => ({ ...f, tags }))} allTags={allTags} />
-        <TextField fullWidth label="Image URL" size="small" value={form.imageUrl} onChange={set('imageUrl')} />
+        <TextField fullWidth label="Comments" size="small" multiline minRows={3} value={form.comments || ''} onChange={set('comments')} />
       </DialogContent>
       <DialogActions sx={{ p: 2.5, gap: 1 }}>
         <Button onClick={onClose} sx={{ flex: 1 }}>Cancel</Button>
@@ -1582,6 +1707,10 @@ export default function App() {
                     <Button variant="outlined" startIcon={<UploadIcon />}
                       onClick={() => triggerImportZip('myherd')}
                     >Import .zip</Button>
+                    {/* Add breed to My Herd */}
+                    <Button variant="contained" startIcon={<AddIcon />}
+                      onClick={() => setAddOpen(true)}
+                    >Add breed</Button>
                     {/* Existing .md / .docx exports */}
                     <Button variant="outlined" startIcon={<DownloadIcon />}
                       onClick={() => exportMd(selectionList, 'my-selection.md')}
@@ -1632,7 +1761,17 @@ export default function App() {
 
         {/* Admin: add breed dialog */}
         {addOpen && (
-          <AddBreedDialog onClose={() => setAddOpen(false)} onSave={addBreed} allTags={allTags} />
+          <AddBreedDialog
+            onClose={() => setAddOpen(false)}
+            onSave={tab === 1 ? async (fields) => {
+              setAddOpen(false);
+              // Add to My Herd only
+              const nextHerd = [...myHerd, { ...fields, id: fields.id ?? fields.name }];
+              await saveMyHerd(nextHerd);
+              setMyHerd(nextHerd);
+            } : addBreed}
+            allTags={allTags}
+          />
         )}
 
         {/* Admin: delete confirmation */}
