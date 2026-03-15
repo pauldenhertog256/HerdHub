@@ -59,6 +59,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import PeopleIcon from '@mui/icons-material/People';
+import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import {
   Document, Paragraph,
   Table as DocxTable, TableCell as DocxTableCell, TableRow as DocxTableRow,
@@ -659,65 +660,66 @@ function EditDialog({ breed, onClose, onSave, onDelete, allTags, context }) {
         </IconButton>
       </DialogTitle>
       <DialogContent dividers sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: 2.5 }}>
-        {/* Paste zone */}
-        <Box
-          ref={pasteZoneRef}
-          tabIndex={0}
-          onPaste={handlePaste}
-          sx={{
-            border: '2px dashed',
-            borderColor: uploading ? 'primary.main' : 'grey.300',
-            borderRadius: 2,
-            p: 1.5,
-            textAlign: 'center',
-            cursor: form.name.trim() ? 'pointer' : 'not-allowed',
-            outline: 'none',
-            bgcolor: uploading ? 'primary.50' : 'grey.50',
-            transition: 'all 0.2s',
-            opacity: form.name.trim() ? 1 : 0.5,
-            '&:focus': { borderColor: 'primary.main', bgcolor: 'primary.50' },
-          }}
-          onClick={() => form.name.trim() && fileRef.current.click()}
-        >
-          {form.imageUrl && !imgLoadErr ? (
-            <Box sx={{ position: 'relative', display: 'inline-block' }}>
-              <Box
-                component="img" src={form.imageUrl} alt={form.name}
-                sx={{ maxHeight: 160, maxWidth: '100%', objectFit: 'contain', borderRadius: 1, display: 'block', mx: 'auto' }}
-                onError={() => setImgLoadErr(true)}
-              />
-              <Tooltip title="Remove image">
-                <IconButton
-                  size="small"
-                  onClick={(e) => { e.stopPropagation(); setForm((f) => ({ ...f, imageUrl: '' })); }}
-                  sx={{
-                    position: 'absolute', top: -10, right: -10,
-                    bgcolor: 'error.main', color: 'white', width: 24, height: 24,
-                    '&:hover': { bgcolor: 'error.dark' },
-                  }}
-                >
-                  <CloseIcon sx={{ fontSize: 14 }} />
-                </IconButton>
-              </Tooltip>
-            </Box>
-          ) : (
-            <Typography variant="body2" color="text.secondary" sx={{ py: 2 }}>
-              📷 Tap to choose a photo · or paste (Ctrl+V) on desktop
-            </Typography>
-          )}
-          {uploading && (
-            <Typography variant="caption" color="primary" sx={{ display: 'block', mt: 0.5 }}>
-              Saving image…
-            </Typography>
-          )}
+        {/* Image preview — key forces remount when URL changes so browser doesn't show stale cache */}
+        {form.imageUrl && !imgLoadErr && (
+          <Box sx={{ position: 'relative', textAlign: 'center' }}>
+            <Box
+              key={form.imageUrl}
+              component="img" src={form.imageUrl}
+              alt={form.name}
+              sx={{ maxHeight: 200, maxWidth: '100%', objectFit: 'contain', borderRadius: 2, display: 'block', mx: 'auto' }}
+              onError={() => setImgLoadErr(true)}
+            />
+            <Tooltip title="Remove image">
+              <IconButton
+                size="small"
+                onClick={() => setForm((f) => ({ ...f, imageUrl: '' }))}
+                sx={{ position: 'absolute', top: 4, right: 4, bgcolor: 'error.main', color: 'white', '&:hover': { bgcolor: 'error.dark' } }}
+              >
+                <CloseIcon sx={{ fontSize: 14 }} />
+              </IconButton>
+            </Tooltip>
+          </Box>
+        )}
+        {/* Upload button + paste zone (paste zone desktop-only, never opens file picker) */}
+        <Box sx={{ display: 'flex', gap: 1, alignItems: 'stretch' }}>
+          <Button
+            variant="outlined"
+            startIcon={uploading ? <CircularProgress size={16} /> : <PhotoCameraIcon />}
+            onClick={() => fileRef.current.click()}
+            disabled={uploading}
+            sx={{ flex: 1, py: 1.5, borderRadius: 2 }}
+          >
+            {uploading ? 'Uploading…' : 'Upload photo'}
+          </Button>
+          <Box
+            ref={pasteZoneRef}
+            tabIndex={0}
+            onPaste={handlePaste}
+            sx={{
+              display: { xs: 'none', sm: 'flex' },
+              alignItems: 'center',
+              justifyContent: 'center',
+              border: '2px dashed',
+              borderColor: 'grey.300',
+              borderRadius: 2,
+              px: 2,
+              outline: 'none',
+              bgcolor: 'grey.50',
+              color: 'text.secondary',
+              fontSize: '0.8rem',
+              whiteSpace: 'nowrap',
+              userSelect: 'none',
+              cursor: 'default',
+              '&:focus': { borderColor: 'primary.main', bgcolor: 'primary.50', color: 'primary.main' },
+            }}
+          >
+            Ctrl+V to paste
+          </Box>
         </Box>
-        {/* hidden file input — accept image from gallery or camera */}
+        {uploading && <Typography variant="caption" color="primary">Saving image…</Typography>}
+        {/* hidden file input */}
         <input ref={fileRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={handleFile} />
-
-        <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-          <TextField fullWidth label="Image URL" size="small" value={form.imageUrl || ''} onChange={(e) => { set('imageUrl')(e); setImgLoadErr(false); }} />
-        </Box>
-        <TextField fullWidth label="Name *" size="small" value={form.name} onChange={set('name')} />
         <TextField fullWidth label="Origin" size="small" value={form.origin} onChange={set('origin')} />
         <TextField fullWidth label="Subspecies" size="small" value={form.subspecies} onChange={set('subspecies')} />
         <TextField fullWidth label="Wikipedia URL" size="small" value={form.wikiUrl} onChange={set('wikiUrl')} />
@@ -902,59 +904,66 @@ function AddBreedDialog({ onClose, onSave, allTags }) {
         <IconButton onClick={onClose} sx={{ position: 'absolute', right: 8, top: 8 }}><CloseIcon /></IconButton>
       </DialogTitle>
       <DialogContent dividers sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: 2.5 }}>
-        {/* Paste zone */}
-        <Box
-          ref={pasteZoneRef}
-          tabIndex={0}
-          onPaste={handlePaste}
-          sx={{
-            border: '2px dashed',
-            borderColor: uploading ? 'primary.main' : 'grey.300',
-            borderRadius: 2,
-            p: 1.5,
-            textAlign: 'center',
-            cursor: form.name.trim() ? 'pointer' : 'not-allowed',
-            outline: 'none',
-            bgcolor: uploading ? 'primary.50' : 'grey.50',
-            transition: 'all 0.2s',
-            opacity: form.name.trim() ? 1 : 0.5,
-            '&:focus': { borderColor: 'primary.main', bgcolor: 'primary.50' },
-          }}
-          onClick={() => form.name.trim() && fileRef.current.click()}
-        >
-          {form.imageUrl && !imgLoadErr ? (
-            <Box sx={{ position: 'relative', display: 'inline-block' }}>
-              <Box
-                component="img" src={form.imageUrl} alt={form.name}
-                sx={{ maxHeight: 160, maxWidth: '100%', objectFit: 'contain', borderRadius: 1, display: 'block', mx: 'auto' }}
-                onError={() => setImgLoadErr(true)}
-              />
-              <Tooltip title="Remove image">
-                <IconButton
-                  size="small"
-                  onClick={(e) => { e.stopPropagation(); setForm((f) => ({ ...f, imageUrl: '' })); }}
-                  sx={{
-                    position: 'absolute', top: -10, right: -10,
-                    bgcolor: 'error.main', color: 'white', width: 24, height: 24,
-                    '&:hover': { bgcolor: 'error.dark' },
-                  }}
-                >
-                  <CloseIcon sx={{ fontSize: 14 }} />
-                </IconButton>
-              </Tooltip>
-            </Box>
-          ) : (
-            <Typography variant="body2" color="text.secondary" sx={{ py: 2 }}>
-              📷 Tap to choose a photo · or paste (Ctrl+V) on desktop
-            </Typography>
-          )}
-          {uploading && (
-            <Typography variant="caption" color="primary" sx={{ display: 'block', mt: 0.5 }}>
-              Saving image…
-            </Typography>
-          )}
+        {/* Image preview */}
+        {form.imageUrl && !imgLoadErr && (
+          <Box sx={{ position: 'relative', textAlign: 'center' }}>
+            <Box
+              key={form.imageUrl}
+              component="img" src={form.imageUrl} alt={form.name}
+              sx={{ maxHeight: 200, maxWidth: '100%', objectFit: 'contain', borderRadius: 2, display: 'block', mx: 'auto' }}
+              onError={() => setImgLoadErr(true)}
+            />
+            <Tooltip title="Remove image">
+              <IconButton
+                size="small"
+                onClick={() => setForm((f) => ({ ...f, imageUrl: '' }))}
+                sx={{ position: 'absolute', top: 4, right: 4, bgcolor: 'error.main', color: 'white', '&:hover': { bgcolor: 'error.dark' } }}
+              >
+                <CloseIcon sx={{ fontSize: 14 }} />
+              </IconButton>
+            </Tooltip>
+          </Box>
+        )}
+        {/* Upload controls: button + paste zone side by side */}
+        <Box sx={{ display: 'flex', gap: 1, alignItems: 'stretch' }}>
+          <Button
+            variant="outlined"
+            startIcon={uploading ? <CircularProgress size={16} /> : <PhotoCameraIcon />}
+            onClick={() => form.name.trim() && fileRef.current.click()}
+            disabled={!form.name.trim() || uploading}
+            sx={{ flex: 1, py: 1.5, borderRadius: 2 }}
+          >
+            {uploading ? 'Uploading…' : 'Upload photo'}
+          </Button>
+          {/* Paste zone — desktop only */}
+          <Box
+            ref={pasteZoneRef}
+            tabIndex={0}
+            onPaste={handlePaste}
+            sx={{
+              display: { xs: 'none', sm: 'flex' },
+              alignItems: 'center',
+              justifyContent: 'center',
+              border: '2px dashed',
+              borderColor: 'grey.300',
+              borderRadius: 2,
+              px: 2,
+              cursor: 'default',
+              outline: 'none',
+              bgcolor: 'grey.50',
+              color: 'text.secondary',
+              fontSize: '0.8rem',
+              whiteSpace: 'nowrap',
+              userSelect: 'none',
+              ...(form.name.trim() ? {} : { opacity: 0.4, pointerEvents: 'none' }),
+              '&:focus': { borderColor: 'primary.main', bgcolor: 'primary.50', color: 'primary.main' },
+            }}
+          >
+            Ctrl+V to paste
+          </Box>
         </Box>
-        {/* hidden file input — accept image from gallery or camera */}
+        {uploading && <Typography variant="caption" color="primary">Saving image…</Typography>}
+        {/* hidden file input */}
         <input ref={fileRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={handleFile} />
 
         <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
