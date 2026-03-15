@@ -208,8 +208,10 @@ function tagColor(tag) {
  * Only local /images/ paths get a thumb route. External URLs return null (show placeholder). */
 function thumbUrl(imageUrl) {
   if (!imageUrl || !imageUrl.startsWith('/images/')) return null;
-  const filename = imageUrl.slice('/images/'.length);
-  return `/api/thumb/${filename}`;
+  // Pass the full path including any ?t= cache-busting param so browser fetches fresh thumb
+  const [pathPart, query] = imageUrl.split('?');
+  const filename = pathPart.slice('/images/'.length);
+  return `/api/thumb/${filename}${query ? `?${query}` : ''}`;
 }
 
 function TagChips({ tags, size = 'small', alwaysExpanded = false }) {

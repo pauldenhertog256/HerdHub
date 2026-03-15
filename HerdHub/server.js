@@ -296,6 +296,8 @@ app.patch('/api/breeds/:id', requireAdmin, async (req, res) => {
     const idx = breeds.findIndex((b) => b.id === id);
     if (idx === -1) return res.status(404).json({ error: 'Not found' });
     let body = { ...req.body };
+    // Strip cache-busting query params from imageUrl before persisting
+    if (body.imageUrl) body.imageUrl = body.imageUrl.split('?')[0];
     // If a new external imageUrl is provided, download it immediately and store locally
     if (body.imageUrl && /^https?:\/\//.test(body.imageUrl)) {
       try {
@@ -389,8 +391,10 @@ app.put('/api/myherd', requireUser, async (req, res) => {
   try {
     const herd = req.body;
     if (!Array.isArray(herd)) return res.status(400).json({ error: 'Expected array' });
-    await saveDb(userMyherdFile(sessionUser(req).email), herd);
-    res.json({ ok: true, count: herd.length });
+    // Strip cache-busting query params from imageUrls before persisting
+    const clean = herd.map((b) => b.imageUrl ? { ...b, imageUrl: b.imageUrl.split('?')[0] } : b);
+    await saveDb(userMyherdFile(sessionUser(req).email), clean);
+    res.json({ ok: true, count: clean.length });
   } catch (err) {
     res.status(500).json({ error: String(err) });
   }
@@ -430,7 +434,8 @@ app.post('/api/upload-image', requireUser, async (req, res) => {
     const staleThumb = path.join(THUMB_DIR, `${flatStem}_thumb.webp`);
     await unlink(staleThumb).catch(() => {});
 
-    res.json({ path: `/images/${relpath}` });
+    // Return path with cache-busting timestamp so the browser fetches the new thumbnail
+    res.json({ path: `/images/${relpath}?t=${Date.now()}` });
     generateThumb(relpath).catch(() => {});
   } catch (err) {
     console.error(err);
