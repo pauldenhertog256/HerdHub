@@ -398,9 +398,8 @@ app.put('/api/myherd', requireUser, async (req, res) => {
 app.post('/api/upload-image', requireUser, async (req, res) => {
   try {
     const { name, breedId, dataUrl, context } = req.body;
-    if (!name || !dataUrl) return res.status(400).json({ error: 'Missing name or dataUrl' });
-
     const user = sessionUser(req);
+    console.log(`[UPLOAD] user=${user.email} role=${user.role} context=${context}`);
     // Admin uploading for the master list → global images dir; everyone else → user-scoped subdir
     const isAdminMaster = user.role === 'admin' && context === 'master';
 
@@ -422,6 +421,12 @@ app.post('/api/upload-image', requireUser, async (req, res) => {
     const base64 = dataUrl.replace(/^data:image\/\w+;base64,/, '');
     await mkdir(destDir, { recursive: true });
     await writeFile(path.join(destDir, filename), Buffer.from(base64, 'base64'));
+
+    // Delete stale thumbnail so it gets regenerated from the new image
+    const { unlink } = await import('fs/promises');
+    const flatStem = relpath.replace(/[\/\\]/g, '_').replace(/\.[^.]+$/, '');
+    const staleThumb = path.join(THUMB_DIR, `${flatStem}_thumb.webp`);
+    await unlink(staleThumb).catch(() => {});
 
     res.json({ path: `/images/${relpath}` });
     generateThumb(relpath).catch(() => {});

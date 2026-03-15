@@ -610,7 +610,7 @@ function EditDialog({ breed, onClose, onSave, onDelete, allTags, context }) {
       const resp = await fetch('/api/upload-image', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: form.name, dataUrl, context: 'myherd' }),
+        body: JSON.stringify({ name: form.name, breedId: form.id, dataUrl, context: context ?? 'myherd' }),
       });
       const { path } = await resp.json();
       setForm((f) => ({ ...f, imageUrl: path }));
