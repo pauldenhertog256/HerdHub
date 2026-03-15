@@ -123,6 +123,7 @@ async function seedDb() {
 }
 
 const app = express();
+app.set('trust proxy', 1); // Required on Railway/Heroku so secure cookies work behind HTTPS proxy
 app.use(compression()); // gzip all responses
 app.use(express.json({ limit: '25mb' }));
 
@@ -133,6 +134,7 @@ app.use(session({
   saveUninitialized: false,
   cookie: {
     secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
   },
 }));
