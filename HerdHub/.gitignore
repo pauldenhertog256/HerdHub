@@ -1,0 +1,41 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Runtime data (volume-mounted in production)
+data/
+
+# Secrets & Backups
+.env
+backups/
+*.tar.gz
+*.b64
+*.bak
+
+# Test artifacts
+test-results/
+playwright-report/
+blob-report/
+server.err
+server.log
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

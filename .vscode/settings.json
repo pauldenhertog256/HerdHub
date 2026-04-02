@@ -1,0 +1,8 @@
+{
+    "chat.tools.terminal.autoApprove": {
+        "/^python -c \"\nimport requests\napi = 'https://commons\\.wikimedia\\.org/w/api\\.php'\nparams = \\{\n    'action': 'query',\n    'titles': 'File:Red-angus\\.jpg',\n    'prop': 'imageinfo',\n    'iiprop': 'url',\n    'format': 'json',\n\\}\nr = requests\\.get\\(api, params=params, headers=\\{'User-Agent': 'CattleBreedScraper/1\\.0'\\}, timeout=10\\)\nprint\\(r\\.json\\(\\)\\)\n# Now try downloading the URL it returns\npages = r\\.json\\(\\)\\['query'\\]\\['pages'\\]\nfor page in pages\\.values\\(\\):\n    info = page\\.get\\('imageinfo', \\[\\]\\)\n    if info:\n        dl_url = info\\[0\\]\\['url'\\]\n        print\\('Download URL:', dl_url\\)\n        img = requests\\.get\\(dl_url, headers=\\{'User-Agent':'CattleBreedScraper/1\\.0','Referer':'https://en\\.wikipedia\\.org/'\\}, timeout=10, stream=True\\)\n        print\\('Status:', img\\.status_code, 'Size:', img\\.headers\\.get\\('content-length'\\)\\)\n\"\n$/": {
+            "approve": true,
+            "matchCommandLine": true
+        }
+    }
+}

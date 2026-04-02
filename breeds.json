@@ -1,0 +1,4053 @@
+[
+  {
+    "name": "Aberdeen Angus",
+    "origin": "Scotland",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Red-angus.jpg/1280px-Red-angus.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Aberdeen_Angus",
+    "localImage": "images/Aberdeen_Angus.jpg"
+  },
+  {
+    "name": "Abergele",
+    "origin": "Ethiopia",
+    "subspecies": null,
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Abergele_cattle.jpg/250px-Abergele_cattle.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Abergele_cattle",
+    "localImage": "images/Abergele.jpg"
+  },
+  {
+    "name": "Abigar",
+    "origin": "Ethiopia",
+    "subspecies": "Taurus",
+    "purpose": "Dairy",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Abigar"
+  },
+  {
+    "name": "Abondance",
+    "origin": "France",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Vache_d%27Abondance.jpg/1920px-Vache_d%27Abondance.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Abondance_(cattle)",
+    "localImage": null
+  },
+  {
+    "name": "Abyssinian Shorthorned Zebu",
+    "origin": "Ethiopia",
+    "subspecies": "Indicus",
+    "purpose": "Draught",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Abyssinian_Shorthorned_Zebu"
+  },
+  {
+    "name": "Aceh",
+    "origin": "Indonesia",
+    "subspecies": "Indicus",
+    "purpose": "Meat",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Aceh_(cattle)"
+  },
+  {
+    "name": "Achham",
+    "origin": "Nepal",
+    "subspecies": "Indicus",
+    "purpose": "Dairy",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Achham_(cattle)"
+  },
+  {
+    "name": "Adamawa",
+    "origin": "Nigeria",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Adamawa_(cattle)"
+  },
+  {
+    "name": "Adaptaur",
+    "origin": "Australia",
+    "subspecies": "Taurus/Indicus hybrid",
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Adaptaur.jpg/250px-Adaptaur.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Adaptaur",
+    "localImage": "images/Adaptaur.jpg"
+  },
+  {
+    "name": "Afar",
+    "origin": "Ethiopia",
+    "subspecies": "Indicus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Afar_cattle"
+  },
+  {
+    "name": "Afrikaner",
+    "origin": "South Africa",
+    "subspecies": "Indicus",
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Kuh_in_transkei.jpg/1920px-Kuh_in_transkei.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Afrikaner_cattle",
+    "localImage": "images/Afrikaner.jpg"
+  },
+  {
+    "name": "Agerolese",
+    "origin": "Italy",
+    "subspecies": "Taurus",
+    "purpose": "Dairy",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Agerolese"
+  },
+  {
+    "name": "Alambadi",
+    "origin": "India",
+    "subspecies": "Indicus",
+    "purpose": null,
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Alambadi_(cattle)"
+  },
+  {
+    "name": "Alatau",
+    "origin": "Kazakhstan",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Alatau_cattle"
+  },
+  {
+    "name": "Albanian",
+    "origin": "Albania",
+    "subspecies": "Taurus",
+    "purpose": "Dairy/Draught",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Albanian_(cattle)"
+  },
+  {
+    "name": "Albera",
+    "origin": "Spain, France",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Semi-feral",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Mama%C3%AFta_%28landscape_format%29.jpg/500px-Mama%C3%AFta_%28landscape_format%29.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Albera_(cattle)",
+    "localImage": null
+  },
+  {
+    "name": "Alderney",
+    "origin": "Channel Islands",
+    "subspecies": "Taurus",
+    "purpose": "Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/The_domestic_animals_-_from_the_latest_and_best_authorities._Illustrated_%281860%29_%2814784573923%29.jpg/1920px-The_domestic_animals_-_from_the_latest_and_best_authorities._Illustrated_%281860%29_%2814784573923%29.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Alderney_cattle",
+    "localImage": null
+  },
+  {
+    "name": "Alentejana",
+    "origin": "Portugal",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Algarve_-_086_%283468253840%29.jpg/3840px-Algarve_-_086_%283468253840%29.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Alentejana",
+    "localImage": null
+  },
+  {
+    "name": "Aleutian wild cattle",
+    "origin": "United States",
+    "subspecies": null,
+    "purpose": "Feral",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Aleutian_wild_cattle"
+  },
+  {
+    "name": "Aliad Dinka",
+    "origin": "South Sudan",
+    "subspecies": null,
+    "purpose": null,
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Alistana-Sanabresa",
+    "origin": "Spain",
+    "subspecies": null,
+    "purpose": null,
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Alistana-Sanabresa"
+  },
+  {
+    "name": "Allmogekor",
+    "origin": "Sweden",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Draught",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Allmogekor"
+  },
+  {
+    "name": "Alur",
+    "origin": "Democratic Republic of the Congo",
+    "subspecies": null,
+    "purpose": null,
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "American",
+    "origin": "United States",
+    "subspecies": "Taurus/Indicus hybrid",
+    "purpose": "Meat",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/American_(cattle)"
+  },
+  {
+    "name": "American Angus",
+    "origin": "United States",
+    "subspecies": null,
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Angus_cattle_7.jpg/500px-Angus_cattle_7.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/American_Angus",
+    "localImage": "images/American_Angus.jpg"
+  },
+  {
+    "name": "American Beef Friesian",
+    "origin": "United States",
+    "subspecies": null,
+    "purpose": null,
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "American Brown Swiss",
+    "origin": "United States",
+    "subspecies": "Taurus",
+    "purpose": "Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Brown_swiss.jpg/500px-Brown_swiss.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Brown_Swiss_cattle",
+    "localImage": "images/American_Brown_Swiss.jpg"
+  },
+  {
+    "name": "American Milking Devon",
+    "origin": "United States",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Pair_of_Milking_Devons.jpg/1920px-Pair_of_Milking_Devons.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/American_Milking_Devon",
+    "localImage": "images/American_Milking_Devon.jpg"
+  },
+  {
+    "name": "American White Park",
+    "origin": "United States",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/American_White_Park"
+  },
+  {
+    "name": "Amerifax",
+    "origin": "United States",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Amerifax"
+  },
+  {
+    "name": "Amrit Mahal",
+    "origin": "India",
+    "subspecies": "Indicus",
+    "purpose": "Developed from Hallikar cattle for war purposes",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Amruthamahal_01.JPG/3840px-Amruthamahal_01.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Amrit_Mahal",
+    "localImage": "images/Amrit_Mahal.jpg"
+  },
+  {
+    "name": "Amsterdam Island cattle",
+    "origin": "Amsterdam Island",
+    "subspecies": "Taurus",
+    "purpose": "Feral",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Amsterdam_Island_Cattle.jpg/500px-Amsterdam_Island_Cattle.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Amsterdam_Island_cattle",
+    "localImage": "images/Amsterdam_Island_cattle.jpg"
+  },
+  {
+    "name": "Anatolian Black",
+    "origin": "Turkey",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Turkish_Nat%C4%B1ve_Black_Cattle_-_Yerlikara_03.jpg/3840px-Turkish_Nat%C4%B1ve_Black_Cattle_-_Yerlikara_03.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Anatolian_Black",
+    "localImage": null
+  },
+  {
+    "name": "Andalusian Black",
+    "origin": "Spain",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Endangered",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Andalusian_Black_cattle"
+  },
+  {
+    "name": "Andalusian Blond",
+    "origin": "Spain",
+    "subspecies": null,
+    "purpose": null,
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Andalusian Grey",
+    "origin": "Spain",
+    "subspecies": null,
+    "purpose": null,
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Angeln",
+    "origin": "Germany",
+    "subspecies": "Taurus",
+    "purpose": "Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Rotes_Angler_Rind_01.JPG/3840px-Rotes_Angler_Rind_01.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Angeln_cattle",
+    "localImage": "images/Angeln.jpg"
+  },
+  {
+    "name": "Angoni",
+    "origin": "Malawi",
+    "subspecies": null,
+    "purpose": null,
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Ankina",
+    "origin": "United States",
+    "subspecies": null,
+    "purpose": null,
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Ankole",
+    "origin": "East Africa",
+    "subspecies": null,
+    "purpose": "meat/dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Ankole_Cattle.jpg/1920px-Ankole_Cattle.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Ankole_(cattle)",
+    "localImage": "images/Ankole.jpg"
+  },
+  {
+    "name": "Ankole-Watusi",
+    "origin": "United States",
+    "subspecies": "Indicus",
+    "purpose": "Show",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Watusi_Thoiry_1982.jpg/1280px-Watusi_Thoiry_1982.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Ankole-Watusi",
+    "localImage": "images/Ankole-Watusi.jpg"
+  },
+  {
+    "name": "Aracena",
+    "origin": "Spain",
+    "subspecies": null,
+    "purpose": null,
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Arado",
+    "origin": "Ethiopia",
+    "subspecies": null,
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Arado_cattle.jpg/960px-Arado_cattle.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Arado_cattle",
+    "localImage": "images/Arado.jpg"
+  },
+  {
+    "name": "Argentine Criollo",
+    "origin": "Argentina",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Argentine_Criollo_Bull.png/330px-Argentine_Criollo_Bull.png",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Argentine_Criollo",
+    "localImage": "images/Argentine_Criollo.png"
+  },
+  {
+    "name": "Argentine Friesian",
+    "origin": "Argentina",
+    "subspecies": null,
+    "purpose": "Dairy",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Armorican",
+    "origin": "France",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Drev_chez_Yannig_Coulomb_%26_Ga%C3%ABlle_Kerl%C3%A9guer.jpg/500px-Drev_chez_Yannig_Coulomb_%26_Ga%C3%ABlle_Kerl%C3%A9guer.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Armorican_(cattle)",
+    "localImage": null
+  },
+  {
+    "name": "Arouquesa",
+    "origin": "Portugal",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Arouquesa2.jpg/960px-Arouquesa2.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Arouquesa",
+    "localImage": null
+  },
+  {
+    "name": "Arsi",
+    "origin": "Ethiopia",
+    "subspecies": null,
+    "purpose": null,
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Asturian Mountain",
+    "origin": "Spain",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Asturiasko_mendiko_behia1.JPG/1920px-Asturiasko_mendiko_behia1.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Asturian_Mountain",
+    "localImage": "images/Asturian_Mountain.jpg"
+  },
+  {
+    "name": "Asturian Valley",
+    "origin": "Spain",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Vaca_Asturiana_de_los_valles.jpg/500px-Vaca_Asturiana_de_los_valles.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Asturian_Valley",
+    "localImage": "images/Asturian_Valley.jpg"
+  },
+  {
+    "name": "Aubrac",
+    "origin": "France",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Vache_Aubrac.jpg/960px-Vache_Aubrac.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Aubrac_cattle",
+    "localImage": "images/Aubrac.jpg"
+  },
+  {
+    "name": "Aulie-Ata",
+    "origin": "Kazakhstan",
+    "subspecies": "Taurus",
+    "purpose": "Dairy",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Aulie-Ata_Cattle"
+  },
+  {
+    "name": "Aure et Saint-Girons",
+    "origin": "France",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Casta8-_SIA2010.JPG/1920px-Casta8-_SIA2010.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Aure_et_Saint-Girons",
+    "localImage": "images/Aure_et_Saint-Girons.jpg"
+  },
+  {
+    "name": "Australian Braford",
+    "origin": "Australia",
+    "subspecies": "Taurus/Indicus hybrid",
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Australian_Braford.JPG/1920px-Australian_Braford.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Australian_Braford",
+    "localImage": "images/Australian_Braford.jpg"
+  },
+  {
+    "name": "Australian Brangus",
+    "origin": "Australia",
+    "subspecies": "Taurus/Indicus hybrid",
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Aus_Brangus.JPG/960px-Aus_Brangus.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Australian_Brangus",
+    "localImage": "images/Australian_Brangus.jpg"
+  },
+  {
+    "name": "Australian Charbray",
+    "origin": "Australia",
+    "subspecies": "Taurus/Indicus hybrid",
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/3/38/Charbray.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Australian_Charbray",
+    "localImage": "images/Australian_Charbray.jpg"
+  },
+  {
+    "name": "Australian Friesian Sahiwal",
+    "origin": "Australia",
+    "subspecies": "Taurus/Indicus hybrid",
+    "purpose": "Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/AFS_cow.jpg/250px-AFS_cow.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Australian_Friesian_Sahiwal",
+    "localImage": "images/Australian_Friesian_Sahiwal.jpg"
+  },
+  {
+    "name": "Australian Lowline",
+    "origin": "Australia",
+    "subspecies": "Taurus",
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Lowline_bull.jpg/500px-Lowline_bull.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Australian_Lowline",
+    "localImage": "images/Australian_Lowline.jpg"
+  },
+  {
+    "name": "Australian Milking Zebu",
+    "origin": "Australia",
+    "subspecies": "Taurus/Indicus hybrid",
+    "purpose": "Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/AMZ_cattle.jpg/330px-AMZ_cattle.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Australian_Milking_Zebu",
+    "localImage": "images/Australian_Milking_Zebu.jpg"
+  },
+  {
+    "name": "Australian Shorthorn",
+    "origin": "Australia",
+    "subspecies": null,
+    "purpose": "Meat",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Austrian Simmental",
+    "origin": "Austria",
+    "subspecies": null,
+    "purpose": null,
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Austrian Yellow",
+    "origin": "Austria",
+    "subspecies": null,
+    "purpose": null,
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Avétonou",
+    "origin": "Togo",
+    "subspecies": null,
+    "purpose": null,
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Avileña-Negra Ibérica",
+    "origin": "Spain",
+    "subspecies": null,
+    "purpose": null,
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Avile%C3%B1as_2.jpg/3840px-Avile%C3%B1as_2.jpg",
+    "wikiUrl": null,
+    "localImage": "images/Avileña-Negra_Ibérica.jpg"
+  },
+  {
+    "name": "Aweil Dinka",
+    "origin": "South Sudan",
+    "subspecies": null,
+    "purpose": null,
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Ayrshire",
+    "origin": "Scotland",
+    "subspecies": "Taurus",
+    "purpose": "Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/AyrshireCattle1.JPG/1920px-AyrshireCattle1.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Ayrshire_cattle",
+    "localImage": "images/Ayrshire.jpg"
+  },
+  {
+    "name": "Azaouak",
+    "origin": "Mali",
+    "subspecies": null,
+    "purpose": null,
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Azebuado",
+    "origin": "Brazil",
+    "subspecies": null,
+    "purpose": null,
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Azerbaijan Zebu",
+    "origin": "Azerbaijan",
+    "subspecies": null,
+    "purpose": null,
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Azores",
+    "origin": "Portugal",
+    "subspecies": null,
+    "purpose": null,
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Bachaur cattle",
+    "origin": "India",
+    "subspecies": "Indicus",
+    "purpose": "Dairy/Draught",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Bachaur_cattle"
+  },
+  {
+    "name": "Baherie cattle",
+    "origin": "Eritrea",
+    "subspecies": "Indicus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Baherie_cattle"
+  },
+  {
+    "name": "Bakosi cattle",
+    "origin": "Cameroon",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Rituals",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Bakosi_cattle"
+  },
+  {
+    "name": "Balancer",
+    "origin": "United States",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy/Gelbvieh /American Angus crossbreed",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Balancer"
+  },
+  {
+    "name": "Bali cattle",
+    "origin": "Indonesia",
+    "subspecies": "Banteng",
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Bali_cattle_IPB_Jonggol.jpg/960px-Bali_cattle_IPB_Jonggol.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Bali_cattle",
+    "localImage": "images/Bali_cattle.jpg"
+  },
+  {
+    "name": "Baoule",
+    "origin": "Ivory Coast",
+    "subspecies": "Taurus",
+    "purpose": "Dairy",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Baoule_cattle"
+  },
+  {
+    "name": "Bargur cattle",
+    "origin": "India",
+    "subspecies": "Indicus",
+    "purpose": "Dairy/Draught/Semi-wild, native to Bargur forest region, bred and grazed by the local Lingayat community",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Baragur_02.JPG/3840px-Baragur_02.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Bargur_Cattle",
+    "localImage": "images/Bargur_cattle.jpg"
+  },
+  {
+    "name": "Barrosã",
+    "origin": "Portugal",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Vaca_barros%C3%A3.JPG/1920px-Vaca_barros%C3%A3.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Barros%C3%A3",
+    "localImage": null
+  },
+  {
+    "name": "Barzona",
+    "origin": "United States",
+    "subspecies": "Taurus/Indicus hybrid",
+    "purpose": "Meat",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Barzona"
+  },
+  {
+    "name": "Bazadaise",
+    "origin": "France",
+    "subspecies": "Taurus",
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Bazadaise.jpg/960px-Bazadaise.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Bazadaise",
+    "localImage": "images/Bazadaise.jpg"
+  },
+  {
+    "name": "Beef Freisian",
+    "origin": "United States",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Beefalo",
+    "origin": "United States",
+    "subspecies": "Taurus/ American bison hybrid",
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/XJ-B1_Beefalo.jpg/3840px-XJ-B1_Beefalo.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Beefalo",
+    "localImage": "images/Beefalo.jpg"
+  },
+  {
+    "name": "Beefmaker",
+    "origin": "United States",
+    "subspecies": "Taurus/Indicus hybrid",
+    "purpose": "Meat",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Beefmaster",
+    "origin": "United States",
+    "subspecies": "Taurus/Indicus hybrid",
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Beefmaster_Females.jpg/3840px-Beefmaster_Females.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Beefmaster",
+    "localImage": "images/Beefmaster.jpg"
+  },
+  {
+    "name": "Begayt",
+    "origin": "Ethiopia",
+    "subspecies": null,
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Begayt_cattle"
+  },
+  {
+    "name": "Belgian Blue",
+    "origin": "Belgium",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Sectio_caesarea.jpg/1920px-Sectio_caesarea.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Belgian_Blue",
+    "localImage": "images/Belgian_Blue.jpg"
+  },
+  {
+    "name": "Belgian Red",
+    "origin": "Belgium, France",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy/Draught/Endangered breed",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Puyenbroeck_Rood_West-Vlaams_rund_24-07-2011.png/1920px-Puyenbroeck_Rood_West-Vlaams_rund_24-07-2011.png",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Belgian_Red",
+    "localImage": "images/Belgian_Red.png"
+  },
+  {
+    "name": "Belgian Red Pied",
+    "origin": "Belgium",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Belgian White-and-Red",
+    "origin": "Belgium",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Puyenbroeck_Oost-Vlaams_witrood_rund_24-07-2011.png/1920px-Puyenbroeck_Oost-Vlaams_witrood_rund_24-07-2011.png",
+    "wikiUrl": null,
+    "localImage": "images/Belgian_White-and-Red.png"
+  },
+  {
+    "name": "Belmont Red",
+    "origin": "Australia",
+    "subspecies": "Taurus/Indicus hybrid",
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Belmont_Red.jpg/330px-Belmont_Red.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Belmont_Red",
+    "localImage": "images/Belmont_Red.jpg"
+  },
+  {
+    "name": "Belted Galloway",
+    "origin": "Scotland",
+    "subspecies": "Taurus",
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Belted_Galloway_at_Gretna_Green.jpg/960px-Belted_Galloway_at_Gretna_Green.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Belted_Galloway",
+    "localImage": "images/Belted_Galloway.jpg"
+  },
+  {
+    "name": "Bernese",
+    "origin": "Switzerland",
+    "subspecies": null,
+    "purpose": null,
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Berrenda cattle",
+    "origin": "Spain",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy/Draught/Sport",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Toro_berrendo_en_colorado._Valdelazarza.jpg/500px-Toro_berrendo_en_colorado._Valdelazarza.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Berrenda_cattle",
+    "localImage": "images/Berrenda_cattle.jpg"
+  },
+  {
+    "name": "Betizu",
+    "origin": "Spain, France",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Draught/Semi-feral",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Betizu_sur_le_massif_du_Xoldokogaina.jpg/500px-Betizu_sur_le_massif_du_Xoldokogaina.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Betizu",
+    "localImage": "images/Betizu.jpg"
+  },
+  {
+    "name": "Bianca Modenese",
+    "origin": "Italy",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Toro_di_razza_Bianca_Val_Padana.jpg/1280px-Toro_di_razza_Bianca_Val_Padana.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Bianca_Modenese",
+    "localImage": "images/Bianca_Modenese.jpg"
+  },
+  {
+    "name": "Blaarkop",
+    "origin": "Netherlands",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Rode_blaarkop_hoogdrachtig.jpg/500px-Rode_blaarkop_hoogdrachtig.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Blaarkop",
+    "localImage": "images/Blaarkop.jpg"
+  },
+  {
+    "name": "Blanca Cacereña",
+    "origin": "Spain",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Blanco Orejinegro BON",
+    "origin": "Colombia",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Blonde d'Aquitaine",
+    "origin": "France",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Blonde_Aquitaine.jpg/1920px-Blonde_Aquitaine.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Blonde_d%27Aquitaine",
+    "localImage": "images/Blonde_d_Aquitaine.jpg"
+  },
+  {
+    "name": "Blue Albion",
+    "origin": "Great Britain",
+    "subspecies": "Taurus",
+    "purpose": "Meat",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Blue_Albion"
+  },
+  {
+    "name": "Blue Grey",
+    "origin": "Great Britain",
+    "subspecies": "Taurus",
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Blue_Gray_Cow.jpg/1920px-Blue_Gray_Cow.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Blue_Grey_cattle",
+    "localImage": "images/Blue_Grey.jpg"
+  },
+  {
+    "name": "Bohuskulla",
+    "origin": "Sweden",
+    "subspecies": null,
+    "purpose": null,
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Bohuskulla.jpg/3840px-Bohuskulla.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Bohuskulla",
+    "localImage": "images/Bohuskulla.jpg"
+  },
+  {
+    "name": "Bonsmara",
+    "origin": "South Africa",
+    "subspecies": "Taurus/Indicus hybrid",
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Bonsmara.jpg/960px-Bonsmara.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Bonsmara",
+    "localImage": "images/Bonsmara.jpg"
+  },
+  {
+    "name": "Boran",
+    "origin": "eastern Africa",
+    "subspecies": "Indicus",
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Boran_cattle_in_Kenya.jpg/330px-Boran_cattle_in_Kenya.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Boran_cattle",
+    "localImage": "images/Boran.jpg"
+  },
+  {
+    "name": "Boškarin",
+    "origin": "Croatia, Slovenia",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Bo%C5%A1karini_na_Brijunima.JPG/1920px-Bo%C5%A1karini_na_Brijunima.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Bo%C5%A1karin",
+    "localImage": "images/Boškarin.jpg"
+  },
+  {
+    "name": "Braford",
+    "origin": "United States",
+    "subspecies": "Taurus/Indicus hybrid",
+    "purpose": "Meat",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Braford"
+  },
+  {
+    "name": "Brahman",
+    "origin": "India",
+    "subspecies": "Indicus",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Brahman_%28EMAPA%29_110307_REFON_2.jpg/1920px-Brahman_%28EMAPA%29_110307_REFON_2.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Brahman_(cattle)",
+    "localImage": "images/Brahman.jpg"
+  },
+  {
+    "name": "Brahmousin",
+    "origin": "United States",
+    "subspecies": "Taurus/Indicus  hybrid",
+    "purpose": "Meat/Draught",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Brangus",
+    "origin": "United States",
+    "subspecies": "Taurus/Indicus hybrid",
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Cow_with_calf.jpg/1920px-Cow_with_calf.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Brangus",
+    "localImage": "images/Brangus.jpg"
+  },
+  {
+    "name": "Braunvieh",
+    "origin": "Switzerland",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/CH_cow_1.jpg/3840px-CH_cow_1.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Braunvieh",
+    "localImage": "images/Braunvieh.jpg"
+  },
+  {
+    "name": "Brava",
+    "origin": "Spain",
+    "subspecies": null,
+    "purpose": null,
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Brava_(cattle)"
+  },
+  {
+    "name": "Bretonne Pie Noir",
+    "origin": "France",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Vaches_Bretonnes_Pie_Noir.JPG/960px-Vaches_Bretonnes_Pie_Noir.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Bretonne_Pie_Noir",
+    "localImage": "images/Bretonne_Pie_Noir.jpg"
+  },
+  {
+    "name": "British White",
+    "origin": "Great Britain",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/British_white.jpg/500px-British_white.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/British_White",
+    "localImage": "images/British_White.jpg"
+  },
+  {
+    "name": "British Friesian",
+    "origin": "Great Britain",
+    "subspecies": "Taurus",
+    "purpose": "Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Cheshire_Cattle.JPG/1280px-Cheshire_Cattle.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/British_Friesian#British_Friesian_cattle",
+    "localImage": "images/British_Friesian.jpg"
+  },
+  {
+    "name": "Brown Carpathian",
+    "origin": "Ukraine",
+    "subspecies": "Taurus",
+    "purpose": null,
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Brown_Carpathian"
+  },
+  {
+    "name": "Brown Caucasian",
+    "origin": "Armenia",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Dehorned_Cow_in_Armenia.tif/lossless-page1-100px-Dehorned_Cow_in_Armenia.tif.png",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Brown_Caucasian",
+    "localImage": "images/Brown_Caucasian.png"
+  },
+  {
+    "name": "Brown Swiss",
+    "origin": "Switzerland",
+    "subspecies": "Taurus",
+    "purpose": "Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Brown_swiss.jpg/500px-Brown_swiss.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Brown_Swiss",
+    "localImage": "images/Brown_Swiss.jpg"
+  },
+  {
+    "name": "Bue Lingo",
+    "origin": "United States",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Bue_Lingo"
+  },
+  {
+    "name": "Burlina",
+    "origin": "Italy",
+    "subspecies": "Taurus",
+    "purpose": "Dairy",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Burlina_cow"
+  },
+  {
+    "name": "Buša cattle",
+    "origin": "former Yugoslavia - Bosnia and Herzegovina , Croatia , Kosovo , Montenegro , North Macedonia , Serbia (Dinaric Alps)",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Busha.jpg/330px-Busha.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Bu%C5%A1a_cattle",
+    "localImage": "images/Buša_cattle.jpg"
+  },
+  {
+    "name": "Butana cattle",
+    "origin": "Sudan",
+    "subspecies": "Indicus",
+    "purpose": "Dairy",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Butana_and_Kenana_cattle"
+  },
+  {
+    "name": "Bushuyev",
+    "origin": "Uzbekistan",
+    "subspecies": "Zebu",
+    "purpose": "Dairy",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Bushuyev_cattle"
+  },
+  {
+    "name": "Cachena",
+    "origin": "Portugal/Spain",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Cachena1.jpg/330px-Cachena1.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Cachena",
+    "localImage": "images/Cachena.jpg"
+  },
+  {
+    "name": "Caldelana",
+    "origin": "Spain",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Camargue",
+    "origin": "France",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Draught/Sport, semi-feral",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Camargue_cattle_2004.jpg/1920px-Camargue_cattle_2004.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Camargue_cattle",
+    "localImage": "images/Camargue.jpg"
+  },
+  {
+    "name": "Campbell Island cattle",
+    "origin": "New Zealand",
+    "subspecies": "Taurus",
+    "purpose": "Feral",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/8/8b/Campbell_Island_cattle.jpg/330px-Campbell_Island_cattle.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Campbell_Island_cattle",
+    "localImage": "images/Campbell_Island_cattle.jpg"
+  },
+  {
+    "name": "Canadian Speckle Park",
+    "origin": "Canada",
+    "subspecies": "Taurus",
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Canadian_Speckle_Park.JPG/1920px-Canadian_Speckle_Park.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Canadian_Speckle_Park",
+    "localImage": "images/Canadian_Speckle_Park.jpg"
+  },
+  {
+    "name": "Canadienne",
+    "origin": "Canada",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Canadienne_heifer.jpg/500px-Canadienne_heifer.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Canadienne_cattle",
+    "localImage": "images/Canadienne.jpg"
+  },
+  {
+    "name": "Canaria",
+    "origin": "Spain",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Draught",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Canchim",
+    "origin": "Brazil",
+    "subspecies": "Taurus/Indicus hybrid",
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Touro_Canchim_REFON.jpg/1280px-Touro_Canchim_REFON.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Canchim",
+    "localImage": "images/Canchim.jpg"
+  },
+  {
+    "name": "Caracu",
+    "origin": "Brazil",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Boi_caracu_no_pasto.JPG/1920px-Boi_caracu_no_pasto.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Caracu",
+    "localImage": "images/Caracu.jpg"
+  },
+  {
+    "name": "Cárdena Andaluza",
+    "origin": "Spain",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Draught",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Carinthian Blondvieh",
+    "origin": "Austria",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/K%C3%A4rntner_Blondvieh2.JPG/3840px-K%C3%A4rntner_Blondvieh2.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Carinthian_Blondvieh",
+    "localImage": "images/Carinthian_Blondvieh.jpg"
+  },
+  {
+    "name": "Carora",
+    "origin": "Venezuelan",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Carora_cattle"
+  },
+  {
+    "name": "Charbray",
+    "origin": "United States",
+    "subspecies": "Taurus/Indicus hybrid",
+    "purpose": "Meat",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Charolais",
+    "origin": "France",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Vache_de_race_charolaise_avec_son_veau.jpg/500px-Vache_de_race_charolaise_avec_son_veau.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Charolais_cattle",
+    "localImage": "images/Charolais.jpg"
+  },
+  {
+    "name": "Chateaubriand",
+    "origin": "—",
+    "subspecies": null,
+    "purpose": null,
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Chiangus",
+    "origin": "—",
+    "subspecies": "Taurus",
+    "purpose": "Meat",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Chianina",
+    "origin": "Italy",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Chianina_cow_and_calf%2C_Tuscany.jpg/1920px-Chianina_cow_and_calf%2C_Tuscany.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Chianina",
+    "localImage": "images/Chianina.jpg"
+  },
+  {
+    "name": "Chillingham cattle",
+    "origin": "England",
+    "subspecies": "Taurus",
+    "purpose": "Feral",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Chillingham_Bull_-_geograph.org.uk_-_223440.jpg/500px-Chillingham_Bull_-_geograph.org.uk_-_223440.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Chillingham_cattle",
+    "localImage": "images/Chillingham_cattle.jpg"
+  },
+  {
+    "name": "Chinese Black Pied",
+    "origin": "China",
+    "subspecies": "Taurus",
+    "purpose": "Dairy",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Chinese_Black_Pied"
+  },
+  {
+    "name": "Cholistani Cattle",
+    "origin": "Pakistan",
+    "subspecies": "Indicus",
+    "purpose": "Dairy",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Cholistani_Cattle"
+  },
+  {
+    "name": "Cika cattle",
+    "origin": "Slovenia",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/IMT-539%2C_Bled%2C_Slovenija.jpg/1920px-IMT-539%2C_Bled%2C_Slovenija.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Cika_cattle",
+    "localImage": "images/Cika_cattle.jpg"
+  },
+  {
+    "name": "Coloursided White Back",
+    "origin": "—",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Commercial",
+    "origin": "—",
+    "subspecies": null,
+    "purpose": null,
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Corriente",
+    "origin": "Spain",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy/Draught/Sport",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Corriente.jpg/250px-Corriente.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Corriente",
+    "localImage": "images/Corriente.jpg"
+  },
+  {
+    "name": "Corsican cattle",
+    "origin": "France",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Often free-ranging, semi-feral",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Korsech_Kou.jpg/1920px-Korsech_Kou.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Corsican_cattle",
+    "localImage": "images/Corsican_cattle.jpg"
+  },
+  {
+    "name": "Costeño con Cuernos",
+    "origin": "Colombia",
+    "subspecies": "Taurus/Indicus  hybrid",
+    "purpose": "Meat/Draught",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Crioulo Lageano",
+    "origin": "Brazil",
+    "subspecies": null,
+    "purpose": null,
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Crioulo_Lageano"
+  },
+  {
+    "name": "Dairy Shorthorn",
+    "origin": "United Kingdom",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Dairy_Shorthorn_cow_at_Tullamore_Show.jpg/3840px-Dairy_Shorthorn_cow_at_Tullamore_Show.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Dairy_Shorthorn",
+    "localImage": "images/Dairy_Shorthorn.jpg"
+  },
+  {
+    "name": "Dajal cattle",
+    "origin": "Pakistan",
+    "subspecies": "Indicus",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Dajal_cattle.jpg/500px-Dajal_cattle.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Dajal_cattle",
+    "localImage": "images/Dajal_cattle.jpg"
+  },
+  {
+    "name": "Dangi cattle",
+    "origin": "India",
+    "subspecies": "Indicus",
+    "purpose": "Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Dangi_02.JPG/3840px-Dangi_02.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Dangi_cattle",
+    "localImage": "images/Dangi_cattle.jpg"
+  },
+  {
+    "name": "Danish Black-Pied",
+    "origin": "Denmark",
+    "subspecies": null,
+    "purpose": null,
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Danish Jersey",
+    "origin": "Denmark",
+    "subspecies": "Taurus",
+    "purpose": "Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Jerseykvaeg.jpg/960px-Jerseykvaeg.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Danish_Jersey",
+    "localImage": "images/Danish_Jersey.jpg"
+  },
+  {
+    "name": "Danish Red",
+    "origin": "Denmark",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/R%C3%B8d_dansk_malkerace_RDM.jpg/1280px-R%C3%B8d_dansk_malkerace_RDM.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Danish_Red",
+    "localImage": "images/Danish_Red.jpg"
+  },
+  {
+    "name": "Deep Red cattle",
+    "origin": "—",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Deoni",
+    "origin": "India",
+    "subspecies": "Indicus",
+    "purpose": "Dairy/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Deoni_01.JPG/3840px-Deoni_01.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Deoni_(cattle)",
+    "localImage": "images/Deoni.jpg"
+  },
+  {
+    "name": "Devon",
+    "origin": "England",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Red_Devon_bull.jpg/500px-Red_Devon_bull.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/North_Devon_cattle",
+    "localImage": "images/Devon.jpg"
+  },
+  {
+    "name": "Dexter cattle",
+    "origin": "Ireland",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Dexter_cow%2C_Three_Counties_Show.jpg/960px-Dexter_cow%2C_Three_Counties_Show.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Dexter_cattle",
+    "localImage": "images/Dexter_cattle.jpg"
+  },
+  {
+    "name": "Dhanni",
+    "origin": "Pakistan",
+    "subspecies": "Indicus",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Dhanni_Cattle_Male.jpg/330px-Dhanni_Cattle_Male.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Dhanni_(cattle)",
+    "localImage": "images/Dhanni.jpg"
+  },
+  {
+    "name": "Doayo cattle",
+    "origin": "Cameroon",
+    "subspecies": "Taurus",
+    "purpose": null,
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Doayo_cattle"
+  },
+  {
+    "name": "Doela",
+    "origin": "—",
+    "subspecies": null,
+    "purpose": null,
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Drakensberger",
+    "origin": "South Africa",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Drakensberger_%3D_%E4%B8%96%E7%95%8C%E3%81%AE%E7%89%9B_%E3%83%89%E3%83%A9%E3%83%BC%E3%82%B1%E3%83%B3%E3%82%B9%E3%83%99%E3%83%AB%E3%82%AC_%28cropped%29.jpg/3840px-Drakensberger_%3D_%E4%B8%96%E7%95%8C%E3%81%AE%E7%89%9B_%E3%83%89%E3%83%A9%E3%83%BC%E3%82%B1%E3%83%B3%E3%82%B9%E3%83%99%E3%83%AB%E3%82%AC_%28cropped%29.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Drakensberger",
+    "localImage": "images/Drakensberger.jpg"
+  },
+  {
+    "name": "Dølafe",
+    "origin": "Norway",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/D%C3%B8lafe.jpg/500px-D%C3%B8lafe.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/D%C3%B8lafe",
+    "localImage": "images/Dølafe.jpg"
+  },
+  {
+    "name": "Droughtmaster",
+    "origin": "Australia",
+    "subspecies": "Taurus/Indicus hybrid",
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Droughtmaster.jpg/1280px-Droughtmaster.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Droughtmaster",
+    "localImage": "images/Droughtmaster.jpg"
+  },
+  {
+    "name": "Dulong'",
+    "origin": "—",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Draught",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Dutch Friesian",
+    "origin": "Netherlands",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Dwarf Lulu",
+    "origin": "—",
+    "subspecies": "Taurus/Indicus/ Yak hybrid",
+    "purpose": null,
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Dwarf_Lulu"
+  },
+  {
+    "name": "East Anatolian Red",
+    "origin": "—",
+    "subspecies": "Taurus",
+    "purpose": "Dairy",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Eastern Finncattle",
+    "origin": "Finland",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/It%C3%A4suomenlehm%C3%A4_Ahlmanin_maatalouskoulun_pellolla.png/330px-It%C3%A4suomenlehm%C3%A4_Ahlmanin_maatalouskoulun_pellolla.png",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Eastern_Finncattle",
+    "localImage": "images/Eastern_Finncattle.png"
+  },
+  {
+    "name": "Eastern Red Polled",
+    "origin": "—",
+    "subspecies": null,
+    "purpose": null,
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Enderby Island cattle",
+    "origin": "New Zealand",
+    "subspecies": "Unknown",
+    "purpose": "Feral",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Enderby_Island_Cattle"
+  },
+  {
+    "name": "English Longhorn",
+    "origin": "England",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/English_Longhorn_cow_and_calf.jpg/960px-English_Longhorn_cow_and_calf.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/English_Longhorn",
+    "localImage": "images/English_Longhorn.jpg"
+  },
+  {
+    "name": "Ennstaler Bergscheck",
+    "origin": "Austria",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Ennstaler2.jpg/960px-Ennstaler2.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Ennstaler_Bergscheck",
+    "localImage": "images/Ennstaler_Bergscheck.jpg"
+  },
+  {
+    "name": "Estonian Holstein",
+    "origin": "Estonia",
+    "subspecies": "Taurus",
+    "purpose": "Dairy",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Estonian Native",
+    "origin": "Estonia",
+    "subspecies": null,
+    "purpose": null,
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Estonian Red cattle",
+    "origin": "Estonia",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Lehm_Eesti_Maa%C3%BClikooli_laudas..jpg/1920px-Lehm_Eesti_Maa%C3%BClikooli_laudas..jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Estonian_Red_cattle",
+    "localImage": "images/Estonian_Red_cattle.jpg"
+  },
+  {
+    "name": "Évolène cattle",
+    "origin": "Switzerland",
+    "subspecies": "Taurus",
+    "purpose": "Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Evolene_Cow.jpg/960px-Evolene_Cow.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/%C3%89vol%C3%A8ne_cattle",
+    "localImage": "images/Évolène_cattle.jpg"
+  },
+  {
+    "name": "Finnish Ayrshire",
+    "origin": "Finland",
+    "subspecies": null,
+    "purpose": null,
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Syyskuu2_2005_060b.jpg/500px-Syyskuu2_2005_060b.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Finnish_Ayrshire",
+    "localImage": "images/Finnish_Ayrshire.jpg"
+  },
+  {
+    "name": "Finncattle",
+    "origin": "Finland",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/L%C3%A4nsisuomenkarjaa_Ahlmanin_maatalouskoulun_pellolla.jpg/1920px-L%C3%A4nsisuomenkarjaa_Ahlmanin_maatalouskoulun_pellolla.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Finncattle",
+    "localImage": "images/Finncattle.jpg"
+  },
+  {
+    "name": "Finnish Holstein-Friesian",
+    "origin": "Finland",
+    "subspecies": null,
+    "purpose": null,
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Fjäll",
+    "origin": "Sweden",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy/Also called Swedish Mountain",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Fjallko.jpg/1920px-Fjallko.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Fj%C3%A4ll",
+    "localImage": "images/Fjäll.jpg"
+  },
+  {
+    "name": "Fleckvieh",
+    "origin": "Austria",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Cow_%28Fleckvieh_breed%29_Oeschinensee_Slaunger_2009-07-07.jpg/3840px-Cow_%28Fleckvieh_breed%29_Oeschinensee_Slaunger_2009-07-07.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Fleckvieh_cattle",
+    "localImage": "images/Fleckvieh.jpg"
+  },
+  {
+    "name": "Florida Cracker cattle",
+    "origin": "United States",
+    "subspecies": "Taurus",
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Florida_Cracker_cow_and_calf.JPG/1920px-Florida_Cracker_cow_and_calf.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Florida_Cracker_cattle",
+    "localImage": "images/Florida_Cracker_cattle.jpg"
+  },
+  {
+    "name": "Fogera",
+    "origin": "Ethiopia",
+    "subspecies": null,
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Fogera_cattle"
+  },
+  {
+    "name": "French Simmental",
+    "origin": "France",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Simmental-vache.JPG/1920px-Simmental-vache.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/French_Simmental",
+    "localImage": "images/French_Simmental.jpg"
+  },
+  {
+    "name": "Fribourgeoise",
+    "origin": "Switzerland",
+    "subspecies": null,
+    "purpose": null,
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Vache_fribourgeoise_1859.jpg/500px-Vache_fribourgeoise_1859.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Fribourgeoise",
+    "localImage": "images/Fribourgeoise.jpg"
+  },
+  {
+    "name": "Friesian Red and White",
+    "origin": "—",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Fulani Sudanese",
+    "origin": "—",
+    "subspecies": "Indicus",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Galician Blond",
+    "origin": "Spain",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Vaca_rubia_en_Cumbraos_-_Mes%C3%ADa_-_Galiza.jpg/1280px-Vaca_rubia_en_Cumbraos_-_Mes%C3%ADa_-_Galiza.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Galician_Blond",
+    "localImage": "images/Galician_Blond.jpg"
+  },
+  {
+    "name": "Galloway cattle",
+    "origin": "Scotland",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Galloway.jpg/1280px-Galloway.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Galloway_cattle",
+    "localImage": "images/Galloway_cattle.jpg"
+  },
+  {
+    "name": "Gangatiri",
+    "origin": "India",
+    "subspecies": "Indicus",
+    "purpose": "Dairy/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Gangatiri_02.JPG/3840px-Gangatiri_02.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Gangatiri",
+    "localImage": "images/Gangatiri.jpg"
+  },
+  {
+    "name": "Gaolao",
+    "origin": "India",
+    "subspecies": "Indicus",
+    "purpose": "Dairy/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Gaolao_02.JPG/3840px-Gaolao_02.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Gaolao",
+    "localImage": "images/Gaolao.jpg"
+  },
+  {
+    "name": "Garvonesa",
+    "origin": "Portugal",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Draught",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Garvonesa"
+  },
+  {
+    "name": "Gascon cattle",
+    "origin": "France",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Gasconnes_Antignac_%2811%29.JPG/1920px-Gasconnes_Antignac_%2811%29.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Gascon_cattle",
+    "localImage": "images/Gascon_cattle.jpg"
+  },
+  {
+    "name": "Gelbvieh",
+    "origin": "Germany",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Gelbvieh.jpg/1280px-Gelbvieh.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Gelbvieh",
+    "localImage": "images/Gelbvieh.jpg"
+  },
+  {
+    "name": "Georgian Mountain cattle",
+    "origin": "Georgia",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Georgian_Mountain_cattle"
+  },
+  {
+    "name": "German Angus",
+    "origin": "Germany",
+    "subspecies": "Taurus",
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Deutsch-Angus-Bulle_Valentin_vom_Natur-Hof_Chemnitz_e.V..JPG/1920px-Deutsch-Angus-Bulle_Valentin_vom_Natur-Hof_Chemnitz_e.V..JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/German_Angus",
+    "localImage": "images/German_Angus.jpg"
+  },
+  {
+    "name": "German Black Pied cattle",
+    "origin": "Germany",
+    "subspecies": "Taurus",
+    "purpose": "Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Schwarzbuntes_Rind.JPG/500px-Schwarzbuntes_Rind.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/German_Black_Pied_cattle",
+    "localImage": "images/German_Black_Pied_cattle.jpg"
+  },
+  {
+    "name": "German Black Pied Dairy",
+    "origin": "Germany",
+    "subspecies": "Taurus",
+    "purpose": "Dairy",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/German_Black_Pied_Dairy"
+  },
+  {
+    "name": "German Red Pied",
+    "origin": "Germany",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/German_Red_Pied"
+  },
+  {
+    "name": "Gir",
+    "origin": "India",
+    "subspecies": "Indicus",
+    "purpose": "Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Gir_01.JPG/3840px-Gir_01.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Gir_cattle",
+    "localImage": "images/Gir.jpg"
+  },
+  {
+    "name": "Glamorgan cattle",
+    "origin": "England",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Da_morgannwgbach.jpg/1920px-Da_morgannwgbach.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Glamorgan_cattle",
+    "localImage": "images/Glamorgan_cattle.jpg"
+  },
+  {
+    "name": "Glan cattle",
+    "origin": "Germany",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Glanrind3.jpg/1280px-Glanrind3.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Glan_cattle",
+    "localImage": "images/Glan_cattle.jpg"
+  },
+  {
+    "name": "Gloucester",
+    "origin": "England",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Gloucester_cow.jpg/250px-Gloucester_cow.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Gloucester_cattle",
+    "localImage": "images/Gloucester.jpg"
+  },
+  {
+    "name": "Gobra",
+    "origin": "—",
+    "subspecies": "Indicus",
+    "purpose": "Meat/Draught",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Greek Shorthorn",
+    "origin": "Greece",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Greek_Shorthorn"
+  },
+  {
+    "name": "Greek Steppe",
+    "origin": "Greece",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Greyman cattle",
+    "origin": "Australia",
+    "subspecies": "Taurus/Indicus hybrid",
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Greyman.JPG/1920px-Greyman.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Greyman_cattle",
+    "localImage": "images/Greyman_cattle.jpg"
+  },
+  {
+    "name": "Gudali",
+    "origin": "Iran/Persia",
+    "subspecies": "Indicus",
+    "purpose": "Dairy/Draught",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Guernsey cattle",
+    "origin": "Channel Islands",
+    "subspecies": "Taurus",
+    "purpose": "Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Guernsey_cow_or_calf_lying_on_the_ground%2C_ca_1941-42.jpg/1920px-Guernsey_cow_or_calf_lying_on_the_ground%2C_ca_1941-42.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Guernsey_cattle",
+    "localImage": "images/Guernsey_cattle.jpg"
+  },
+  {
+    "name": "Guzerá",
+    "origin": "Brazil",
+    "subspecies": "Indicus",
+    "purpose": "Meat/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Guzer%C3%A1_macho_-_EMAPA_100307_REFON_1.jpg/1920px-Guzer%C3%A1_macho_-_EMAPA_100307_REFON_1.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Guzer%C3%A1",
+    "localImage": "images/Guzerá.jpg"
+  },
+  {
+    "name": "Hallikar [ 4 ]",
+    "origin": "India",
+    "subspecies": "Indicus",
+    "purpose": "Draught/Origin of Amrit Mahal cattle",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Hallikaru_01.JPG/3840px-Hallikaru_01.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Hallikar",
+    "localImage": "images/Hallikar___4__.jpg"
+  },
+  {
+    "name": "Hanwoo",
+    "origin": "Korea",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Draught/Cow fighting",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/So_%28Korean_cattle%29.jpg/3840px-So_%28Korean_cattle%29.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Hanwoo",
+    "localImage": "images/Hanwoo.jpg"
+  },
+  {
+    "name": "Hariana cattle",
+    "origin": "India",
+    "subspecies": "Indicus",
+    "purpose": "Dairy/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Hariana_01.JPG/3840px-Hariana_01.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Hariana_cattle",
+    "localImage": "images/Hariana_cattle.jpg"
+  },
+  {
+    "name": "Hartón del Valle",
+    "origin": "Colombia",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Harzer Rotvieh",
+    "origin": "Germany",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Harz-Kuh.jpg/1280px-Harz-Kuh.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Harzer_Rotvieh",
+    "localImage": "images/Harzer_Rotvieh.jpg"
+  },
+  {
+    "name": "Hays Converter",
+    "origin": "Canada",
+    "subspecies": "Taurus",
+    "purpose": "Meat",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Hays_Converter"
+  },
+  {
+    "name": "Heck cattle",
+    "origin": "Germany",
+    "subspecies": "Taurus",
+    "purpose": "Science",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Laufende_schwarze_Kuh.JPG/1920px-Laufende_schwarze_Kuh.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Heck_cattle",
+    "localImage": "images/Heck_cattle.jpg"
+  },
+  {
+    "name": "Hereford",
+    "origin": "England",
+    "subspecies": "Taurus",
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Hereford_bull_large.jpg/500px-Hereford_bull_large.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Hereford_(cattle)",
+    "localImage": "images/Hereford.jpg"
+  },
+  {
+    "name": "Herens",
+    "origin": "Switzerland, Italy, France",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Cow fighting",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Eringerkuh.jpg/330px-Eringerkuh.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Herens_(cattle)",
+    "localImage": "images/Herens.jpg"
+  },
+  {
+    "name": "Highland cattle",
+    "origin": "Scotland",
+    "subspecies": "Taurus",
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Cow_on_Pupers.jpg/1920px-Cow_on_Pupers.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Highland_cattle",
+    "localImage": "images/Highland_cattle.jpg"
+  },
+  {
+    "name": "Hinterwald",
+    "origin": "Germany",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Cow_suckling.jpg/500px-Cow_suckling.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Hinterwald",
+    "localImage": "images/Hinterwald.jpg"
+  },
+  {
+    "name": "Holando-Argentino",
+    "origin": "Argentina",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Holando-Argentino"
+  },
+  {
+    "name": "Holstein Friesian cattle",
+    "origin": "Germany, the Netherlands",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Cow_female_black_white.jpg/1920px-Cow_female_black_white.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Holstein_Friesian_cattle",
+    "localImage": "images/Holstein_Friesian_cattle.jpg"
+  },
+  {
+    "name": "Horro",
+    "origin": "Ethiopia",
+    "subspecies": "Indicus",
+    "purpose": "Meat/Draught",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Horro"
+  },
+  {
+    "name": "Huáng Cattle",
+    "origin": "China",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Hungarian Grey",
+    "origin": "Hungary",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/Hungarian_Grey_Cattle.jpg/1920px-Hungarian_Grey_Cattle.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Hungarian_Grey",
+    "localImage": "images/Hungarian_Grey.jpg"
+  },
+  {
+    "name": "Iberian cattle",
+    "origin": "Spain",
+    "subspecies": null,
+    "purpose": null,
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/List_of_Spanish_cattle_breeds"
+  },
+  {
+    "name": "Icelandic",
+    "origin": "Iceland",
+    "subspecies": "Taurus",
+    "purpose": "Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Cow_in_Iceland.jpg/1920px-Cow_in_Iceland.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Icelandic_cattle",
+    "localImage": "images/Icelandic.jpg"
+  },
+  {
+    "name": "Illawarra cattle",
+    "origin": "Australia",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Illawarra.jpg/500px-Illawarra.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Illawarra_cattle",
+    "localImage": "images/Illawarra_cattle.jpg"
+  },
+  {
+    "name": "Improved Red and White",
+    "origin": "Netherlands",
+    "subspecies": "Taurus",
+    "purpose": "Meat",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Indo-Brazilian",
+    "origin": "—",
+    "subspecies": "Indicus",
+    "purpose": "Meat",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Indo-Brazilian_cattle"
+  },
+  {
+    "name": "Irish Moiled",
+    "origin": "Ireland",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Irish_moiled.jpg/500px-Irish_moiled.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Irish_Moiled",
+    "localImage": "images/Irish_Moiled.jpg"
+  },
+  {
+    "name": "Palestine Holstein",
+    "origin": "Palestine",
+    "subspecies": "Taurus",
+    "purpose": "Dairy",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Palestine Red",
+    "origin": "Palestine",
+    "subspecies": "Taurus/Indicus  hybrid",
+    "purpose": "Meat/Dairy",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Istoben cattle",
+    "origin": "—",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Istoben_cattle"
+  },
+  {
+    "name": "Istrian cattle",
+    "origin": "",
+    "subspecies": "see Boškarin",
+    "purpose": null,
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Bo%C5%A1karin_2.jpg/1920px-Bo%C5%A1karin_2.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Istrian_cattle",
+    "localImage": "images/Istrian_cattle.jpg"
+  },
+  {
+    "name": "Jamaica Black",
+    "origin": "Jamaica",
+    "subspecies": "Taurus/Indicus  hybrid",
+    "purpose": "Meat/Dairy",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Jamaica Hope",
+    "origin": "Jamaica",
+    "subspecies": "Taurus/Indicus hybrid",
+    "purpose": "Dairy",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Jamaica_Hope"
+  },
+  {
+    "name": "Jamaica Red",
+    "origin": "Jamaica",
+    "subspecies": "Taurus/Indicus hybrid",
+    "purpose": "Meat",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Japanese Black",
+    "origin": "Japan",
+    "subspecies": "Taurus",
+    "purpose": "Meat/One of the four wagyu breeds",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Tajimagyu2.jpg/3840px-Tajimagyu2.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Japanese_Black",
+    "localImage": "images/Japanese_Black.jpg"
+  },
+  {
+    "name": "Japanese Brown",
+    "origin": "Japan",
+    "subspecies": "Taurus",
+    "purpose": "Meat/One of the four wagyu breeds",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/10th_Wagyukyoshinkai_Shinsa%2C_Japanese_Brown.jpg/250px-10th_Wagyukyoshinkai_Shinsa%2C_Japanese_Brown.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Japanese_Brown",
+    "localImage": "images/Japanese_Brown.jpg"
+  },
+  {
+    "name": "Japanese Polled",
+    "origin": "Japan",
+    "subspecies": "Taurus",
+    "purpose": "Meat/One of the four wagyu breeds",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Japanese_Polled_%3D_%E4%B8%96%E7%95%8C%E3%81%AE%E7%89%9B_%E7%84%A1%E8%A7%92%E5%92%8C%E7%A8%AE%EF%BC%88%E9%9B%84%EF%BC%89_%2835896549093%29.jpg/3840px-Japanese_Polled_%3D_%E4%B8%96%E7%95%8C%E3%81%AE%E7%89%9B_%E7%84%A1%E8%A7%92%E5%92%8C%E7%A8%AE%EF%BC%88%E9%9B%84%EF%BC%89_%2835896549093%29.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Japanese_Polled",
+    "localImage": "images/Japanese_Polled.jpg"
+  },
+  {
+    "name": "Japanese Shorthorn",
+    "origin": "Japan",
+    "subspecies": "Taurus",
+    "purpose": "Meat/One of the four wagyu breeds",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Japanese_Shorthorn_%3D_%E4%B8%96%E7%95%8C%E3%81%AE%E7%89%9B_%E6%97%A5%E6%9C%AC%E7%9F%AD%E8%A7%92%E7%A8%AE%EF%BC%88%E9%9B%8C%EF%BC%89_%2836660258406%29.jpg/3840px-Japanese_Shorthorn_%3D_%E4%B8%96%E7%95%8C%E3%81%AE%E7%89%9B_%E6%97%A5%E6%9C%AC%E7%9F%AD%E8%A7%92%E7%A8%AE%EF%BC%88%E9%9B%8C%EF%BC%89_%2836660258406%29.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Japanese_Shorthorn",
+    "localImage": "images/Japanese_Shorthorn.jpg"
+  },
+  {
+    "name": "Jarmelista",
+    "origin": "Portugal",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Draught",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Jarmelista"
+  },
+  {
+    "name": "Javari cattle",
+    "origin": "India",
+    "subspecies": "Indicus",
+    "purpose": "Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Javari_02.JPG/3840px-Javari_02.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Javari_Cattle",
+    "localImage": "images/Javari_cattle.jpg"
+  },
+  {
+    "name": "Jersey cattle",
+    "origin": "Channel Islands",
+    "subspecies": "Taurus",
+    "purpose": "Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Walworth_Gate_010.jpg/1920px-Walworth_Gate_010.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Jersey_cattle",
+    "localImage": "images/Jersey_cattle.jpg"
+  },
+  {
+    "name": "Jutland cattle",
+    "origin": "Denmark",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Jutland_cattle"
+  },
+  {
+    "name": "Kabin Buri cattle",
+    "origin": "Thailand",
+    "subspecies": "Taurus/Indicus hybrid",
+    "purpose": "Meat/Dairy/Crossbreed between Brahman and Simmental",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Kalmyk cattle",
+    "origin": "Russia",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/1896._17.%D0%92%D0%BE%D0%BB_%D0%9A%D0%B0%D0%BB%D0%BC%D1%8B%D0%BA_%D0%9A%D0%B0%D0%BB%D0%BC%D1%8B%D1%86%D0%BA%D0%BE%D0%B9_%D0%BF%D0%BE%D1%80%D0%BE%D0%B4%D1%8B%2C_%D0%B2%D1%8B%D1%80%D0%B0%D1%89%D0%B5%D0%BD%D0%BD%D1%8B%D0%B9_%D0%B2_%D0%B8%D0%BC%D0%B5%D0%BD%D0%B8%D0%B8_%D0%9A%D1%83%D0%BB%D0%B5%D1%88%D0%BE%D0%B2%D0%B0_.jpg/1920px-1896._17.%D0%92%D0%BE%D0%BB_%D0%9A%D0%B0%D0%BB%D0%BC%D1%8B%D0%BA_%D0%9A%D0%B0%D0%BB%D0%BC%D1%8B%D1%86%D0%BA%D0%BE%D0%B9_%D0%BF%D0%BE%D1%80%D0%BE%D0%B4%D1%8B%2C_%D0%B2%D1%8B%D1%80%D0%B0%D1%89%D0%B5%D0%BD%D0%BD%D1%8B%D0%B9_%D0%B2_%D0%B8%D0%BC%D0%B5%D0%BD%D0%B8%D0%B8_%D0%9A%D1%83%D0%BB%D0%B5%D1%88%D0%BE%D0%B2%D0%B0_.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Kalmyk_cattle",
+    "localImage": "images/Kalmyk_cattle.jpg"
+  },
+  {
+    "name": "Kangayam",
+    "origin": "India",
+    "subspecies": "Indicus",
+    "purpose": "Dairy/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Kangayam_02.JPG/3840px-Kangayam_02.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Kangayam_(cattle)",
+    "localImage": null
+  },
+  {
+    "name": "Kankrej",
+    "origin": "India",
+    "subspecies": "Indicus",
+    "purpose": "Dairy/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Guzer%C3%A1_macho_-_EMAPA_100307_REFON_1.jpg/1920px-Guzer%C3%A1_macho_-_EMAPA_100307_REFON_1.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Kankrej_cattle",
+    "localImage": "images/Kankrej.jpg"
+  },
+  {
+    "name": "Kamphaeng Saen cattle",
+    "origin": "Thailand",
+    "subspecies": "Taurus/Indicus hybrid",
+    "purpose": "Meat",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Karan Swiss",
+    "origin": "—",
+    "subspecies": "Taurus/Indicus  hybrid",
+    "purpose": "Meat/Dairy",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Kasaragod Dwarf cattle",
+    "origin": "India",
+    "subspecies": "Indicus",
+    "purpose": "Dairy/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/%E0%B4%95%E0%B4%BE%E0%B4%B8%E0%B5%BC%E0%B4%97%E0%B5%8B%E0%B4%A1%E0%B5%8D_%E0%B4%95%E0%B5%81%E0%B4%B3%E0%B5%8D%E0%B4%B3%E0%B5%BB_Kasaragod_dwarf_cattle.jpg/1920px-%E0%B4%95%E0%B4%BE%E0%B4%B8%E0%B5%BC%E0%B4%97%E0%B5%8B%E0%B4%A1%E0%B5%8D_%E0%B4%95%E0%B5%81%E0%B4%B3%E0%B5%8D%E0%B4%B3%E0%B5%BB_Kasaragod_dwarf_cattle.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Kasaragod_Dwarf_cattle",
+    "localImage": "images/Kasaragod_Dwarf_cattle.jpg"
+  },
+  {
+    "name": "Kathiawadi",
+    "origin": "India",
+    "subspecies": "Indicus",
+    "purpose": "Draught",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Kathiawadi_cattle"
+  },
+  {
+    "name": "Kazakh Whiteheaded",
+    "origin": "Kazakhstan",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Kuray_cow_in_the_evening.jpg/3840px-Kuray_cow_in_the_evening.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Kazakh_Whiteheaded",
+    "localImage": "images/Kazakh_Whiteheaded.jpg"
+  },
+  {
+    "name": "Kenana cattle",
+    "origin": "Sudan",
+    "subspecies": "Indicus",
+    "purpose": "Dairy",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Butana_and_Kenana_cattle"
+  },
+  {
+    "name": "Kenkatha cattle",
+    "origin": "India",
+    "subspecies": "Indicus",
+    "purpose": "Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Kenkatha_02.JPG/3840px-Kenkatha_02.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Kenkatha_cattle",
+    "localImage": "images/Kenkatha_cattle.jpg"
+  },
+  {
+    "name": "Kerry cattle",
+    "origin": "Ireland",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Kerry_cow_and_calf_in_Killarney_National_Park.jpg/1280px-Kerry_cow_and_calf_in_Killarney_National_Park.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Kerry_cattle",
+    "localImage": "images/Kerry_cattle.jpg"
+  },
+  {
+    "name": "Kherigarh",
+    "origin": "India",
+    "subspecies": "Indicus",
+    "purpose": "Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Kerigar_02.JPG/3840px-Kerigar_02.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Kherigarh",
+    "localImage": "images/Kherigarh.jpg"
+  },
+  {
+    "name": "Khillari cattle",
+    "origin": "India",
+    "subspecies": "Indicus",
+    "purpose": "Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Khilari_01.JPG/3840px-Khilari_01.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Khillari_cattle",
+    "localImage": "images/Khillari_cattle.jpg"
+  },
+  {
+    "name": "Kholomogory",
+    "origin": "Russia",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Korat Wagyu",
+    "origin": "Thailand",
+    "subspecies": "Taurus/Indicus hybrid",
+    "purpose": "Meat",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Kostroma cattle",
+    "origin": "Russia",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Kostroma_cattle"
+  },
+  {
+    "name": "Krishna Valley cattle",
+    "origin": "India",
+    "subspecies": "Indicus",
+    "purpose": "Dairy/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Krishna-cow_01.JPG/3840px-Krishna-cow_01.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Krishna_Valley_cattle",
+    "localImage": "images/Krishna_Valley_cattle.jpg"
+  },
+  {
+    "name": "Kuri",
+    "origin": "—",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/La_vache_kouri_au_mus%C3%A9e_national_du_Niger.jpg/3840px-La_vache_kouri_au_mus%C3%A9e_national_du_Niger.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Kuri_(cattle)",
+    "localImage": "images/Kuri.jpg"
+  },
+  {
+    "name": "Kurgan cattle",
+    "origin": "Russia",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Kurgan_cattle"
+  },
+  {
+    "name": "La Reina cattle",
+    "origin": "Nicaragua",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/La_Reina_cattle"
+  },
+  {
+    "name": "Lakenvelder cattle",
+    "origin": "Netherlands",
+    "subspecies": "Taurus",
+    "purpose": "Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Dutch_Belted_Cow.jpg/250px-Dutch_Belted_Cow.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Lakenvelder_cattle",
+    "localImage": "images/Lakenvelder_cattle.jpg"
+  },
+  {
+    "name": "Lampurger",
+    "origin": "—",
+    "subspecies": null,
+    "purpose": null,
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Latvian Blue",
+    "origin": "—",
+    "subspecies": null,
+    "purpose": null,
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Latvian Brown",
+    "origin": "Latvia",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Latvijas_bruna.JPG/3840px-Latvijas_bruna.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Latvian_Brown",
+    "localImage": "images/Latvian_Brown.jpg"
+  },
+  {
+    "name": "Latvian Danish Red",
+    "origin": "Latvia",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Latvian_Danish_Red"
+  },
+  {
+    "name": "Lebedyn",
+    "origin": "Ukraine",
+    "subspecies": "Taurus",
+    "purpose": null,
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Lebedyn_(cattle)"
+  },
+  {
+    "name": "Limia cattle",
+    "origin": "Spain",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/CRZG%2C_boi_limiao.jpg/3840px-CRZG%2C_boi_limiao.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Limia_cattle",
+    "localImage": "images/Limia_cattle.jpg"
+  },
+  {
+    "name": "Limousin",
+    "origin": "France",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Col_de_la_Core_Bovins_15082018_1.jpg/3840px-Col_de_la_Core_Bovins_15082018_1.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Limousin_cattle",
+    "localImage": "images/Limousin.jpg"
+  },
+  {
+    "name": "Limpurger",
+    "origin": "—",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Lincoln Red",
+    "origin": "England",
+    "subspecies": "Taurus",
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Lincoln_Red_heifer.jpg/1920px-Lincoln_Red_heifer.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Lincoln_Red",
+    "localImage": "images/Lincoln_Red.jpg"
+  },
+  {
+    "name": "Lynch Lineback",
+    "origin": "Canada",
+    "subspecies": "Taurus",
+    "purpose": "Dairy",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Lithuanian Black-and-White",
+    "origin": "—",
+    "subspecies": null,
+    "purpose": null,
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Lithuanian Light Grey",
+    "origin": "—",
+    "subspecies": null,
+    "purpose": null,
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Lithuanian Red",
+    "origin": "Lithuania",
+    "subspecies": null,
+    "purpose": "Meat",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Lithuanian_Red"
+  },
+  {
+    "name": "Lithuanian White-Backed",
+    "origin": "—",
+    "subspecies": null,
+    "purpose": null,
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Lohani cattle",
+    "origin": "—",
+    "subspecies": "Indicus",
+    "purpose": "Meat/Draught",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Lohani_cattle"
+  },
+  {
+    "name": "Lourdais",
+    "origin": "France",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Lourdaise_dans_Pyr%C3%A9n%C3%A9es.jpg/500px-Lourdaise_dans_Pyr%C3%A9n%C3%A9es.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Lourdais",
+    "localImage": "images/Lourdais.jpg"
+  },
+  {
+    "name": "Lucerna cattle",
+    "origin": "South America",
+    "subspecies": "Taurus",
+    "purpose": null,
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Lucerna_cattle"
+  },
+  {
+    "name": "Luing",
+    "origin": "Scotland",
+    "subspecies": "Taurus",
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Luing_Cattle.jpg/500px-Luing_Cattle.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Luing_cattle",
+    "localImage": "images/Luing.jpg"
+  },
+  {
+    "name": "Madagascar Zebu",
+    "origin": "—",
+    "subspecies": "Indicus",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Z%C3%A9bus_de_Madagascar_02.jpg/1920px-Z%C3%A9bus_de_Madagascar_02.jpg",
+    "wikiUrl": null,
+    "localImage": "images/Madagascar_Zebu.jpg"
+  },
+  {
+    "name": "Madura",
+    "origin": "Indonesia",
+    "subspecies": "Banteng /Indicus  hybrid",
+    "purpose": "Meat/Dairy/Draught/Racing",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Sapi_Madura_-_panoramio.jpg/1280px-Sapi_Madura_-_panoramio.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Madura_cattle",
+    "localImage": "images/Madura.jpg"
+  },
+  {
+    "name": "Maine-Anjou",
+    "origin": "France",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/0/0d/Maineanjou.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Maine-Anjou",
+    "localImage": "images/Maine-Anjou.jpg"
+  },
+  {
+    "name": "Malnad Gidda",
+    "origin": "India",
+    "subspecies": "Indicus",
+    "purpose": "Dairy/Draught/Semi-dwarf breed",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Malenadu_Gidda_01.JPG/3840px-Malenadu_Gidda_01.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Malnad_Gidda",
+    "localImage": "images/Malnad_Gidda.jpg"
+  },
+  {
+    "name": "Malvi",
+    "origin": "India",
+    "subspecies": "Indicus",
+    "purpose": "Dairy/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Malvi_02.JPG/3840px-Malvi_02.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Malvi",
+    "localImage": "images/Malvi.jpg"
+  },
+  {
+    "name": "Mandalong Special",
+    "origin": "—",
+    "subspecies": "Taurus/Indicus hybrid",
+    "purpose": "Meat",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Mantequera Leonesa",
+    "origin": "—",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Maraîchine",
+    "origin": "France",
+    "subspecies": "Taurus",
+    "purpose": "meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Maraichine01.jpg/1920px-Maraichine01.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Mara%C3%AEchine",
+    "localImage": "images/Maraîchine.jpg"
+  },
+  {
+    "name": "Maramureş Brown",
+    "origin": "Romania",
+    "subspecies": null,
+    "purpose": null,
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Marchigiana",
+    "origin": "Italy",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Esemplare_di_razza_bovina_marchigiana.jpg/1920px-Esemplare_di_razza_bovina_marchigiana.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Marchigiana",
+    "localImage": "images/Marchigiana.jpg"
+  },
+  {
+    "name": "Maremmana",
+    "origin": "Italy",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Maremmana_cattle_2008.jpg/1920px-Maremmana_cattle_2008.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Maremmana",
+    "localImage": "images/Maremmana.jpg"
+  },
+  {
+    "name": "Marinhoa",
+    "origin": "Portugal",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Marinhoa"
+  },
+  {
+    "name": "Maronesa",
+    "origin": "Portugal",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Maronesa_no_Alv%C3%A3o_derived_2.jpg/500px-Maronesa_no_Alv%C3%A3o_derived_2.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Maronesa",
+    "localImage": "images/Maronesa.jpg"
+  },
+  {
+    "name": "Masai",
+    "origin": "—",
+    "subspecies": "Indicus",
+    "purpose": "Meat/Draught",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Mashona",
+    "origin": "Zimbabwe",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Draught",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Menorquina",
+    "origin": "Spain",
+    "subspecies": "Taurus",
+    "purpose": "Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Vaca_menorquina.jpg/500px-Vaca_menorquina.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Menorquina_cattle",
+    "localImage": "images/Menorquina.jpg"
+  },
+  {
+    "name": "Mertolenga",
+    "origin": "Portugal",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Rede_Natura_2000_-_S%C3%ADtio_do_Estu%C3%A1rio_do_Tejo_06%2C_cropped_2.jpg/1280px-Rede_Natura_2000_-_S%C3%ADtio_do_Estu%C3%A1rio_do_Tejo_06%2C_cropped_2.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Mertolenga",
+    "localImage": "images/Mertolenga.jpg"
+  },
+  {
+    "name": "Meuse-Rhine-Issel",
+    "origin": "Netherlands",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Koeien_met_horens.jpg/1920px-Koeien_met_horens.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Meuse-Rhine-Issel",
+    "localImage": "images/Meuse-Rhine-Issel.jpg"
+  },
+  {
+    "name": "Mewati",
+    "origin": "India",
+    "subspecies": "Indicus",
+    "purpose": "Dairy/Draught",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Mewati_cattle"
+  },
+  {
+    "name": "Milking Shorthorn",
+    "origin": "Canada, United States",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Milking_shorthorns.JPG/330px-Milking_shorthorns.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Milking_Shorthorn_(North_America)",
+    "localImage": "images/Milking_Shorthorn.jpg"
+  },
+  {
+    "name": "Minhota",
+    "origin": "Portugal",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Vaca_gallega.JPG/960px-Vaca_gallega.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Minhota",
+    "localImage": "images/Minhota.jpg"
+  },
+  {
+    "name": "Mirandesa",
+    "origin": "Portugal",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Vaca_ra%C3%A7a_mirandesa.JPG/3840px-Vaca_ra%C3%A7a_mirandesa.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Mirandesa",
+    "localImage": "images/Mirandesa.jpg"
+  },
+  {
+    "name": "Mocăniţă",
+    "origin": "Romania",
+    "subspecies": null,
+    "purpose": null,
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Mollie",
+    "origin": "Spain",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Draught",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Monchina",
+    "origin": "Spain",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Sementales_H-B_monchina_%28cropped%29.jpg/1280px-Sementales_H-B_monchina_%28cropped%29.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Monchina_(cattle)",
+    "localImage": "images/Monchina.jpg"
+  },
+  {
+    "name": "Mongolian",
+    "origin": "China",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Draught",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Mongolian_cattle"
+  },
+  {
+    "name": "Montbéliarde",
+    "origin": "France",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Vache_Montb%C3%A9liarde.jpg/1280px-Vache_Montb%C3%A9liarde.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Montb%C3%A9liarde",
+    "localImage": "images/Montbéliarde.jpg"
+  },
+  {
+    "name": "Morucha",
+    "origin": "—",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Draught/Fighting",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Munshiganj Cattle",
+    "origin": "Bangladesh",
+    "subspecies": null,
+    "purpose": "Meat",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Munshiganj_Cattle"
+  },
+  {
+    "name": "Muturu",
+    "origin": "Nigeria",
+    "subspecies": "Taurus africanus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Murboden",
+    "origin": "Austria",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Murboden"
+  },
+  {
+    "name": "Murciana-Levantina",
+    "origin": "Spain",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Draught",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Murnau-Werdenfels",
+    "origin": "Germany",
+    "subspecies": "Taurus",
+    "purpose": "Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Murnau-Werdenfelser-Rind.jpg/500px-Murnau-Werdenfelser-Rind.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Murnau-Werdenfels",
+    "localImage": "images/Murnau-Werdenfels.jpg"
+  },
+  {
+    "name": "Murray Grey",
+    "origin": "Australia",
+    "subspecies": "Taurus",
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/CSIRO_ScienceImage_1081_Murray_gray_cows.jpg/500px-CSIRO_ScienceImage_1081_Murray_gray_cows.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Murray_Grey",
+    "localImage": "images/Murray_Grey.jpg"
+  },
+  {
+    "name": "Nagori",
+    "origin": "India",
+    "subspecies": "Indicus",
+    "purpose": "Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Nagori_02.JPG/3840px-Nagori_02.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Nagori",
+    "localImage": "images/Nagori.jpg"
+  },
+  {
+    "name": "N'Dama",
+    "origin": "Guinea",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/N%27Dama_herd_in_West_Africa.jpg/1920px-N%27Dama_herd_in_West_Africa.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/N%27Dama",
+    "localImage": "images/N_Dama.jpg"
+  },
+  {
+    "name": "Negra Andaluza",
+    "origin": "Spain",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Draught",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Andalusian_Black_cattle"
+  },
+  {
+    "name": "Nelore",
+    "origin": "India",
+    "subspecies": "Indicus",
+    "purpose": "Meat/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Touro_Nelore_REFON.jpg/1280px-Touro_Nelore_REFON.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Nelore",
+    "localImage": "images/Nelore.jpg"
+  },
+  {
+    "name": "Nguni",
+    "origin": "Southern Africa",
+    "subspecies": "Taurus/Indicus  hybrid",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Nguni_cattle.jpg/1920px-Nguni_cattle.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Nguni_cattle",
+    "localImage": "images/Nguni.jpg"
+  },
+  {
+    "name": "Nimari",
+    "origin": "India",
+    "subspecies": "Indicus",
+    "purpose": "Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Nimari_02.JPG/3840px-Nimari_02.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Nimari_cattle",
+    "localImage": "images/Nimari.jpg"
+  },
+  {
+    "name": "Normande",
+    "origin": "France",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Vachesnormandes.jpg/1280px-Vachesnormandes.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Normande",
+    "localImage": "images/Normande.jpg"
+  },
+  {
+    "name": "North Bengal Grey",
+    "origin": "Bangladesh",
+    "subspecies": null,
+    "purpose": "Meat/Dairy",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/North_Bengal_Grey_cattle"
+  },
+  {
+    "name": "Northern Finncattle",
+    "origin": "Finland",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Pohjoissuomenkarja.jpg/1920px-Pohjoissuomenkarja.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Northern_Finncattle",
+    "localImage": "images/Northern_Finncattle.jpg"
+  },
+  {
+    "name": "Northern Shorthorn",
+    "origin": "Great Britain",
+    "subspecies": "Taurus",
+    "purpose": "Dairy",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Norwegian Red",
+    "origin": "Norway",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/NRF_NorwegianRed_daughter_10579_Eggtroen.jpg/1920px-NRF_NorwegianRed_daughter_10579_Eggtroen.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Norwegian_Red",
+    "localImage": "images/Norwegian_Red.jpg"
+  },
+  {
+    "name": "Ongole",
+    "origin": "India",
+    "subspecies": "Indicus",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/The_Ongole_Bull_of_Moses.jpg/500px-The_Ongole_Bull_of_Moses.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Ongole_cattle",
+    "localImage": "images/Ongole.jpg"
+  },
+  {
+    "name": "Original Simmental",
+    "origin": "Switzerland",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Simmentaler_Fleckvieh.jpg/1280px-Simmentaler_Fleckvieh.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Simmental_cattle",
+    "localImage": "images/Original_Simmental.jpg"
+  },
+  {
+    "name": "Pajuna",
+    "origin": "Spain",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Fernando_Garc%C3%ADa_%2846%29.jpg/3840px-Fernando_Garc%C3%ADa_%2846%29.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Pajuna_Cattle",
+    "localImage": "images/Pajuna.jpg"
+  },
+  {
+    "name": "Palmera",
+    "origin": "—",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Draught/Sport",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/La_Palma_-_Brena_Alta_-_Carretera_San_Isidro_-_Palmera_03_ies_cropped.jpg/1920px-La_Palma_-_Brena_Alta_-_Carretera_San_Isidro_-_Palmera_03_ies_cropped.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Palmera_cattle",
+    "localImage": "images/Palmera.jpg"
+  },
+  {
+    "name": "Pantaneiro",
+    "origin": "Brazil",
+    "subspecies": null,
+    "purpose": null,
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Pantaneiro"
+  },
+  {
+    "name": "Parda Alpina",
+    "origin": "Spain",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Parthenaise",
+    "origin": "France",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/T%C3%AAte_parthenaise.jpg/1920px-T%C3%AAte_parthenaise.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Parthenaise",
+    "localImage": "images/Parthenaise.jpg"
+  },
+  {
+    "name": "Pasiega",
+    "origin": "Spain",
+    "subspecies": "Taurus",
+    "purpose": "Dairy",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Pasiega"
+  },
+  {
+    "name": "Pembroke",
+    "origin": "Wales",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Pembroke_cattle"
+  },
+  {
+    "name": "Philippine Native",
+    "origin": "Philippines",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Philippine_cow.jpg/500px-Philippine_cow.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Philippine_Native",
+    "localImage": "images/Philippine_Native.jpg"
+  },
+  {
+    "name": "Pie Rouge des Plaines",
+    "origin": "France",
+    "subspecies": "Taurus",
+    "purpose": "Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Pie_rouge_des_plaines_SDA2010.JPG/1920px-Pie_rouge_des_plaines_SDA2010.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Pie_Rouge_des_Plaines",
+    "localImage": "images/Pie_Rouge_des_Plaines.jpg"
+  },
+  {
+    "name": "Piedmontese cattle",
+    "origin": "Italy",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Race_piemontaise.JPG/1280px-Race_piemontaise.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Piedmontese_cattle",
+    "localImage": "images/Piedmontese_cattle.jpg"
+  },
+  {
+    "name": "Pineywoods",
+    "origin": "—",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Pineywoods_cattle"
+  },
+  {
+    "name": "Pinzgauer",
+    "origin": "Austria",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/VachePinzgauer2.JPG/1280px-VachePinzgauer2.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Pinzgau_Cattle",
+    "localImage": "images/Pinzgauer.jpg"
+  },
+  {
+    "name": "Pirenaica",
+    "origin": "Spain, France",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/6/66/Vacas_pirenaicas_Hualde...jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Pirenaica",
+    "localImage": "images/Pirenaica.jpg"
+  },
+  {
+    "name": "Podolac",
+    "origin": "Croatia",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Slavonsko_srijemski_podolac.jpg/1920px-Slavonsko_srijemski_podolac.jpg",
+    "wikiUrl": null,
+    "localImage": "images/Podolac.jpg"
+  },
+  {
+    "name": "Podolica",
+    "origin": "Italy",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/3/30/Vitelli_da_ingrasso_Podolici_a_Cancellara_%28Basilicata%29.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Podolica",
+    "localImage": "images/Podolica.jpg"
+  },
+  {
+    "name": "Polish Black-and-White",
+    "origin": "—",
+    "subspecies": null,
+    "purpose": null,
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Polish Red",
+    "origin": "Poland",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Czerwone_krowy_-_01.JPG/1920px-Czerwone_krowy_-_01.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Polish_Red",
+    "localImage": "images/Polish_Red.jpg"
+  },
+  {
+    "name": "Polled Hereford",
+    "origin": "England",
+    "subspecies": "Taurus",
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/PolledHereford_bull.jpg/330px-PolledHereford_bull.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Polled_Hereford",
+    "localImage": "images/Polled_Hereford.jpg"
+  },
+  {
+    "name": "Poll Shorthorn",
+    "origin": "Australia",
+    "subspecies": "Taurus",
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Red_Shorthorn_Bull_IMG_0077.jpg/1920px-Red_Shorthorn_Bull_IMG_0077.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Poll_Shorthorn",
+    "localImage": "images/Poll_Shorthorn.jpg"
+  },
+  {
+    "name": "Polled Shorthorn",
+    "origin": "United States",
+    "subspecies": "Taurus",
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Red_Shorthorn_Bull_IMG_0077.jpg/1920px-Red_Shorthorn_Bull_IMG_0077.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Polled_Shorthorn",
+    "localImage": "images/Polled_Shorthorn.jpg"
+  },
+  {
+    "name": "Ponwar",
+    "origin": "India",
+    "subspecies": "Indicus",
+    "purpose": "Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Ponwar_01.JPG/3840px-Ponwar_01.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Ponwar_cattle",
+    "localImage": "images/Ponwar.jpg"
+  },
+  {
+    "name": "Preta",
+    "origin": "Portugal",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Draught",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Preta_cattle"
+  },
+  {
+    "name": "Prim'Holstein [ note 1 ]",
+    "origin": "France",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Prim%27Holstein_qui_se_gratte_03.jpg/3840px-Prim%27Holstein_qui_se_gratte_03.jpg",
+    "wikiUrl": null,
+    "localImage": "images/Prim_Holstein___note_1__.jpg"
+  },
+  {
+    "name": "Punganur",
+    "origin": "India",
+    "subspecies": "Indicus",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Punganur_bull.jpg/500px-Punganur_bull.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Punganur_cattle",
+    "localImage": "images/Punganur.jpg"
+  },
+  {
+    "name": "Pulikulam",
+    "origin": "India",
+    "subspecies": "Indicus",
+    "purpose": "Dairy/Draught/Jallikattu",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Pulikulam"
+  },
+  {
+    "name": "Pustertaler Sprinzen",
+    "origin": "Italy",
+    "subspecies": "Taurus",
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Pustertaler_Schecke1.jpg/250px-Pustertaler_Schecke1.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Pustertaler_Sprinzen",
+    "localImage": "images/Pustertaler_Sprinzen.jpg"
+  },
+  {
+    "name": "Qinchaun",
+    "origin": "China",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Draught",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Queensland Miniature Boran",
+    "origin": "—",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Pets",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Ramo Grande",
+    "origin": "Portugal",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Carro_de_Bois_com_o_condutor%2C_A%C3%A7ores%2C_Portugal.jpg/500px-Carro_de_Bois_com_o_condutor%2C_A%C3%A7ores%2C_Portugal.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Ramo_Grande",
+    "localImage": "images/Ramo_Grande.jpg"
+  },
+  {
+    "name": "Randall",
+    "origin": "United States",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Randalloxteam.jpg/500px-Randalloxteam.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Randall_Cattle",
+    "localImage": "images/Randall.jpg"
+  },
+  {
+    "name": "Raramuri Criollo",
+    "origin": "Chihuahua, Mexico",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Raramuri_Criollo_Bulls_at_the_Jornada_Experimental_Range%2C_NM.jpg/3840px-Raramuri_Criollo_Bulls_at_the_Jornada_Experimental_Range%2C_NM.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Raramuri_Criollo",
+    "localImage": "images/Raramuri_Criollo.jpg"
+  },
+  {
+    "name": "Rathi",
+    "origin": "India [ 5 ]",
+    "subspecies": "Indicus",
+    "purpose": "Dairy/Draught/Domestic",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Rathi_01.JPG/3840px-Rathi_01.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Rathi_cattle",
+    "localImage": "images/Rathi.jpg"
+  },
+  {
+    "name": "Rätisches Grauvieh",
+    "origin": "Switzerland",
+    "subspecies": "taurus",
+    "purpose": "meat/dairy/draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/R%C3%A4tisches_Grauvieh_4187.jpg/1920px-R%C3%A4tisches_Grauvieh_4187.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/R%C3%A4tisches_Grauvieh",
+    "localImage": "images/Rätisches_Grauvieh.jpg"
+  },
+  {
+    "name": "Raya",
+    "origin": "Ethiopia",
+    "subspecies": null,
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/9/90/Raya_oxen_at_ploughing.jpg/330px-Raya_oxen_at_ploughing.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Raya_cattle",
+    "localImage": "images/Raya.jpg"
+  },
+  {
+    "name": "Red Angus",
+    "origin": "Scotland",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Red-angus.jpg/1280px-Red-angus.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Red_Angus",
+    "localImage": "images/Red_Angus.jpg"
+  },
+  {
+    "name": "Red Brangus",
+    "origin": "—",
+    "subspecies": "Taurus/Indicus hybrid",
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Red_Brangus_Bull.png/1920px-Red_Brangus_Bull.png",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Red_Brangus",
+    "localImage": "images/Red_Brangus.png"
+  },
+  {
+    "name": "Red Chittagong",
+    "origin": "Bangladesh [ 6 ]",
+    "subspecies": "Indicus",
+    "purpose": "Draught/Good reproductive performance",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Red_Chittagong_cattle%2C_Bangladesh_%282%29.jpg/330px-Red_Chittagong_cattle%2C_Bangladesh_%282%29.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Red_Chittagong",
+    "localImage": "images/Red_Chittagong.jpg"
+  },
+  {
+    "name": "Red Fulani",
+    "origin": "West Africa",
+    "subspecies": "Taurus/Indicus hybrid",
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/A_cow_breastfeeding_her_calf.jpg/3840px-A_cow_breastfeeding_her_calf.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Red_Fulani",
+    "localImage": "images/Red_Fulani.jpg"
+  },
+  {
+    "name": "Red Gorbatov",
+    "origin": "Russia",
+    "subspecies": "Taurus",
+    "purpose": "Dairy",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Red_Gorbatov_cattle"
+  },
+  {
+    "name": "Red Holstein",
+    "origin": "—",
+    "subspecies": "Taurus",
+    "purpose": "Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/6/68/Cow_00.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Holstein_cattle#Red_and_white_Holsteins",
+    "localImage": "images/Red_Holstein.jpg"
+  },
+  {
+    "name": "Red Kandhari",
+    "origin": "India",
+    "subspecies": "Indicus",
+    "purpose": "Draught/Domestic",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Red_Kandhari_01.JPG/1920px-Red_Kandhari_01.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Red_Kandhari",
+    "localImage": "images/Red_Kandhari.jpg"
+  },
+  {
+    "name": "Red Mingrelian",
+    "origin": "Georgia",
+    "subspecies": null,
+    "purpose": "Meat/Dairy",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Red_Mingrelian"
+  },
+  {
+    "name": "Red Poll",
+    "origin": "England",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Red_Poll_heifers.JPG/1920px-Red_Poll_heifers.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Red_Poll",
+    "localImage": "images/Red_Poll.jpg"
+  },
+  {
+    "name": "Red Polled Østland",
+    "origin": "Norway",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Red Sindhi",
+    "origin": "Pakistan",
+    "subspecies": "Indicus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Red_Sindhi_Bull_at_Pakistan.jpg/500px-Red_Sindhi_Bull_at_Pakistan.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Red_Sindhi",
+    "localImage": "images/Red_Sindhi.jpg"
+  },
+  {
+    "name": "Retinta",
+    "origin": "—",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Draught",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Riggit Galloway",
+    "origin": "—",
+    "subspecies": "Taurus",
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Galloway.jpg/1280px-Galloway.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Riggit_Galloway",
+    "localImage": "images/Riggit_Galloway.jpg"
+  },
+  {
+    "name": "Ringamåla",
+    "origin": "Sweden",
+    "subspecies": "Taurus",
+    "purpose": "Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/20090809_Karlshamn%2C_Rathaus_2.JPG/1920px-20090809_Karlshamn%2C_Rathaus_2.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Ringam%C3%A5la",
+    "localImage": "images/Ringamåla.jpg"
+  },
+  {
+    "name": "Rohjan",
+    "origin": "—",
+    "subspecies": "Indicus",
+    "purpose": "Meat/Draught",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Romagnola",
+    "origin": "Italy",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Vacca_Romagnola_%283611366059%29.jpg/1920px-Vacca_Romagnola_%283611366059%29.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Romagnola",
+    "localImage": "images/Romagnola.jpg"
+  },
+  {
+    "name": "Romanian Bălțata",
+    "origin": "Romania",
+    "subspecies": null,
+    "purpose": null,
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Romanian_B%C4%83l%C8%9Bata"
+  },
+  {
+    "name": "Romanian Steppe Gray",
+    "origin": "Romania",
+    "subspecies": null,
+    "purpose": null,
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Romosinuano",
+    "origin": "Colombia",
+    "subspecies": "Taurus",
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Romosinuano_cattle.jpg/1920px-Romosinuano_cattle.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Romosinuano",
+    "localImage": "images/Romosinuano.jpg"
+  },
+  {
+    "name": "Russian Black Pied",
+    "origin": "Russia",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Russian_Black_Pied"
+  },
+  {
+    "name": "RX3",
+    "origin": "—",
+    "subspecies": "Taurus",
+    "purpose": "Meat",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Sahiwal",
+    "origin": "Pakistan",
+    "subspecies": "Indicus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Sahiwala_02.JPG/3840px-Sahiwala_02.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Sahiwal_cattle",
+    "localImage": "images/Sahiwal.jpg"
+  },
+  {
+    "name": "Sibi Bhagnari",
+    "origin": "Sibi , Pakistan",
+    "subspecies": "Zebu",
+    "purpose": "Meat/Draught/Sibi Mela",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Bhagnari-bull.jpg/330px-Bhagnari-bull.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Sibi_bhagnari",
+    "localImage": "images/Sibi_Bhagnari.jpg"
+  },
+  {
+    "name": "Salers",
+    "origin": "France",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Vache_salers.jpg/960px-Vache_salers.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Salers_cattle",
+    "localImage": "images/Salers.jpg"
+  },
+  {
+    "name": "Salorn",
+    "origin": "—",
+    "subspecies": "Taurus",
+    "purpose": "Meat",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Sanga",
+    "origin": "—",
+    "subspecies": "Taurus/Indicus hybrid",
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Watusi_Cattle1.jpg/500px-Watusi_Cattle1.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Sanga_cattle",
+    "localImage": "images/Sanga.jpg"
+  },
+  {
+    "name": "Sanhe",
+    "origin": "—",
+    "subspecies": "Taurus/Mongolian  hybrid",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Santa Cruz",
+    "origin": "United States",
+    "subspecies": "Taurus/Indicus hybrid",
+    "purpose": "Meat",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Santa Gertrudis",
+    "origin": "United States",
+    "subspecies": "Taurus/Indicus hybrid",
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Santa_Gertrudis_bull.JPG/1920px-Santa_Gertrudis_bull.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Santa_Gertrudis_cattle",
+    "localImage": "images/Santa_Gertrudis.jpg"
+  },
+  {
+    "name": "Sayaguesa",
+    "origin": "Spain",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Sayaguesa_Lippeaue.JPG/960px-Sayaguesa_Lippeaue.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Sayaguesa_Cattle",
+    "localImage": "images/Sayaguesa.jpg"
+  },
+  {
+    "name": "Schwyz",
+    "origin": "Switzerland",
+    "subspecies": null,
+    "purpose": null,
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Selembu",
+    "origin": "—",
+    "subspecies": "Gaur /Indicus hybrid",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/Selembu.jpg/3840px-Selembu.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Selembu",
+    "localImage": "images/Selembu.jpg"
+  },
+  {
+    "name": "Senepol",
+    "origin": "—",
+    "subspecies": "Taurus/Indicus hybrid",
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Toro_25M.jpg/960px-Toro_25M.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Senepol",
+    "localImage": "images/Senepol.jpg"
+  },
+  {
+    "name": "Serbian Pied",
+    "origin": "Serbia",
+    "subspecies": "Taurus",
+    "purpose": "Dairy",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Serbian Steppe",
+    "origin": "Serbia",
+    "subspecies": "Taurus",
+    "purpose": "Draught",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Sheko",
+    "origin": "Ethiopia",
+    "subspecies": null,
+    "purpose": null,
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Shetland",
+    "origin": "Scotland",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Muscliff%2C_Shetland_Cattle_-_geograph.org.uk_-_734933.jpg/500px-Muscliff%2C_Shetland_Cattle_-_geograph.org.uk_-_734933.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Shetland_cattle",
+    "localImage": "images/Shetland.jpg"
+  },
+  {
+    "name": "Shorthorn",
+    "origin": "England",
+    "subspecies": "Taurus",
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Red_Shorthorn_Bull_IMG_0077.jpg/1920px-Red_Shorthorn_Bull_IMG_0077.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Shorthorn",
+    "localImage": "images/Shorthorn.jpg"
+  },
+  {
+    "name": "Siboney de Cuba",
+    "origin": "Cuba",
+    "subspecies": "Taurus/Indicus  hybrid",
+    "purpose": "Meat/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/SiboneydeCuba.JPG/250px-SiboneydeCuba.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Siboney_de_Cuba",
+    "localImage": "images/Siboney_de_Cuba.jpg"
+  },
+  {
+    "name": "Simbrah",
+    "origin": "—",
+    "subspecies": "Taurus/Indicus hybrid",
+    "purpose": "Meat",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Simford",
+    "origin": "—",
+    "subspecies": "Taurus",
+    "purpose": "Meat",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Simmental",
+    "origin": "Switzerland",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Simmentaler_Fleckvieh.jpg/1280px-Simmentaler_Fleckvieh.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Simmental_cattle",
+    "localImage": "images/Simmental.jpg"
+  },
+  {
+    "name": "Siri",
+    "origin": "Bhutan",
+    "subspecies": "Zebu",
+    "purpose": "Dairy/Draught",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Siri_cattle"
+  },
+  {
+    "name": "South Devon",
+    "origin": "England",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/f/f5/South_Devon_cattle.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/South_Devon_cattle",
+    "localImage": "images/South_Devon.jpg"
+  },
+  {
+    "name": "Spanish Fighting Bull",
+    "origin": "Spain",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Sport",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/El_Pilar_Bull_by_Alexander_Fiske-Harrison%2C_Seville_Feria_09.jpg/330px-El_Pilar_Bull_by_Alexander_Fiske-Harrison%2C_Seville_Feria_09.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Spanish_Fighting_Bull",
+    "localImage": "images/Spanish_Fighting_Bull.jpg"
+  },
+  {
+    "name": "Speckle Park",
+    "origin": "Canada",
+    "subspecies": "Taurus",
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Canadian_Speckle_Park.JPG/1920px-Canadian_Speckle_Park.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Speckle_Park",
+    "localImage": "images/Speckle_Park.jpg"
+  },
+  {
+    "name": "Square Meater",
+    "origin": "Australia",
+    "subspecies": "Taurus",
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Square_Meater.jpg/500px-Square_Meater.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Square_Meater",
+    "localImage": null
+  },
+  {
+    "name": "Stabiliser",
+    "origin": "United States",
+    "subspecies": "Taurus",
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Stabiliser_Cows.jpg/3840px-Stabiliser_Cows.jpg",
+    "wikiUrl": null,
+    "localImage": "images/Stabiliser.jpg"
+  },
+  {
+    "name": "Sussex",
+    "origin": "England",
+    "subspecies": "Taurus",
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Sussex_cow_4.JPG/1920px-Sussex_cow_4.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Sussex_cattle",
+    "localImage": "images/Sussex.jpg"
+  },
+  {
+    "name": "Swedish Friesian",
+    "origin": "—",
+    "subspecies": "Taurus",
+    "purpose": "Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Svensk_L%C3%A5glandsboskap.jpg/500px-Svensk_L%C3%A5glandsboskap.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Swedish_Friesian",
+    "localImage": "images/Swedish_Friesian.jpg"
+  },
+  {
+    "name": "Swedish Polled",
+    "origin": "—",
+    "subspecies": "Taurus",
+    "purpose": "Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/R%C3%B6dkull2.jpg/3840px-R%C3%B6dkull2.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Swedish_Polled",
+    "localImage": "images/Swedish_Polled.jpg"
+  },
+  {
+    "name": "Swedish Red Pied",
+    "origin": "—",
+    "subspecies": "Taurus",
+    "purpose": "Dairy",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Swedish_Red_Pied"
+  },
+  {
+    "name": "Swedish Red Polled",
+    "origin": "—",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/R%C3%B6dkull2.jpg/3840px-R%C3%B6dkull2.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Swedish_Red_Polled",
+    "localImage": "images/Swedish_Red_Polled.jpg"
+  },
+  {
+    "name": "Swedish Red-and-White",
+    "origin": "—",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Svensk_r%C3%B6d_och_vit_boskap_%28SRB%29%2C_cropped.jpg/1920px-Svensk_r%C3%B6d_och_vit_boskap_%28SRB%29%2C_cropped.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Swedish_Red-and-White",
+    "localImage": "images/Swedish_Red-and-White.jpg"
+  },
+  {
+    "name": "Tabapuã",
+    "origin": "Brazil",
+    "subspecies": "Indicus",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Tarentaise",
+    "origin": "France",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Vache-tarentaise-et-le-lac-de-roseland-ferme--6614e1T650.jpg/500px-Vache-tarentaise-et-le-lac-de-roseland-ferme--6614e1T650.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Tarentaise_cattle",
+    "localImage": "images/Tarentaise.jpg"
+  },
+  {
+    "name": "Tasmanian Grey",
+    "origin": "Australia",
+    "subspecies": "Taurus",
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Tasmanian_Grey.jpg/330px-Tasmanian_Grey.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Tasmanian_Grey",
+    "localImage": "images/Tasmanian_Grey.jpg"
+  },
+  {
+    "name": "Telemark",
+    "origin": "Norway",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Telemarksfe.jpg/1920px-Telemarksfe.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Telemark_cattle",
+    "localImage": "images/Telemark.jpg"
+  },
+  {
+    "name": "Texas Longhorn",
+    "origin": "United States",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Texas_Longhorn_cow.jpg/1920px-Texas_Longhorn_cow.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Texas_longhorn_(cattle)",
+    "localImage": "images/Texas_Longhorn.jpg"
+  },
+  {
+    "name": "Texon",
+    "origin": "—",
+    "subspecies": "Taurus",
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Map_of_Texas_highlighting_Reagan_County.svg/3840px-Map_of_Texas_highlighting_Reagan_County.svg.png",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Texon",
+    "localImage": "images/Texon.png"
+  },
+  {
+    "name": "Thai Black",
+    "origin": "Thailand",
+    "subspecies": "Taurus/Indicus hybrid",
+    "purpose": "Meat",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Thai Fighting Bull",
+    "origin": "Thailand",
+    "subspecies": "Indicus",
+    "purpose": "Sport",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Thai Friesian",
+    "origin": "Thailand",
+    "subspecies": "Taurus/Indicus hybrid",
+    "purpose": "Dairy",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Thai Milking Zebu",
+    "origin": "Thailand",
+    "subspecies": "Taurus/Indicus hybrid",
+    "purpose": "Dairy",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Tharparkar",
+    "origin": "India/ Pakistan [ 7 ]",
+    "subspecies": "Indicus",
+    "purpose": "Dairy/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Tharparkar_02.JPG/3840px-Tharparkar_02.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Tharparkar_(cattle)",
+    "localImage": "images/Tharparkar.jpg"
+  },
+  {
+    "name": "Tswana",
+    "origin": "Botswana",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Vacas%2C_vista_a%C3%A9rea_del_delta_del_Okavango%2C_Botsuana%2C_2018-08-01%2C_DD_47.jpg/3840px-Vacas%2C_vista_a%C3%A9rea_del_delta_del_Okavango%2C_Botsuana%2C_2018-08-01%2C_DD_47.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Tswana_cattle",
+    "localImage": "images/Tswana.jpg"
+  },
+  {
+    "name": "Tudanca",
+    "origin": "Spain",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy/Draught/Grazing projects, rewilding",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/TudancaBull.JPG/1920px-TudancaBull.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Tudanca_Cattle",
+    "localImage": "images/Tudanca.jpg"
+  },
+  {
+    "name": "Tuli",
+    "origin": "Zimbabwe",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Tuli_Bull_Calf.jpg/500px-Tuli_Bull_Calf.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Tuli_(cattle)",
+    "localImage": "images/Tuli.jpg"
+  },
+  {
+    "name": "Tulim",
+    "origin": "South-Africa",
+    "subspecies": "Taurus/Indicus hybrid",
+    "purpose": "Meat",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Tulim"
+  },
+  {
+    "name": "Turkish Grey Steppe",
+    "origin": "—",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Draught",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Tux-Zillertal",
+    "origin": "Austria",
+    "subspecies": "Taurus",
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/TuxerRinder.JPG/1920px-TuxerRinder.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Tux-Zillertal",
+    "localImage": "images/Tux-Zillertal.jpg"
+  },
+  {
+    "name": "Tyrol Grey",
+    "origin": "Austria",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Tiroler_Grauvieh01.jpg/1280px-Tiroler_Grauvieh01.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Tyrol_Grey",
+    "localImage": "images/Tyrol_Grey.jpg"
+  },
+  {
+    "name": "Umblachery",
+    "origin": "India",
+    "subspecies": "Indicus",
+    "purpose": "Dairy/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Amblacheri_02.JPG/3840px-Amblacheri_02.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Umblachery",
+    "localImage": "images/Umblachery.jpg"
+  },
+  {
+    "name": "Ukrainian Grey",
+    "origin": "Ukraine",
+    "subspecies": "Taurus",
+    "purpose": null,
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/%D0%9C%D1%83%D0%B7%D0%B5%D0%B9-%D1%81%D0%BA%D0%B0%D0%BD%D1%81%D0%B5%D0%BD_%22%D0%9A%D0%BE%D0%B7%D0%B0%D1%86%D1%8C%D0%BA%D1%96_%D0%B7%D0%B5%D0%BC%D0%BB%D1%96_%D0%A3%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D0%B8%22_%28cropped%29.JPG/960px-%D0%9C%D1%83%D0%B7%D0%B5%D0%B9-%D1%81%D0%BA%D0%B0%D0%BD%D1%81%D0%B5%D0%BD_%22%D0%9A%D0%BE%D0%B7%D0%B0%D1%86%D1%8C%D0%BA%D1%96_%D0%B7%D0%B5%D0%BC%D0%BB%D1%96_%D0%A3%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D0%B8%22_%28cropped%29.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Ukrainian_Grey",
+    "localImage": "images/Ukrainian_Grey.jpg"
+  },
+  {
+    "name": "Valdostana Castana",
+    "origin": "Italy",
+    "subspecies": null,
+    "purpose": null,
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Bataille_de_reine_pp.jpg/1920px-Bataille_de_reine_pp.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Valdostana_Castana",
+    "localImage": "images/Valdostana_Castana.jpg"
+  },
+  {
+    "name": "Valdostana Pezzata Nera",
+    "origin": "Italy",
+    "subspecies": null,
+    "purpose": null,
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Mucche_scese_dall%27alpeggio_-_Festa_della_desarpa_Cogne.JPG/1920px-Mucche_scese_dall%27alpeggio_-_Festa_della_desarpa_Cogne.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Valdostana_Pezzata_Nera",
+    "localImage": "images/Valdostana_Pezzata_Nera.jpg"
+  },
+  {
+    "name": "Valdostana Pezzata Rossa",
+    "origin": "Italy",
+    "subspecies": null,
+    "purpose": null,
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Valldostana_peu_vermell.jpg/1920px-Valldostana_peu_vermell.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Valdostana_Pezzata_Rossa",
+    "localImage": "images/Valdostana_Pezzata_Rossa.jpg"
+  },
+  {
+    "name": "Väneko",
+    "origin": "Sweden",
+    "subspecies": null,
+    "purpose": null,
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/V%C3%A4neko_cow_and_bull.jpg/1920px-V%C3%A4neko_cow_and_bull.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/V%C3%A4neko",
+    "localImage": "images/Väneko.jpg"
+  },
+  {
+    "name": "Vaynol",
+    "origin": "Wales",
+    "subspecies": "Taurus",
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Vaynol_cow.png/500px-Vaynol_cow.png",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Vaynol_cattle",
+    "localImage": "images/Vaynol.png"
+  },
+  {
+    "name": "Vechur [ 8 ]",
+    "origin": "India",
+    "subspecies": "Indicus",
+    "purpose": "Dairy/Milk and ghee traditionally used in Ayurvedic medicine. The protein content of the milk has anti-bacterial properties [ 9 ] [ 10 ]",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Vechur_Cow.jpg/3840px-Vechur_Cow.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Vechur_Cattle",
+    "localImage": "images/Vechur___8__.jpg"
+  },
+  {
+    "name": "Vestland Fjord",
+    "origin": "Norway",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Vestland Red Polled",
+    "origin": "Norway",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Vianesa",
+    "origin": "—",
+    "subspecies": "Indicus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Vianesa_%28cropped%29.png/1280px-Vianesa_%28cropped%29.png",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Vianesa",
+    "localImage": "images/Vianesa.png"
+  },
+  {
+    "name": "Volinian Beef",
+    "origin": "Ukraine",
+    "subspecies": null,
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Volyn_meat_cattle_logo.png/330px-Volyn_meat_cattle_logo.png",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Volinian_Beef",
+    "localImage": "images/Volinian_Beef.png"
+  },
+  {
+    "name": "Vorderwald",
+    "origin": "Germany",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Noe_vorderwaelder.jpg/1920px-Noe_vorderwaelder.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Vorderwald",
+    "localImage": "images/Vorderwald.jpg"
+  },
+  {
+    "name": "Vosgienne",
+    "origin": "France",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Vosgienne_111.JPG/1920px-Vosgienne_111.JPG",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Vosgienne",
+    "localImage": "images/Vosgienne.jpg"
+  },
+  {
+    "name": "Waguli",
+    "origin": "USA",
+    "subspecies": "Taurus",
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Waguli_CriolloX1.jpg/3840px-Waguli_CriolloX1.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Waguli",
+    "localImage": "images/Waguli.jpg"
+  },
+  {
+    "name": "Wangus",
+    "origin": "—",
+    "subspecies": "Taurus/Indicus hybrid",
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Tajimagyu2.jpg/3840px-Tajimagyu2.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Wangus",
+    "localImage": "images/Wangus.jpg"
+  },
+  {
+    "name": "Welsh Black",
+    "origin": "Wales",
+    "subspecies": "Taurus",
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Welsh_Black_Cattle_Aberdare_Blog.jpg/1920px-Welsh_Black_Cattle_Aberdare_Blog.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Welsh_Black_cattle",
+    "localImage": "images/Welsh_Black.jpg"
+  },
+  {
+    "name": "Western Finncattle",
+    "origin": "Finland",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/L%C3%A4nsisuomenkarjaa_Ahlmanin_maatalouskoulun_pellolla_cropped.png/960px-L%C3%A4nsisuomenkarjaa_Ahlmanin_maatalouskoulun_pellolla_cropped.png",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Western_Finncattle",
+    "localImage": "images/Western_Finncattle.png"
+  },
+  {
+    "name": "White Cáceres",
+    "origin": "—",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Draught",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "White Fulani",
+    "origin": "—",
+    "subspecies": "Indicus",
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Fula_cattle_herders_by_John_Atherton.jpg/1920px-Fula_cattle_herders_by_John_Atherton.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/White_Fulani",
+    "localImage": "images/White_Fulani.jpg"
+  },
+  {
+    "name": "White Lamphun",
+    "origin": "Thailand",
+    "subspecies": "Indicus",
+    "purpose": "Draught",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "White Park",
+    "origin": "Great Britain",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/White_Park.jpg/960px-White_Park.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/White_Park_cattle",
+    "localImage": "images/White_Park.jpg"
+  },
+  {
+    "name": "Whitebred Shorthorn",
+    "origin": "Great Britain",
+    "subspecies": "Taurus",
+    "purpose": "Meat",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Whitebred_Shorthorns_at_Stanmer_Park_-_geograph.org.uk_-_2277867.jpg/3840px-Whitebred_Shorthorns_at_Stanmer_Park_-_geograph.org.uk_-_2277867.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Whitebred_Shorthorn",
+    "localImage": "images/Whitebred_Shorthorn.jpg"
+  },
+  {
+    "name": "Xinjiang Brown",
+    "origin": "—",
+    "subspecies": "Taurus/Mongolian  hybrid",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Yakutian",
+    "origin": "Russia",
+    "subspecies": "Taurus",
+    "purpose": "Meat/Dairy/Draught",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Yakutian_Cattle_01_-_Head-on.jpeg/500px-Yakutian_Cattle_01_-_Head-on.jpeg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Yakutian_cattle",
+    "localImage": "images/Yakutian.jpeg"
+  },
+  {
+    "name": "Yanbian",
+    "origin": "China",
+    "subspecies": "Taurus",
+    "purpose": "Draught",
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Yanbian_cattle"
+  },
+  {
+    "name": "Yanhuang",
+    "origin": "China",
+    "subspecies": "Taurus/Zebu",
+    "purpose": null,
+    "imageUrl": null,
+    "wikiUrl": null
+  },
+  {
+    "name": "Yurino",
+    "origin": "Ukraine",
+    "subspecies": "Taurus",
+    "purpose": null,
+    "imageUrl": null,
+    "wikiUrl": "https://en.wikipedia.org/wiki/Yurino_(cattle)"
+  },
+  {
+    "name": "Żubroń",
+    "origin": "Poland",
+    "subspecies": "Taurus/ European bison hybrid",
+    "purpose": "Meat/Science",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Zubron2.jpg/250px-Zubron2.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/%C5%BBubro%C5%84",
+    "localImage": "images/Żubroń.jpg"
+  },
+  {
+    "name": "Zebu",
+    "origin": "—",
+    "subspecies": "Indicus",
+    "purpose": "Meat/Dairy/Draft",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/A_well-fed_bull_in_Kuno_WS_AJTJ_P1070807.jpg/3840px-A_well-fed_bull_in_Kuno_WS_AJTJ_P1070807.jpg",
+    "wikiUrl": "https://en.wikipedia.org/wiki/Zebu",
+    "localImage": "images/Zebu.jpg"
+  }
+]
