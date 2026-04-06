@@ -13,37 +13,49 @@
  *   node upload-local-images.mjs --base-url http://localhost:5176
  */
 
-import { readdir, readFile } from 'fs/promises';
-import path from 'path';
+import { readdir, readFile } from "fs/promises";
+import path from "path";
 
-const BASE_URL = process.argv.includes('--base-url')
-  ? process.argv[process.argv.indexOf('--base-url') + 1]
-  : 'https://herdhub-production-7da5.up.railway.app';
+const BASE_URL = process.argv.includes("--base-url")
+  ? process.argv[process.argv.indexOf("--base-url") + 1]
+  : "https://herdhub-production-7da5.up.railway.app";
 
-const DRY_RUN = process.argv.includes('--dry-run');
+const DRY_RUN = process.argv.includes("--dry-run");
 
-const ADMIN_EMAIL    = 'pauldenhertog256@gmail.com';
-const ADMIN_PASSWORD = process.env.ADMIN_PASS ?? (() => { throw new Error('Set ADMIN_PASS env var'); })();
+const ADMIN_EMAIL = "admin@herdhub.com";
+const ADMIN_PASSWORD =
+  process.env.ADMIN_PASS ??
+  (() => {
+    throw new Error("Set ADMIN_PASS env var");
+  })();
 
-const IMAGES_DIR = new URL('./images/', import.meta.url).pathname.replace(/^\/([A-Z]:)/, '$1');
+const IMAGES_DIR = new URL("./images/", import.meta.url).pathname.replace(
+  /^\/([A-Z]:)/,
+  "$1",
+);
 
 // ── helpers ──────────────────────────────────────────────────────────────────
 
 function slugToName(filename) {
   // "Aberdeen_Angus.jpg" → "Aberdeen Angus"
-  return path.basename(filename, path.extname(filename)).replace(/_/g, ' ');
+  return path.basename(filename, path.extname(filename)).replace(/_/g, " ");
 }
 
 function toDataUrl(buffer, ext) {
-  const mime = ext === 'jpg' || ext === 'jpeg' ? 'image/jpeg'
-             : ext === 'png'  ? 'image/png'
-             : ext === 'webp' ? 'image/webp'
-             : ext === 'gif'  ? 'image/gif'
-             : 'image/jpeg';
-  return `data:${mime};base64,${buffer.toString('base64')}`;
+  const mime =
+    ext === "jpg" || ext === "jpeg"
+      ? "image/jpeg"
+      : ext === "png"
+        ? "image/png"
+        : ext === "webp"
+          ? "image/webp"
+          : ext === "gif"
+            ? "image/gif"
+            : "image/jpeg";
+  return `data:${mime};base64,${buffer.toString("base64")}`;
 }
 
-const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 // ── main ─────────────────────────────────────────────────────────────────────
 
@@ -53,24 +65,27 @@ async function main() {
   console.log(`Images   : ${IMAGES_DIR}\n`);
 
   // 1. Log in and grab session cookie
-  console.log('Logging in...');
+  console.log("Logging in...");
   const loginRes = await fetch(`${BASE_URL}/api/login`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email: ADMIN_EMAIL, password: ADMIN_PASSWORD }),
   });
   if (!loginRes.ok) {
-    console.error('Login failed:', await loginRes.text());
+    console.error("Login failed:", await loginRes.text());
     process.exit(1);
   }
-  const cookie = loginRes.headers.get('set-cookie');
-  if (!cookie) { console.error('No session cookie received'); process.exit(1); }
-  const sessionCookie = cookie.split(';')[0]; // just the name=value part
-  console.log('Logged in.\n');
+  const cookie = loginRes.headers.get("set-cookie");
+  if (!cookie) {
+    console.error("No session cookie received");
+    process.exit(1);
+  }
+  const sessionCookie = cookie.split(";")[0]; // just the name=value part
+  console.log("Logged in.\n");
 
   const authHeaders = {
-    'Cookie': sessionCookie,
-    'Content-Type': 'application/json',
+    Cookie: sessionCookie,
+    "Content-Type": "application/json",
   };
 
   // 2. Fetch all breeds from production
@@ -78,22 +93,26 @@ async function main() {
   const breeds = await breedsRes.json();
 
   // External = still pointing at http(s) URLs
-  const external = breeds.filter(b => /^https?:\/\//.test(b.imageUrl ?? ''));
-  console.log(`Breeds total: ${breeds.length} | Still external: ${external.length}\n`);
+  const external = breeds.filter((b) => /^https?:\/\//.test(b.imageUrl ?? ""));
+  console.log(
+    `Breeds total: ${breeds.length} | Still external: ${external.length}\n`,
+  );
 
   // 3. Read local image files and build a map: lowercased-name → { file, ext, buffer }
   const files = await readdir(IMAGES_DIR);
   const imageMap = new Map(); // lowercased breed name → file path
   for (const f of files) {
     const ext = path.extname(f).slice(1).toLowerCase();
-    if (!['jpg', 'jpeg', 'png', 'webp', 'gif'].includes(ext)) continue;
+    if (!["jpg", "jpeg", "png", "webp", "gif"].includes(ext)) continue;
     const name = slugToName(f).toLowerCase();
     imageMap.set(name, { filePath: path.join(IMAGES_DIR, f), ext });
   }
   console.log(`Local image map: ${imageMap.size} entries\n`);
 
   // 4. Process each external breed
-  let uploaded = 0, skipped = 0, failed = 0;
+  let uploaded = 0,
+    skipped = 0,
+    failed = 0;
 
   for (const breed of external) {
     const key = breed.name.toLowerCase();
@@ -118,13 +137,15 @@ async function main() {
 
       // 4b. Upload image
       const upRes = await fetch(`${BASE_URL}/api/upload-image`, {
-        method: 'POST',
+        method: "POST",
         headers: authHeaders,
         body: JSON.stringify({ name: breed.name, breedId: breed.id, dataUrl }),
       });
       if (!upRes.ok) {
         const err = await upRes.text();
-        console.error(`  [FAIL] "${breed.name}" upload: ${upRes.status} ${err}`);
+        console.error(
+          `  [FAIL] "${breed.name}" upload: ${upRes.status} ${err}`,
+        );
         failed++;
         continue;
       }
@@ -132,13 +153,15 @@ async function main() {
 
       // 4c. Patch breed imageUrl
       const patchRes = await fetch(`${BASE_URL}/api/breeds/${breed.id}`, {
-        method: 'PATCH',
+        method: "PATCH",
         headers: authHeaders,
         body: JSON.stringify({ imageUrl: localPath }),
       });
       if (!patchRes.ok) {
         const err = await patchRes.text();
-        console.error(`  [FAIL] "${breed.name}" patch: ${patchRes.status} ${err}`);
+        console.error(
+          `  [FAIL] "${breed.name}" patch: ${patchRes.status} ${err}`,
+        );
         failed++;
         continue;
       }
@@ -154,7 +177,12 @@ async function main() {
     }
   }
 
-  console.log(`\nDone. Uploaded: ${uploaded} | Skipped (no local): ${skipped} | Failed: ${failed}`);
+  console.log(
+    `\nDone. Uploaded: ${uploaded} | Skipped (no local): ${skipped} | Failed: ${failed}`,
+  );
 }
 
-main().catch(err => { console.error(err); process.exit(1); });
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
