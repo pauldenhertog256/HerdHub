@@ -44,9 +44,24 @@ export function getDb() {
     db.exec(schema);
   }
 
-  // Auto-Migration: Run if accounts table is empty and JSON data exists
+  // Auto-Migration: Run if accounts table is empty and JSON data exists.
+  // On Windows Docker Desktop (WSL2 bind mounts) files can take a moment to
+  // become visible after container start. Spin-wait up to 5 s using
+  // Atomics.wait() (non-CPU-burning synchronous sleep).
   const accountCount = db.prepare('SELECT COUNT(*) as count FROM accounts').get().count;
   if (accountCount === 0) {
+    const breedsPath = join(DATA_DIR, 'db', 'breeds.json');
+    if (!existsSync(breedsPath)) {
+      const saw = new Int32Array(new SharedArrayBuffer(4));
+      let waited = 0;
+      while (!existsSync(breedsPath) && waited < 5000) {
+        Atomics.wait(saw, 0, 0, 250); // sleep 250 ms
+        waited += 250;
+      }
+      if (existsSync(breedsPath)) {
+        console.log(`⏳ Volume mount became available after ${waited} ms`);
+      }
+    }
     console.log('🔄 No accounts found in SQLite. Checking for JSON data to migrate...');
     migrateFromJson(db, DATA_DIR);
   }

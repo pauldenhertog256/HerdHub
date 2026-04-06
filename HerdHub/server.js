@@ -196,22 +196,41 @@ function sanitizeUrl(url) {
 
 // ── Startup: migrate / seed breeds.json with IDs ─────────────────────────────
 async function seedDb() {
-  // Breeds
+  // Breeds — only seed from bundled file if BOTH the JSON file is absent AND SQLite has no breeds.
+  // (On Windows bind mounts the JSON may not be visible at first startup; if the SQLite migration
+  //  already ran successfully we should not overwrite its data with the older bundled file.)
   if (!existsSync(BREEDS_DB)) {
-    let breeds = null;
-    const oldPersistent = path.join(IMG_DIR, "_breeds.json");
-    if (existsSync(oldPersistent)) breeds = await loadDb(oldPersistent);
-    if (!breeds) breeds = (await loadDb(BREEDS_BUNDLED)) ?? [];
-    let nextId = 1;
-    breeds = breeds.map((b) => {
-      if (b.id) {
-        nextId = Math.max(nextId, b.id + 1);
-        return b;
-      }
-      return { id: nextId++, ...b };
-    });
-    await saveDb(BREEDS_DB, breeds);
-    console.log(`DB seeded — ${breeds.length} breeds`);
+    let sqliteBreedCount = 0;
+    try {
+      sqliteBreedCount = getDb().prepare("SELECT COUNT(*) as c FROM breeds").get().c;
+    } catch (_) {}
+
+    if (sqliteBreedCount === 0) {
+      // Truly empty — seed from JSON sources
+      let breeds = null;
+      const oldPersistent = path.join(IMG_DIR, "_breeds.json");
+      if (existsSync(oldPersistent)) breeds = await loadDb(oldPersistent);
+      if (!breeds) breeds = (await loadDb(BREEDS_BUNDLED)) ?? [];
+      let nextId = 1;
+      breeds = breeds.map((b) => {
+        if (b.id) {
+          nextId = Math.max(nextId, b.id + 1);
+          return b;
+        }
+        return { id: nextId++, ...b };
+      });
+      await saveDb(BREEDS_DB, breeds);
+      console.log(`DB seeded — ${breeds.length} breeds`);
+    } else {
+      // SQLite already has breeds (migration ran) — regenerate breeds.json from SQLite
+      console.log(`📝 Regenerating breeds.json from SQLite (${sqliteBreedCount} breeds)…`);
+      const rows = getDb()
+        .prepare("SELECT id, name, origin, subspecies, image_url as imageUrl, wiki_url as wikiUrl, props FROM breeds")
+        .all();
+      const breeds = rows.map(parseBreedProps);
+      await saveDb(BREEDS_DB, breeds);
+      console.log(`✅ breeds.json regenerated from SQLite — ${breeds.length} breeds`);
+    }
   }
 
   // Migration: purpose string → tags array
