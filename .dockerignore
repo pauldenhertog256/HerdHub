@@ -1,0 +1,22 @@
+# Don't bake local runtime data into the image — it's volume-mounted in production
+HerdHub/data/
+HerdHub/data.backup/
+HerdHub/backups/
+
+# Node modules — rebuilt inside the image
+**/node_modules/
+
+# Built frontend — rebuilt inside the image
+HerdHub/dist/
+
+# Dev/test scratch files
+HerdHub/test-results/
+HerdHub/playwright-report/
+HerdHub/*.log
+
+# Secrets
+HerdHub/.env
+.env
+
+# Git
+.git/
