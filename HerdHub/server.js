@@ -86,76 +86,24 @@ async function loadDb(file) {
 async function saveDb(file, data) {
   await mkdir(path.dirname(file), { recursive: true });
   await writeFile(file, JSON.stringify(data, null, 2));
+}
 
-  // Dual-write to SQLite (keeps DB in sync with JSON during test/dev runs)
+// Emergency read-only fallback for catastrophic SQLite failures
+async function emergencyFallback(file, res) {
   try {
-    const db = getDb();
-    db.pragma("foreign_keys = OFF"); // Avoid ordering issues during JSON saves
-    if (file.endsWith("accounts.json")) {
-      const stmt = db.prepare(
-        "INSERT OR REPLACE INTO accounts (id, email, password_hash, role, created_at) VALUES (?, ?, ?, ?, ?)",
-      );
-      const runMany = db.transaction((rows) =>
-        rows.forEach((r) =>
-          stmt.run(r.id, r.email, r.passwordHash, r.role, r.createdAt),
-        ),
-      );
-      runMany(data);
-    } else if (file.endsWith("breeds.json")) {
-      const stmt = db.prepare(
-        "INSERT OR REPLACE INTO breeds (id, species, name, origin, subspecies, image_url, wiki_url, props, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-      );
-      const runMany = db.transaction((rows) =>
-        rows.forEach((r) =>
-          stmt.run(
-            r.id,
-            "cattle",
-            r.name,
-            r.origin,
-            r.subspecies,
-            r.imageUrl,
-            r.wikiUrl,
-            JSON.stringify({ tags: r.tags, purpose: r.purpose }),
-            new Date().toISOString(),
-            new Date().toISOString(),
-          ),
-        ),
-      );
-      runMany(data);
-    } else if (file.endsWith("myherd.json")) {
-      const parts = file.split(path.sep);
-      const b64email = parts[parts.length - 2];
-      const email = Buffer.from(b64email, "base64url").toString("utf8");
-      const user = db
-        .prepare("SELECT id FROM accounts WHERE email = ?")
-        .get(email);
-      if (user) {
-        const stmt = db.prepare(
-          "INSERT OR REPLACE INTO user_herds (user_id, breed_id, custom_name, custom_image_url, custom_notes, created_at) VALUES (?, ?, ?, ?, ?, ?)",
-        );
-        const runMany = db.transaction((rows) =>
-          rows.forEach((r) =>
-            stmt.run(
-              user.id,
-              r.id,
-              r.name || null,
-              r.imageUrl || null,
-              r.notes || null,
-              new Date().toISOString(),
-            ),
-          ),
-        );
-        runMany(data);
-      }
+    console.error(
+      "🚨 SQLite catastrophic failure, attempting emergency JSON fallback for",
+      file,
+    );
+    const data = await loadDb(file);
+    if (data !== null) {
+      console.warn("⚠️ Emergency JSON fallback successful for", file);
+      return data;
     }
-    db.pragma("foreign_keys = ON");
   } catch (err) {
-    // Log dual-write errors in development/test
-    if (process.env.NODE_ENV !== "production") {
-      console.warn("⚠️ Dual-write to SQLite failed:", err.message);
-    }
-    // JSON remains authoritative during migration
+    console.error("❌ Emergency fallback also failed:", err.message);
   }
+  return null;
 }
 
 function userMyherdFile(email) {
@@ -197,12 +145,12 @@ function sanitizeUrl(url) {
 // ── Startup: migrate / seed breeds.json with IDs ─────────────────────────────
 async function seedDb() {
   // Breeds — only seed from bundled file if BOTH the JSON file is absent AND SQLite has no breeds.
-  // (On Windows bind mounts the JSON may not be visible at first startup; if the SQLite migration
-  //  already ran successfully we should not overwrite its data with the older bundled file.)
   if (!existsSync(BREEDS_DB)) {
     let sqliteBreedCount = 0;
     try {
-      sqliteBreedCount = getDb().prepare("SELECT COUNT(*) as c FROM breeds").get().c;
+      sqliteBreedCount = getDb()
+        .prepare("SELECT COUNT(*) as c FROM breeds")
+        .get().c;
     } catch (_) {}
 
     if (sqliteBreedCount === 0) {
@@ -222,18 +170,24 @@ async function seedDb() {
       await saveDb(BREEDS_DB, breeds);
       console.log(`DB seeded — ${breeds.length} breeds`);
     } else {
-      // SQLite already has breeds (migration ran) — regenerate breeds.json from SQLite
-      console.log(`📝 Regenerating breeds.json from SQLite (${sqliteBreedCount} breeds)…`);
+      // SQLite already has breeds — regenerate breeds.json from SQLite
+      console.log(
+        `📝 Regenerating breeds.json from SQLite (${sqliteBreedCount} breeds)…`,
+      );
       const rows = getDb()
-        .prepare("SELECT id, name, origin, subspecies, image_url as imageUrl, wiki_url as wikiUrl, props FROM breeds")
+        .prepare(
+          "SELECT id, name, origin, subspecies, image_url as imageUrl, wiki_url as wikiUrl, props FROM breeds",
+        )
         .all();
       const breeds = rows.map(parseBreedProps);
       await saveDb(BREEDS_DB, breeds);
-      console.log(`✅ breeds.json regenerated from SQLite — ${breeds.length} breeds`);
+      console.log(
+        `✅ breeds.json regenerated from SQLite — ${breeds.length} breeds`,
+      );
     }
   }
 
-  // Migration: purpose string → tags array
+  // Ensure purpose string → tags array conversion
   {
     let breeds = (await loadDb(BREEDS_DB)) ?? [];
     let migrated = false;
@@ -395,11 +349,17 @@ app.post("/api/login", authLimiter, async (req, res) => {
       .prepare("SELECT * FROM accounts WHERE email = ?")
       .get(email.toLowerCase());
   } catch (err) {
-    console.warn("⚠️ SQLite login failed, falling back to JSON:", err.message);
-    const accounts = (await loadDb(ACCOUNTS_DB)) ?? [];
-    account = accounts.find(
-      (a) => a.email.toLowerCase() === email.toLowerCase(),
-    );
+    console.error("❌ SQLite login failed:", err.message);
+    // Emergency fallback for catastrophic failures
+    const accounts = await emergencyFallback(ACCOUNTS_DB, res);
+    if (accounts !== null) {
+      console.warn("⚠️ Login using emergency JSON fallback");
+      account = accounts.find(
+        (a) => a.email.toLowerCase() === email.toLowerCase(),
+      );
+    } else {
+      return res.status(500).json({ error: "Database error" });
+    }
   }
 
   const ok =
@@ -465,7 +425,7 @@ app.post("/api/register", authLimiter, async (req, res) => {
       createdAt,
     );
 
-    // Also write to JSON via saveDb for dual-write during migration
+    // Write to JSON for backup/export compatibility
     const newAccount = {
       id: info.lastInsertRowid,
       email: email.toLowerCase(),
@@ -488,33 +448,8 @@ app.post("/api/register", authLimiter, async (req, res) => {
       role: "user",
     });
   } catch (err) {
-    console.warn(
-      "⚠️ SQLite registration failed, falling back to JSON:",
-      err.message,
-    );
-    // Fall back to JSON
-    const accounts = (await loadDb(ACCOUNTS_DB)) ?? [];
-    if (accounts.find((a) => a.email.toLowerCase() === email.toLowerCase())) {
-      return res.status(409).json({ error: "Email already registered" });
-    }
-    const passwordHash = await bcrypt.hash(password, 12);
-    const nextId =
-      accounts.length > 0 ? Math.max(...accounts.map((a) => a.id || 0)) + 1 : 1;
-    const newAccount = {
-      id: nextId,
-      email: email.toLowerCase(),
-      passwordHash,
-      role: "user",
-      createdAt: new Date().toISOString(),
-    };
-    accounts.push(newAccount);
-    await saveDb(ACCOUNTS_DB, accounts);
-    // Regenerate session ID to prevent session fixation (A07)
-    await new Promise((resolve, reject) =>
-      req.session.regenerate((err) => (err ? reject(err) : resolve())),
-    );
-    req.session.user = { email: newAccount.email, role: newAccount.role };
-    res.status(201).json({ email: newAccount.email, role: newAccount.role });
+    console.error("❌ SQLite registration failed:", err.message);
+    return res.status(500).json({ error: "Database error" });
   }
 });
 
@@ -528,9 +463,15 @@ app.get("/api/accounts", requireAdmin, async (req, res) => {
       .all();
     res.json(accounts);
   } catch (err) {
-    console.warn("⚠️ SQLite read failed, falling back to JSON:", err.message);
-    const accounts = (await loadDb(ACCOUNTS_DB)) ?? [];
-    res.json(accounts.map(({ passwordHash: _, ...rest }) => rest));
+    console.error("❌ SQLite read failed:", err.message);
+    // Emergency fallback for catastrophic failures
+    const accounts = await emergencyFallback(ACCOUNTS_DB, res);
+    if (accounts !== null) {
+      console.warn("⚠️ /api/accounts using emergency JSON fallback");
+      res.json(accounts.map(({ passwordHash: _, ...rest }) => rest));
+    } else {
+      res.status(500).json({ error: "Database error" });
+    }
   }
 });
 
@@ -565,24 +506,8 @@ app.patch("/api/accounts/:id", requireAdmin, async (req, res) => {
       .get(req.params.id);
     res.json(updated);
   } catch (err) {
-    console.warn("⚠️ SQLite patch failed, falling back to JSON:", err.message);
-    const accounts = (await loadDb(ACCOUNTS_DB)) ?? [];
-    const idx = accounts.findIndex(
-      (a) => String(a.id) === String(req.params.id),
-    );
-    if (idx === -1) return res.status(404).json({ error: "Not found" });
-    const { role, password } = req.body;
-    if (role) accounts[idx].role = role;
-    if (password) {
-      if (password.length < 8)
-        return res
-          .status(400)
-          .json({ error: "Password must be at least 8 characters" });
-      accounts[idx].passwordHash = await bcrypt.hash(password, 12);
-    }
-    await saveDb(ACCOUNTS_DB, accounts);
-    const { passwordHash: _, ...safe } = accounts[idx];
-    res.json(safe);
+    console.error("❌ SQLite patch failed:", err.message);
+    res.status(500).json({ error: "Database error" });
   }
 });
 
@@ -595,14 +520,8 @@ app.delete("/api/accounts/:id", requireAdmin, async (req, res) => {
     if (info.changes === 0) return res.status(404).json({ error: "Not found" });
     res.json({ ok: true });
   } catch (err) {
-    console.warn("⚠️ SQLite delete failed, falling back to JSON:", err.message);
-    let accounts = (await loadDb(ACCOUNTS_DB)) ?? [];
-    const before = accounts.length;
-    accounts = accounts.filter((a) => String(a.id) !== String(req.params.id));
-    if (accounts.length === before)
-      return res.status(404).json({ error: "Not found" });
-    await saveDb(ACCOUNTS_DB, accounts);
-    res.json({ ok: true });
+    console.error("❌ SQLite delete failed:", err.message);
+    res.status(500).json({ error: "Database error" });
   }
 });
 
@@ -640,7 +559,7 @@ app.post("/api/accounts", requireAdmin, async (req, res) => {
       createdAt,
     );
 
-    // Also write to JSON via saveDb for dual-write during migration
+    // Write to JSON for backup/export compatibility
     const newAccount = {
       id: info.lastInsertRowid,
       email: email.toLowerCase(),
@@ -721,12 +640,15 @@ app.get("/api/breeds", async (req, res) => {
     console.log(`✅ /api/breeds returning ${breedsWithTags.length} breeds`);
     res.json(breedsWithTags);
   } catch (err) {
-    console.warn("⚠️ SQLite read failed, falling back to JSON:", err.message);
-    const breeds = (await loadDb(BREEDS_DB)) ?? [];
-    console.log(
-      `✅ /api/breeds (JSON fallback) returning ${breeds.length} breeds`,
-    );
-    res.json(breeds.map(({ localImage: _, ...b }) => b));
+    console.error("❌ SQLite read failed:", err.message);
+    // Emergency fallback for catastrophic failures
+    const breeds = await emergencyFallback(BREEDS_DB, res);
+    if (breeds !== null) {
+      console.warn("⚠️ /api/breeds using emergency JSON fallback");
+      res.json(breeds.map(({ localImage: _, ...b }) => b));
+    } else {
+      res.status(500).json({ error: "Database error" });
+    }
   }
 });
 
@@ -799,22 +721,8 @@ app.patch("/api/breeds/:id", requireAdmin, async (req, res) => {
     const updated = db.prepare("SELECT * FROM breeds WHERE id = ?").get(id);
     res.json(parseBreedProps(updated));
   } catch (err) {
-    console.warn("⚠️ SQLite patch failed, falling back to JSON:", err.message);
-    try {
-      const id = Number(req.params.id);
-      const breeds = (await loadDb(BREEDS_DB)) ?? [];
-      const idx = breeds.findIndex((b) => b.id === id);
-      if (idx === -1) return res.status(404).json({ error: "Not found" });
-      let body = { ...req.body };
-      if (body.imageUrl) body.imageUrl = body.imageUrl.split("?")[0];
-      if ("wikiUrl" in body) body.wikiUrl = sanitizeUrl(body.wikiUrl);
-      breeds[idx] = { ...breeds[idx], ...body, id };
-      if (body.tags) breeds[idx].tags = normalizeTags(body.tags);
-      await saveDb(BREEDS_DB, breeds);
-      res.json(breeds[idx]);
-    } catch (fallbackErr) {
-      res.status(500).json({ error: String(fallbackErr) });
-    }
+    console.error("❌ SQLite patch failed:", err.message);
+    res.status(500).json({ error: "Database error" });
   }
 });
 
@@ -872,43 +780,8 @@ app.post("/api/breeds", requireAdmin, async (req, res) => {
       .get(nextId);
     res.status(201).json(parseBreedProps(inserted));
   } catch (err) {
-    console.warn("⚠️ SQLite create failed, falling back to JSON:", err.message);
-    try {
-      const breeds = (await loadDb(BREEDS_DB)) ?? [];
-      const nextId = breeds.reduce((m, b) => Math.max(m, b.id ?? 0), 0) + 1;
-      const newBreed = {
-        id: nextId,
-        name: "",
-        origin: null,
-        subspecies: null,
-        tags: [],
-        imageUrl: null,
-        wikiUrl: null,
-        ...req.body,
-        id: nextId,
-      };
-      newBreed.tags = normalizeTags(newBreed.tags);
-      if (newBreed.wikiUrl) newBreed.wikiUrl = sanitizeUrl(newBreed.wikiUrl);
-      if (newBreed.imageUrl && /^https?:\/\//.test(newBreed.imageUrl)) {
-        try {
-          newBreed.imageUrl = await downloadAndSaveImage(
-            newBreed.imageUrl,
-            nextId,
-            newBreed.name,
-          );
-        } catch (err) {
-          // Log download errors in development/test mode
-          if (process.env.NODE_ENV !== "production") {
-            console.warn("⚠️ Image download failed:", err.message);
-          }
-        }
-      }
-      breeds.push(newBreed);
-      await saveDb(BREEDS_DB, breeds);
-      res.status(201).json(newBreed);
-    } catch (fallbackErr) {
-      res.status(500).json({ error: String(fallbackErr) });
-    }
+    console.error("❌ SQLite create failed:", err.message);
+    res.status(500).json({ error: "Database error" });
   }
 });
 
@@ -950,28 +823,8 @@ app.post("/api/breeds/import", requireAdmin, async (req, res) => {
     runImport(incoming);
     res.json({ ok: true, count: incoming.length });
   } catch (err) {
-    console.warn("⚠️ SQLite import failed, falling back to JSON:", err.message);
-    try {
-      const incoming = req.body;
-      if (!Array.isArray(incoming))
-        return res.status(400).json({ error: "Expected array" });
-      let nextId = 1;
-      const breeds = incoming.map((b) => {
-        const tags = normalizeTags(
-          b.tags ??
-            (b.purpose ? b.purpose.split("/").map((t) => t.trim()) : []),
-        );
-        if (b.id) {
-          nextId = Math.max(nextId, b.id + 1);
-          return { ...b, tags };
-        }
-        return { id: nextId++, ...b, tags };
-      });
-      await saveDb(BREEDS_DB, breeds);
-      res.json({ ok: true, count: breeds.length });
-    } catch (fallbackErr) {
-      res.status(500).json({ error: String(fallbackErr) });
-    }
+    console.error("❌ SQLite import failed:", err.message);
+    res.status(500).json({ error: "Database error" });
   }
 });
 
@@ -985,19 +838,8 @@ app.delete("/api/breeds/:id", requireAdmin, async (req, res) => {
     if (info.changes === 0) return res.status(404).json({ error: "Not found" });
     res.json({ ok: true });
   } catch (err) {
-    console.warn("⚠️ SQLite delete failed, falling back to JSON:", err.message);
-    try {
-      const id = Number(req.params.id);
-      let breeds = (await loadDb(BREEDS_DB)) ?? [];
-      const before = breeds.length;
-      breeds = breeds.filter((b) => b.id !== id);
-      if (breeds.length === before)
-        return res.status(404).json({ error: "Not found" });
-      await saveDb(BREEDS_DB, breeds);
-      res.json({ ok: true });
-    } catch (fallbackErr) {
-      res.status(500).json({ error: String(fallbackErr) });
-    }
+    console.error("❌ SQLite delete failed:", err.message);
+    res.status(500).json({ error: "Database error" });
   }
 });
 
@@ -1019,9 +861,18 @@ app.get("/api/myherd", requireUser, async (req, res) => {
       .all(user.id);
     res.json(herd);
   } catch (err) {
-    console.warn("⚠️ SQLite read failed, falling back to JSON:", err.message);
-    const herd = (await loadDb(userMyherdFile(sessionUser(req).email))) ?? [];
-    res.json(herd);
+    console.error("❌ SQLite read failed:", err.message);
+    // Emergency fallback for catastrophic failures
+    const herd = await emergencyFallback(
+      userMyherdFile(sessionUser(req).email),
+      res,
+    );
+    if (herd !== null) {
+      console.warn("⚠️ /api/myherd using emergency JSON fallback");
+      res.json(herd);
+    } else {
+      res.status(500).json({ error: "Database error" });
+    }
   }
 });
 
@@ -1108,7 +959,42 @@ app.put("/api/myherd", requireUser, async (req, res) => {
       }),
     );
 
+    // Write to SQLite
+    const db = getDb();
+    const dbUser = db
+      .prepare("SELECT id FROM accounts WHERE email = ?")
+      .get(user.email);
+
+    if (!dbUser) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Delete existing herd for this user
+    db.prepare("DELETE FROM user_herds WHERE user_id = ?").run(dbUser.id);
+
+    // Insert new herd
+    const insertStmt = db.prepare(
+      "INSERT INTO user_herds (user_id, breed_id, custom_name, custom_image_url, custom_notes, created_at) VALUES (?, ?, ?, ?, ?, ?)",
+    );
+
+    const insertMany = db.transaction((herdItems) => {
+      herdItems.forEach((item) => {
+        insertStmt.run(
+          dbUser.id,
+          item.id,
+          item.name || null,
+          item.imageUrl || null,
+          item.notes || null,
+          new Date().toISOString(),
+        );
+      });
+    });
+
+    insertMany(clean);
+
+    // Also write to JSON for backup/export compatibility
     await saveDb(userMyherdFile(user.email), clean);
+
     res.json({ ok: true, count: clean.length });
   } catch (err) {
     res.status(500).json({ error: String(err) });
@@ -1545,7 +1431,44 @@ app.post(
   async (req, res) => {
     try {
       const { breedsData, imageCount } = await extractBreedZip(req.body);
-      await saveDb(userMyherdFile(sessionUser(req).email), breedsData);
+      const user = sessionUser(req);
+
+      // Write to SQLite
+      const db = getDb();
+      const dbUser = db
+        .prepare("SELECT id FROM accounts WHERE email = ?")
+        .get(user.email);
+
+      if (!dbUser) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      // Delete existing herd for this user
+      db.prepare("DELETE FROM user_herds WHERE user_id = ?").run(dbUser.id);
+
+      // Insert new herd
+      const insertStmt = db.prepare(
+        "INSERT INTO user_herds (user_id, breed_id, custom_name, custom_image_url, custom_notes, created_at) VALUES (?, ?, ?, ?, ?, ?)",
+      );
+
+      const insertMany = db.transaction((herdItems) => {
+        herdItems.forEach((item) => {
+          insertStmt.run(
+            dbUser.id,
+            item.id,
+            item.name || null,
+            item.imageUrl || null,
+            item.notes || null,
+            new Date().toISOString(),
+          );
+        });
+      });
+
+      insertMany(breedsData);
+
+      // Also write to JSON for backup/export compatibility
+      await saveDb(userMyherdFile(user.email), breedsData);
+
       res.json({ ok: true, breeds: breedsData.length, images: imageCount });
     } catch (err) {
       console.error(err);
@@ -1571,69 +1494,21 @@ app.get("/api/admin/backup", requireAdmin, (req, res) => {
   archive.finalize();
 });
 
-// ── Migration Verification ──────────────────────────────────────────────────────
-app.get("/api/verify-migration", requireAdmin, async (req, res) => {
-  try {
-    const db = getDb();
-    const sqliteAccounts = db
-      .prepare("SELECT COUNT(*) as count FROM accounts")
-      .get().count;
-    const sqliteBreeds = db
-      .prepare("SELECT COUNT(*) as count FROM breeds")
-      .get().count;
-    const sqliteHerds = db
-      .prepare("SELECT COUNT(*) as count FROM user_herds")
-      .get().count;
-
-    const jsonAccounts = JSON.parse(
-      (await readFile(ACCOUNTS_DB, "utf8")) || "[]",
-    ).length;
-    const jsonBreeds = JSON.parse(
-      (await readFile(BREEDS_DB, "utf8")) || "[]",
-    ).length;
-
-    let jsonHerds = 0;
-    const usersDir = path.join(DB_DIR, "users");
-    if (existsSync(usersDir)) {
-      for (const folder of await readdir(usersDir)) {
-        const herdPath = path.join(usersDir, folder, "myherd.json");
-        if (existsSync(herdPath)) {
-          jsonHerds += JSON.parse(
-            (await readFile(herdPath, "utf8")) || "[]",
-          ).length;
-        }
-      }
-    }
-
-    const match =
-      sqliteAccounts === jsonAccounts &&
-      sqliteBreeds === jsonBreeds &&
-      sqliteHerds === jsonHerds;
-    res.json({
-      match,
-      sqlite: {
-        accounts: sqliteAccounts,
-        breeds: sqliteBreeds,
-        herds: sqliteHerds,
-      },
-      json: { accounts: jsonAccounts, breeds: jsonBreeds, herds: jsonHerds },
-    });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
 // ── Static frontend (production) ──────────────────────────────────────────────
 app.use(express.static(DIST_DIR));
 // Images and thumbs are named with breed IDs — safe to cache for 30 days
 // setHeaders ensures .avif files get the correct MIME type (some mime DBs omit it)
-app.use("/images", express.static(IMG_DIR, {
-  maxAge: "30d",
-  immutable: true,
-  setHeaders(res, filePath) {
-    if (filePath.endsWith(".avif")) res.setHeader("Content-Type", "image/avif");
-  },
-}));
+app.use(
+  "/images",
+  express.static(IMG_DIR, {
+    maxAge: "30d",
+    immutable: true,
+    setHeaders(res, filePath) {
+      if (filePath.endsWith(".avif"))
+        res.setHeader("Content-Type", "image/avif");
+    },
+  }),
+);
 
 // SPA fallback — all non-API routes serve index.html
 app.get("*", (req, res) => {
@@ -1722,6 +1597,21 @@ async function ensureLocalImages() {
         // Persist every 10 downloads so progress survives a restart
         if (saved % 10 === 0) {
           await saveDb(BREEDS_DB, breeds);
+          // Also update SQLite with only changed breeds
+          const db = getDb();
+          const updateStmt = db.prepare(
+            "UPDATE breeds SET image_url = ?, updated_at = ? WHERE id = ?",
+          );
+          const updateMany = db.transaction((changedBreeds) => {
+            changedBreeds.forEach((b) => {
+              updateStmt.run(b.imageUrl, new Date().toISOString(), b.id);
+            });
+          });
+          // Get breeds that were changed in this batch (last 10)
+          const changedBreeds = breeds.slice(-10).filter((b) => b.id);
+          if (changedBreeds.length > 0) {
+            updateMany(changedBreeds);
+          }
           dirty = false;
         }
       } catch (err) {
@@ -1732,7 +1622,26 @@ async function ensureLocalImages() {
       if (/^https?:\/\//.test(b.imageUrl))
         await new Promise((r) => setTimeout(r, 500));
     }
-    if (dirty) await saveDb(BREEDS_DB, breeds);
+    if (dirty) {
+      await saveDb(BREEDS_DB, breeds);
+      // Also update SQLite with only changed breeds
+      const db = getDb();
+      const updateStmt = db.prepare(
+        "UPDATE breeds SET image_url = ?, updated_at = ? WHERE id = ?",
+      );
+      const updateMany = db.transaction((changedBreeds) => {
+        changedBreeds.forEach((b) => {
+          updateStmt.run(b.imageUrl, new Date().toISOString(), b.id);
+        });
+      });
+      // Get breeds that were actually changed (external breeds that were processed)
+      const changedBreeds = breeds.filter(
+        (b) => b.id && external.some((e) => e.id === b.id),
+      );
+      if (changedBreeds.length > 0) {
+        updateMany(changedBreeds);
+      }
+    }
     console.log(`Image localisation done — ${saved} saved, ${failed} failed.`);
   } catch (e) {
     console.warn("ensureLocalImages error:", e.message);

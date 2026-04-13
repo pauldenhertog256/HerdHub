@@ -10,7 +10,7 @@
  */
 
 import { spawn } from "node:child_process";
-import { setTimeout } from "node:timers/promises";
+import { setTimeout as sleep } from "node:timers/promises";
 import { createRequire } from "node:module";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -53,15 +53,20 @@ async function cleanupTestData() {
           break;
         } catch (e) {
           if (e.code === "EBUSY" || e.code === "EPERM") {
-            console.warn(`⏳ DB file locked (attempt ${attempt}/5), retrying in 1s…`);
-            await new Promise((r) => setTimeout(r, 1000));
+            console.warn(
+              `⏳ DB file locked (attempt ${attempt}/5), retrying in 1s…`,
+            );
+            await sleep(1000);
           } else {
             throw e;
           }
         }
       }
       if (deleted && f === DB_PATH) console.log("✅ Deleted SQLite database");
-      if (!deleted) console.warn(`⚠️ Could not delete ${f} after 5 attempts — tests may use stale DB`);
+      if (!deleted)
+        console.warn(
+          `⚠️ Could not delete ${f} after 5 attempts — tests may use stale DB`,
+        );
     }
 
     // Clean up test accounts from JSON file
@@ -194,7 +199,7 @@ async function waitForServer(url, maxAttempts = 20, delayMs = 500) {
     } catch {
       // Server not ready yet
     }
-    await setTimeout(delayMs);
+    await sleep(delayMs);
   }
   console.error("❌ Server failed to start within timeout.");
   return false;
@@ -212,7 +217,7 @@ async function waitForVite(url, maxAttempts = 20, delayMs = 500) {
     } catch {
       // Vite not ready yet
     }
-    await setTimeout(delayMs);
+    await sleep(delayMs);
   }
   console.error("❌ Vite failed to start within timeout.");
   return false;
