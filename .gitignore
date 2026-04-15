@@ -3,3 +3,21 @@ __pycache__/
 *.pyc
 nul
 node_modules/
+
+# Sensitive files
+cookies.txt
+prod_breeds.json
+
+# HerdHub runtime directories
+HerdHub/.pids/
+HerdHub/backups/
+HerdHub/data/
+HerdHub/logs/
+HerdHub/test-results/
+
+# HerdHub test/development files
+HerdHub/.env.test
+HerdHub/.env.test.clean
+HerdHub/generate_hash.js
+HerdHub/import_prod_breeds.js
+HerdHub/seed_database.js

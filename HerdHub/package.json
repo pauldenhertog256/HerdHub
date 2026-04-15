@@ -14,7 +14,11 @@
     "test:upload": "node scripts/test-runner.mjs test/image-upload.test.mjs",
     "test:e2e": "node scripts/test-runner.mjs --e2e",
     "backup": "node scripts/backup-production.mjs",
-    "backup:db": "node scripts/backup-production.mjs --db-only"
+    "backup:db": "node scripts/backup-production.mjs --db-only",
+    "start:all": "node start-servers.mjs",
+    "stop:all": "node stop-servers.mjs",
+    "start:servers": "node start-servers.mjs",
+    "stop:servers": "node stop-servers.mjs"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",

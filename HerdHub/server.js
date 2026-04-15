@@ -29,7 +29,7 @@ process.on("unhandledRejection", (reason, promise) => {
   // Don't exit, keep server running
 });
 
-// Initialize SQLite Database (auto-migrates if needed)
+// Initialize SQLite Database
 getDb();
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -41,7 +41,6 @@ const DB_DIR = path.join(DATA_DIR, "db");
 const BREEDS_DB = path.join(DB_DIR, "breeds.json");
 const ACCOUNTS_DB = path.join(DB_DIR, "accounts.json");
 const USERS_DIR = path.join(DB_DIR, "users");
-const BREEDS_BUNDLED = path.join(__dirname, "public", "breeds.json");
 const PORT = process.env.PORT || 5176;
 
 // ── DB helpers ────────────────────────────────────────────────────────────────
@@ -75,35 +74,14 @@ function parseBreedProps(breed) {
   const { props, species, ...rest } = breed;
   return { ...rest, tags };
 }
-async function loadDb(file) {
-  try {
-    return JSON.parse(await readFile(file, "utf8"));
-  } catch {
-    return null;
-  }
-}
 
+// JSON files are read-only for backup/export compatibility
+// No longer writing to JSON - SQLite is sole source of truth
 async function saveDb(file, data) {
-  await mkdir(path.dirname(file), { recursive: true });
-  await writeFile(file, JSON.stringify(data, null, 2));
-}
-
-// Emergency read-only fallback for catastrophic SQLite failures
-async function emergencyFallback(file, res) {
-  try {
-    console.error(
-      "🚨 SQLite catastrophic failure, attempting emergency JSON fallback for",
-      file,
-    );
-    const data = await loadDb(file);
-    if (data !== null) {
-      console.warn("⚠️ Emergency JSON fallback successful for", file);
-      return data;
-    }
-  } catch (err) {
-    console.error("❌ Emergency fallback also failed:", err.message);
-  }
-  return null;
+  console.warn(
+    `⚠️ Attempt to write to JSON file ${file} - SQLite is sole source of truth`,
+  );
+  // No-op: JSON files are read-only for backup/export compatibility only
 }
 
 function userMyherdFile(email) {
@@ -142,89 +120,11 @@ function sanitizeUrl(url) {
   return null;
 }
 
-// ── Startup: migrate / seed breeds.json with IDs ─────────────────────────────
+// ── Startup: seed admin accounts ─────────────────────────────────────────────
 async function seedDb() {
-  // Breeds — only seed from bundled file if BOTH the JSON file is absent AND SQLite has no breeds.
-  if (!existsSync(BREEDS_DB)) {
-    let sqliteBreedCount = 0;
-    try {
-      sqliteBreedCount = getDb()
-        .prepare("SELECT COUNT(*) as c FROM breeds")
-        .get().c;
-    } catch (_) {}
+  const db = getDb();
 
-    if (sqliteBreedCount === 0) {
-      // Truly empty — seed from JSON sources
-      let breeds = null;
-      const oldPersistent = path.join(IMG_DIR, "_breeds.json");
-      if (existsSync(oldPersistent)) breeds = await loadDb(oldPersistent);
-      if (!breeds) breeds = (await loadDb(BREEDS_BUNDLED)) ?? [];
-      let nextId = 1;
-      breeds = breeds.map((b) => {
-        if (b.id) {
-          nextId = Math.max(nextId, b.id + 1);
-          return b;
-        }
-        return { id: nextId++, ...b };
-      });
-      await saveDb(BREEDS_DB, breeds);
-      console.log(`DB seeded — ${breeds.length} breeds`);
-    } else {
-      // SQLite already has breeds — regenerate breeds.json from SQLite
-      console.log(
-        `📝 Regenerating breeds.json from SQLite (${sqliteBreedCount} breeds)…`,
-      );
-      const rows = getDb()
-        .prepare(
-          "SELECT id, name, origin, subspecies, image_url as imageUrl, wiki_url as wikiUrl, props FROM breeds",
-        )
-        .all();
-      const breeds = rows.map(parseBreedProps);
-      await saveDb(BREEDS_DB, breeds);
-      console.log(
-        `✅ breeds.json regenerated from SQLite — ${breeds.length} breeds`,
-      );
-    }
-  }
-
-  // Ensure purpose string → tags array conversion
-  {
-    let breeds = (await loadDb(BREEDS_DB)) ?? [];
-    let migrated = false;
-    // First, ensure all breeds have IDs
-    let nextId = 1;
-    breeds = breeds.map((b) => {
-      // Ensure breed has an ID
-      const breedWithId = b.id ? b : { id: nextId++, ...b };
-      if (b.id && b.id >= nextId) nextId = b.id + 1;
-
-      if (!Array.isArray(breedWithId.tags)) {
-        const tags = breedWithId.purpose
-          ? breedWithId.purpose
-              .split("/")
-              .map((t) => t.trim())
-              .filter(Boolean)
-          : [];
-        const { purpose, ...rest } = breedWithId;
-        migrated = true;
-        return { ...rest, tags: normalizeTags(tags) };
-      }
-      // Also normalize any existing tags that might be wrong case
-      const normalized = normalizeTags(breedWithId.tags);
-      if (normalized.join(",") !== breedWithId.tags.join(",")) {
-        migrated = true;
-        return { ...breedWithId, tags: normalized };
-      }
-      return breedWithId;
-    });
-    if (migrated) {
-      await saveDb(BREEDS_DB, breeds);
-      console.log("Migrated purpose → tags");
-    }
-  }
-
-  // Accounts — seed admin from env vars only (no hardcoded credentials)
-  let accounts = (await loadDb(ACCOUNTS_DB)) ?? [];
+  // Seed admin accounts from environment variables only (no hardcoded credentials)
   const adminSeeds = [];
   if (process.env.ADMIN_EMAIL && process.env.ADMIN_PASS) {
     adminSeeds.push({
@@ -232,29 +132,9 @@ async function seedDb() {
       password: process.env.ADMIN_PASS,
     });
   }
-  let changed = false;
-  for (const seed of adminSeeds) {
-    if (!accounts.find((a) => a.email === seed.email)) {
-      const nextId =
-        accounts.length > 0
-          ? Math.max(...accounts.map((a) => a.id || 0)) + 1
-          : 1;
-      accounts.push({
-        id: nextId,
-        email: seed.email,
-        passwordHash: await bcrypt.hash(seed.password, 12),
-        role: "admin",
-        createdAt: new Date().toISOString(),
-      });
-      console.log(`Admin seeded: ${seed.email}`);
-      changed = true;
-    }
-  }
-  if (changed) await saveDb(ACCOUNTS_DB, accounts);
 
-  // Also ensure admin exists in SQLite
+  // Ensure admin exists in SQLite (sole source of truth)
   try {
-    const db = getDb();
     for (const seed of adminSeeds) {
       const existing = db
         .prepare("SELECT id FROM accounts WHERE email = ?")
@@ -341,7 +221,7 @@ app.post("/api/login", authLimiter, async (req, res) => {
   if (!email || !password)
     return res.status(400).json({ error: "Email and password required" });
 
-  // Try SQLite first, then fall back to JSON
+  // SQLite is sole source of truth
   let account = null;
   try {
     const db = getDb();
@@ -350,16 +230,7 @@ app.post("/api/login", authLimiter, async (req, res) => {
       .get(email.toLowerCase());
   } catch (err) {
     console.error("❌ SQLite login failed:", err.message);
-    // Emergency fallback for catastrophic failures
-    const accounts = await emergencyFallback(ACCOUNTS_DB, res);
-    if (accounts !== null) {
-      console.warn("⚠️ Login using emergency JSON fallback");
-      account = accounts.find(
-        (a) => a.email.toLowerCase() === email.toLowerCase(),
-      );
-    } else {
-      return res.status(500).json({ error: "Database error" });
-    }
+    return res.status(500).json({ error: "Database error" });
   }
 
   const ok =
@@ -425,17 +296,8 @@ app.post("/api/register", authLimiter, async (req, res) => {
       createdAt,
     );
 
-    // Write to JSON for backup/export compatibility
-    const newAccount = {
-      id: info.lastInsertRowid,
-      email: email.toLowerCase(),
-      passwordHash,
-      role: "user",
-      createdAt,
-    };
-    const accounts = (await loadDb(ACCOUNTS_DB)) ?? [];
-    accounts.push(newAccount);
-    await saveDb(ACCOUNTS_DB, accounts);
+    // JSON files are read-only for backup/export compatibility
+    // No longer writing to JSON - SQLite is sole source of truth
 
     // Regenerate session ID to prevent session fixation (A07)
     await new Promise((resolve, reject) =>
@@ -464,14 +326,7 @@ app.get("/api/accounts", requireAdmin, async (req, res) => {
     res.json(accounts);
   } catch (err) {
     console.error("❌ SQLite read failed:", err.message);
-    // Emergency fallback for catastrophic failures
-    const accounts = await emergencyFallback(ACCOUNTS_DB, res);
-    if (accounts !== null) {
-      console.warn("⚠️ /api/accounts using emergency JSON fallback");
-      res.json(accounts.map(({ passwordHash: _, ...rest }) => rest));
-    } else {
-      res.status(500).json({ error: "Database error" });
-    }
+    res.status(500).json({ error: "Database error" });
   }
 });
 
@@ -559,49 +414,14 @@ app.post("/api/accounts", requireAdmin, async (req, res) => {
       createdAt,
     );
 
-    // Write to JSON for backup/export compatibility
-    const newAccount = {
-      id: info.lastInsertRowid,
-      email: email.toLowerCase(),
-      passwordHash,
-      role,
-      createdAt,
-    };
-    const accounts = (await loadDb(ACCOUNTS_DB)) ?? [];
-    accounts.push(newAccount);
-    await saveDb(ACCOUNTS_DB, accounts);
+    // JSON files are read-only for backup/export compatibility
+    // No longer writing to JSON - SQLite is sole source of truth
 
     // Do NOT overwrite the current session - admin stays logged in as themselves
     res.status(201).json({ id: info.lastInsertRowid, email, role, createdAt });
   } catch (err) {
-    console.warn("⚠️ SQLite create failed, falling back to JSON:", err.message);
-    const { email, password, role = "user" } = req.body;
-    if (!email || !password)
-      return res.status(400).json({ error: "Email and password required" });
-    if (password.length < 8)
-      return res
-        .status(400)
-        .json({ error: "Password must be at least 8 characters" });
-    if (!["user", "admin"].includes(role))
-      return res.status(400).json({ error: "Invalid role" });
-    const accounts = (await loadDb(ACCOUNTS_DB)) ?? [];
-    if (accounts.find((a) => a.email.toLowerCase() === email.toLowerCase())) {
-      return res.status(409).json({ error: "Email already registered" });
-    }
-    const nextId =
-      accounts.length > 0 ? Math.max(...accounts.map((a) => a.id || 0)) + 1 : 1;
-    const newAccount = {
-      id: nextId,
-      email,
-      passwordHash: await bcrypt.hash(password, 12),
-      role,
-      createdAt: new Date().toISOString(),
-    };
-    accounts.push(newAccount);
-    await saveDb(ACCOUNTS_DB, accounts);
-    // Do NOT overwrite the current session - admin stays logged in as themselves
-    const { passwordHash: _, ...safe } = newAccount;
-    res.status(201).json(safe);
+    console.error("❌ SQLite account creation failed:", err.message);
+    res.status(500).json({ error: "Database error" });
   }
 });
 
@@ -610,12 +430,19 @@ app.post("/api/accounts", requireAdmin, async (req, res) => {
 app.post("/api/impersonate/:id", requireAdmin, async (req, res) => {
   if (req.session.adminBackup)
     return res.status(400).json({ error: "Already impersonating" });
-  const accounts = (await loadDb(ACCOUNTS_DB)) ?? [];
-  const target = accounts.find((a) => String(a.id) === String(req.params.id));
-  if (!target) return res.status(404).json({ error: "Account not found" });
-  req.session.adminBackup = req.session.user;
-  req.session.user = { email: target.email, role: target.role };
-  res.json({ email: target.email, role: target.role, impersonating: true });
+  try {
+    const db = getDb();
+    const target = db
+      .prepare("SELECT email, role FROM accounts WHERE id = ?")
+      .get(req.params.id);
+    if (!target) return res.status(404).json({ error: "Account not found" });
+    req.session.adminBackup = req.session.user;
+    req.session.user = { email: target.email, role: target.role };
+    res.json({ email: target.email, role: target.role, impersonating: true });
+  } catch (err) {
+    console.error("❌ SQLite impersonation failed:", err.message);
+    res.status(500).json({ error: "Database error" });
+  }
 });
 
 app.post("/api/unimpersonate", (req, res) => {
@@ -641,14 +468,25 @@ app.get("/api/breeds", async (req, res) => {
     res.json(breedsWithTags);
   } catch (err) {
     console.error("❌ SQLite read failed:", err.message);
-    // Emergency fallback for catastrophic failures
-    const breeds = await emergencyFallback(BREEDS_DB, res);
-    if (breeds !== null) {
-      console.warn("⚠️ /api/breeds using emergency JSON fallback");
-      res.json(breeds.map(({ localImage: _, ...b }) => b));
-    } else {
-      res.status(500).json({ error: "Database error" });
-    }
+    res.status(500).json({ error: "Database error" });
+  }
+});
+
+// GET one breed by ID — no auth, guests can view details
+app.get("/api/breeds/:id", async (req, res) => {
+  try {
+    const db = getDb();
+    const id = Number(req.params.id);
+    const breed = db
+      .prepare(
+        "SELECT id, species, name, origin, subspecies, image_url as imageUrl, wiki_url as wikiUrl, props FROM breeds WHERE id = ?",
+      )
+      .get(id);
+    if (!breed) return res.status(404).json({ error: "Not found" });
+    res.json(parseBreedProps(breed));
+  } catch (err) {
+    console.error("❌ SQLite read failed:", err.message);
+    res.status(500).json({ error: "Database error" });
   }
 });
 
@@ -862,17 +700,7 @@ app.get("/api/myherd", requireUser, async (req, res) => {
     res.json(herd);
   } catch (err) {
     console.error("❌ SQLite read failed:", err.message);
-    // Emergency fallback for catastrophic failures
-    const herd = await emergencyFallback(
-      userMyherdFile(sessionUser(req).email),
-      res,
-    );
-    if (herd !== null) {
-      console.warn("⚠️ /api/myherd using emergency JSON fallback");
-      res.json(herd);
-    } else {
-      res.status(500).json({ error: "Database error" });
-    }
+    res.status(500).json({ error: "Database error" });
   }
 });
 
@@ -992,8 +820,8 @@ app.put("/api/myherd", requireUser, async (req, res) => {
 
     insertMany(clean);
 
-    // Also write to JSON for backup/export compatibility
-    await saveDb(userMyherdFile(user.email), clean);
+    // JSON files are read-only for backup/export compatibility
+    // No longer writing to JSON - SQLite is sole source of truth
 
     res.json({ ok: true, count: clean.length });
   } catch (err) {
@@ -1364,9 +1192,15 @@ async function extractBreedZip(buf) {
 // GET /api/export-zip — master breeds + images (admin)
 app.get("/api/export-zip", requireAdmin, async (req, res) => {
   try {
-    const breeds = (await loadDb(BREEDS_DB)) ?? [];
+    const db = getDb();
+    const breeds = db
+      .prepare(
+        "SELECT id, name, origin, subspecies, image_url as imageUrl, wiki_url as wikiUrl, props FROM breeds",
+      )
+      .all();
+    const breedsWithTags = breeds.map(parseBreedProps);
     const date = new Date().toISOString().slice(0, 10);
-    await buildBreedZip(breeds, res, `Export_All_${date}.zip`);
+    await buildBreedZip(breedsWithTags, res, `Export_All_${date}.zip`);
   } catch (err) {
     console.error(err);
     if (!res.headersSent) res.status(500).json({ error: String(err) });
@@ -1390,7 +1224,8 @@ app.post(
         }
         return { id: nextId++, ...b, tags };
       });
-      await saveDb(BREEDS_DB, breeds);
+      // JSON files are read-only for backup/export compatibility
+      // No longer writing to JSON - SQLite is sole source of truth
       res.json({ ok: true, breeds: breeds.length, images: imageCount });
     } catch (err) {
       console.error(err);
@@ -1466,8 +1301,8 @@ app.post(
 
       insertMany(breedsData);
 
-      // Also write to JSON for backup/export compatibility
-      await saveDb(userMyherdFile(user.email), breedsData);
+      // JSON files are read-only for backup/export compatibility
+      // No longer writing to JSON - SQLite is sole source of truth
 
       res.json({ ok: true, breeds: breedsData.length, images: imageCount });
     } catch (err) {
@@ -1565,83 +1400,62 @@ async function ensureAllThumbs() {
  */
 async function ensureLocalImages() {
   try {
-    let breeds = (await loadDb(BREEDS_DB)) ?? [];
+    const db = getDb();
+    const breeds = db
+      .prepare(
+        "SELECT id, name, image_url as imageUrl FROM breeds WHERE image_url IS NOT NULL",
+      )
+      .all();
+
     const external = breeds.filter(
       (b) =>
         b.imageUrl &&
         (b.imageUrl.startsWith("data:") || /^https?:\/\//.test(b.imageUrl)),
     );
     if (!external.length) return;
+
     console.log(
       `Localising ${external.length} external breed images (copying from local stash where available)…`,
     );
 
-    let saved = 0,
-      failed = 0,
-      dirty = false;
+    let saved = 0;
+    let failed = 0;
+    const changedBreeds = [];
+
     for (const b of external) {
-      const idx = breeds.findIndex((x) => x.id === b.id);
-      if (idx === -1) continue;
       try {
-        const localUrl = await downloadAndSaveImage(
-          b.imageUrl,
-          b.id,
-          b.name,
-          1,
-          b.localImage ?? null,
-          false,
-        );
-        breeds[idx] = { ...breeds[idx], imageUrl: localUrl };
-        dirty = true;
-        saved++;
-        // Persist every 10 downloads so progress survives a restart
-        if (saved % 10 === 0) {
-          await saveDb(BREEDS_DB, breeds);
-          // Also update SQLite with only changed breeds
-          const db = getDb();
-          const updateStmt = db.prepare(
-            "UPDATE breeds SET image_url = ?, updated_at = ? WHERE id = ?",
-          );
-          const updateMany = db.transaction((changedBreeds) => {
-            changedBreeds.forEach((b) => {
-              updateStmt.run(b.imageUrl, new Date().toISOString(), b.id);
-            });
-          });
-          // Get breeds that were changed in this batch (last 10)
-          const changedBreeds = breeds.slice(-10).filter((b) => b.id);
-          if (changedBreeds.length > 0) {
-            updateMany(changedBreeds);
-          }
-          dirty = false;
+        const newUrl = await downloadAndSaveImage(b.imageUrl, b.id, b.name);
+        if (newUrl && newUrl !== b.imageUrl) {
+          changedBreeds.push({ id: b.id, imageUrl: newUrl });
+          saved++;
+        } else if (newUrl) {
+          // Image was already local or download succeeded but URL didn't change
+          saved++;
         }
       } catch (err) {
         console.warn(`  Failed "${b.name}": ${err.message}`);
         failed++;
       }
+
       // 500 ms between requests — avoids Wikimedia 429 rate-limiting
       if (/^https?:\/\//.test(b.imageUrl))
         await new Promise((r) => setTimeout(r, 500));
     }
-    if (dirty) {
-      await saveDb(BREEDS_DB, breeds);
-      // Also update SQLite with only changed breeds
-      const db = getDb();
+
+    // Update SQLite with changed breeds
+    if (changedBreeds.length > 0) {
       const updateStmt = db.prepare(
         "UPDATE breeds SET image_url = ?, updated_at = ? WHERE id = ?",
       );
-      const updateMany = db.transaction((changedBreeds) => {
-        changedBreeds.forEach((b) => {
+      const updateMany = db.transaction((breedsToUpdate) => {
+        breedsToUpdate.forEach((b) => {
           updateStmt.run(b.imageUrl, new Date().toISOString(), b.id);
         });
       });
-      // Get breeds that were actually changed (external breeds that were processed)
-      const changedBreeds = breeds.filter(
-        (b) => b.id && external.some((e) => e.id === b.id),
-      );
-      if (changedBreeds.length > 0) {
-        updateMany(changedBreeds);
-      }
+      updateMany(changedBreeds);
+      console.log(`Updated ${changedBreeds.length} breeds in SQLite`);
     }
+
     console.log(`Image localisation done — ${saved} saved, ${failed} failed.`);
   } catch (e) {
     console.warn("ensureLocalImages error:", e.message);

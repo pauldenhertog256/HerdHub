@@ -17,6 +17,8 @@ data/
 
 # Secrets & Backups
 .env
+.env.test
+.env.test.clean
 backups/
 *.tar.gz
 *.b64
@@ -28,6 +30,9 @@ playwright-report/
 blob-report/
 server.err
 server.log
+generate_hash.js
+import_prod_breeds.js
+seed_database.js
 
 # Editor directories and files
 .vscode/*
